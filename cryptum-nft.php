@@ -30,6 +30,7 @@ if (is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX)) {
 require_once 'utils.php';
 require_once 'product-admin.php';
 require_once 'order.php';
+require_once 'order-admin.php';
 require_once 'product-info.php';
 
 function cryptum_nft_plugin_loaded()
@@ -49,6 +50,9 @@ function cryptum_nft_plugin_loaded()
 
 	add_action('woocommerce_product_thumbnails', 'show_product_nft_blockchain_info', 20);
 
+	add_action('woocommerce_after_checkout_billing_form', 'checkout_page');
+	add_action('woocommerce_checkout_process', 'checkout_validation_process');
+	add_action('woocommerce_checkout_update_order_meta', 'checkout_field_update_order_meta');
 	add_action('woocommerce_order_status_changed', 'on_order_status_changed', 10, 3);
 }
 

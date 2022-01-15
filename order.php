@@ -1,56 +1,54 @@
 <?php
 
-function on_order_status_changed($order_id, $old_status, $new_status)
+function checkout_page($checkout)
 {
-	_log($old_status . ' -> ' . $new_status);
-	if ($new_status == 'processing') {
-		$order = wc_get_order($order_id);
-
-		$user = $order->get_user();
-		$options = get_option('cryptum_nft');
-		$storeId = $options['storeId'];
-
-		$items = $order->get_items();
-		$products = [];
-		foreach ($items as $orderItem) {
-			$product = wc_get_product($orderItem->get_product_id());
-			$cryptum_nft_enabled = $product->get_meta('_cryptum_nft_options_nft_enable');
-			if (isset($cryptum_nft_enabled) and $cryptum_nft_enabled == 'yes') {
-				$products[] = [
-					'id' => trim($product->get_meta('_cryptum_nft_options_product_id')),
-					'name' => $product->get_name(),
-					'value' => $product->get_price(),
-					'quantity' => $orderItem->get_quantity()
-				];
-			}
+	$cart = WC()->cart->get_cart();
+	$has_nft_enabled = false;
+	foreach ($cart as $cart_item) {
+		$product = wc_get_product($cart_item['product_id']);
+		$cryptum_nft_enabled = $product->get_meta('_cryptum_nft_options_nft_enable');
+		if (isset($cryptum_nft_enabled) and $cryptum_nft_enabled == 'yes') {
+			$has_nft_enabled = true;
+			break;
 		}
-
-		if (count($products) == 0) {
-			return;
+	}
+	if ($has_nft_enabled) {
+		woocommerce_form_field(
+			'user_wallet_address',
+			array(
+				'type' => 'text',
+				'class' => array(
+					'my-field-class form-row-wide'
+				),
+				'label' => __('User wallet address'),
+				'placeholder' => '',
+				'required' => true
+			),
+			$checkout->get_value('user_wallet_address')
+		);
+	}
+}
+function checkout_validation_process()
+{
+	$cart = WC()->cart->get_cart();
+	$has_nft_enabled = false;
+	foreach ($cart as $cart_item) {
+		$product = wc_get_product($cart_item['product_id']);
+		$cryptum_nft_enabled = $product->get_meta('_cryptum_nft_options_nft_enable');
+		if (isset($cryptum_nft_enabled) and $cryptum_nft_enabled == 'yes') {
+			$has_nft_enabled = true;
+			break;
 		}
-
-		$emailAddress = !empty($order->get_billing_email()) ? $order->get_billing_email() : $user->get('email');
-		$url = get_cryptum_url($options['environment']);
-		$response = request($url . '/nft/checkout', [
-			'body' => [
-				'storeId' => $storeId,
-				'emailAddress' => $emailAddress,
-				'products' => $products
-			],
-			'headers' => ['x-api-key' => $options['apikey']],
-			'data_format' => 'body',
-			'method' => 'POST',
-			'timeout' => 60
-		]);
-		if (isset($response['error'])) {
-			$error_message = $response['message'];
-			add_settings_error(
-				'cryptum_nft',
-				'Processing error',
-				__($error_message, 'cryptum_nft'),
-				'error'
-			);
-			return;
+	}
+	if ($has_nft_enabled) {
+		if (empty($_POST['user_wallet_address'])) {
+			wc_add_notice(__('Please enter user wallet address!'), 'error');
 		}
+	}
+}
+function checkout_field_update_order_meta($order_id)
+{
+	if (!empty($_POST['user_wallet_address'])) {
+		update_post_meta($order_id, 'user_wallet_address', sanitize_text_field($_POST['user_wallet_address']));
 	}
 }
