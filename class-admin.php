@@ -15,7 +15,7 @@ function cryptum_nft_init()
 		// ]);
 
 		// if (is_wp_error($response)) {
-		// 	_log(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+		// 	cryptum_nft__log(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 		// 	add_settings_error(
 		// 		'cryptum_nft',
 		// 		'Configuration error',
@@ -28,7 +28,7 @@ function cryptum_nft_init()
 
 		// if (isset($responseBody['error'])) {
 		// 	$error_message = $responseBody['error']['message'];
-		// 	_log(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+		// 	cryptum_nft__log(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 		// 	add_settings_error(
 		// 		'cryptum_nft',
 		// 		'Configuration error',

@@ -41,22 +41,22 @@ function cryptum_nft_plugin_loaded()
 		wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', ['jquery'], true);
 	});
 
-	add_filter('woocommerce_product_data_tabs', 'show_cryptum_nft_product_data_tab');
+	add_filter('woocommerce_product_data_tabs', 'cryptum_nft_show_product_data_tab');
 
-	add_action('woocommerce_product_data_panels', 'show_cryptum_nft_product_data_tab_panel');
+	add_action('woocommerce_product_data_panels', 'cryptum_nft_show_product_data_tab_panel');
 
-	add_action('woocommerce_process_product_meta', 'on_process_product_metadata');
-	add_action('wp_ajax_process_product_metadata', 'process_product_metadata');
+	add_action('woocommerce_process_product_meta', 'cryptum_nft_on_process_product_metadata');
+	add_action('wp_ajax_process_product_metadata', 'cryptum_nft_process_product_metadata');
 
-	add_action('woocommerce_product_thumbnails', 'show_product_nft_blockchain_info', 20);
+	add_action('woocommerce_product_thumbnails', 'cryptum_nft_show_product_nft_blockchain_info', 20);
 
-	add_action('woocommerce_after_checkout_billing_form', 'checkout_page');
-	add_action('woocommerce_checkout_process', 'checkout_validation_process');
-	add_action('woocommerce_checkout_update_order_meta', 'checkout_field_update_order_meta');
-	add_action('woocommerce_order_status_changed', 'on_order_status_changed', 10, 3);
+	add_action('woocommerce_after_checkout_billing_form', 'cryptum_nft_checkout_page');
+	add_action('woocommerce_checkout_process', 'cryptum_nft_checkout_validation_process');
+	add_action('woocommerce_checkout_update_order_meta', 'cryptum_nft_checkout_field_update_order_meta');
+	add_action('woocommerce_order_status_changed', 'cryptum_nft_on_order_status_changed', 10, 3);
 }
 
-function _log($message, $level = 'info')
+function cryptum_nft__log($message, $level = 'info')
 {
 	wc_get_logger()->log($level, $message, array('source' => 'cryptum_nft'));
 }

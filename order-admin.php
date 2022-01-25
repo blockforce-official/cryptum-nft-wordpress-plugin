@@ -1,8 +1,8 @@
 <?php
 
-function on_order_status_changed($order_id, $old_status, $new_status)
+function cryptum_nft_on_order_status_changed($order_id, $old_status, $new_status)
 {
-	_log($old_status . ' -> ' . $new_status);
+	cryptum_nft__log($old_status . ' -> ' . $new_status);
 	if ($new_status == 'processing') {
 		$order = wc_get_order($order_id);
 
@@ -30,20 +30,26 @@ function on_order_status_changed($order_id, $old_status, $new_status)
 		}
 
 		$emailAddress = !empty($order->get_billing_email()) ? $order->get_billing_email() : $user->get('email');
-		$url = get_cryptum_url($options['environment']);
-		$response = request($url . '/nft/checkout', [
-			'body' => [
-				'storeId' => $storeId,
-				'emailAddress' => $emailAddress,
+		$url = CryptumNFTUtils::get_cryptum_url($options['environment']);
+		$response = CryptumNFTUtils::request($url . '/nft/checkout', [
+			'body' => json_encode([
+				'store' => $storeId,
+				'email' => $emailAddress,
 				'products' => $products,
-				'clientWallet' => $order->get_meta('user_wallet_address')
-			],
-			'headers' => ['x-api-key' => $options['apikey']],
+				'ecommerceType' => 'wordpress',
+				'ecommerceOrderId' => $order_id,
+				'clientWallet' => $order->get_meta('user_wallet_address'),
+				'callbackUrl' => ''
+			]),
+			'headers' => array(
+				'x-api-key' => $options['apikey'],
+				'Content-Type' => 'application/json; charset=utf-8'
+			),
 			'data_format' => 'body',
 			'method' => 'POST',
 			'timeout' => 60
 		]);
-		_log(json_encode($response));
+		cryptum_nft__log(json_encode($response));
 		if (isset($response['error'])) {
 			$error_message = $response['message'];
 			add_settings_error(

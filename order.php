@@ -1,6 +1,6 @@
 <?php
 
-function checkout_page($checkout)
+function cryptum_nft_checkout_page($checkout)
 {
 	$cart = WC()->cart->get_cart();
 	$has_nft_enabled = false;
@@ -28,7 +28,7 @@ function checkout_page($checkout)
 		);
 	}
 }
-function checkout_validation_process()
+function cryptum_nft_checkout_validation_process()
 {
 	$cart = WC()->cart->get_cart();
 	$has_nft_enabled = false;
@@ -46,7 +46,7 @@ function checkout_validation_process()
 		}
 	}
 }
-function checkout_field_update_order_meta($order_id)
+function cryptum_nft_checkout_field_update_order_meta($order_id)
 {
 	if (!empty($_POST['user_wallet_address'])) {
 		update_post_meta($order_id, 'user_wallet_address', sanitize_text_field($_POST['user_wallet_address']));

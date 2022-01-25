@@ -2,7 +2,7 @@
 
 require_once 'utils.php';
 
-function show_cryptum_nft_product_data_tab($tabs)
+function cryptum_nft_show_product_data_tab($tabs)
 {
 	$tabs['cryptum_nft_options'] = [
 		'label' => __('Cryptum NFT Options', 'txtdomain'),
@@ -10,7 +10,7 @@ function show_cryptum_nft_product_data_tab($tabs)
 	];
 	return $tabs;
 }
-function show_cryptum_nft_product_data_tab_panel()
+function cryptum_nft_show_product_data_tab_panel()
 {
 ?>
 	<div id="cryptum_nft_options" class="panel woocommerce_options_panel hidden">
@@ -52,12 +52,12 @@ function show_cryptum_nft_product_data_tab_panel()
 			global $post;
 			?>
 
-			function is_blocked($node) {
+			function cryptum_nft_is_blocked($node) {
 				return $node.is(".processing") || $node.parents(".processing").length;
 			};
 
-			function block($node) {
-				if (!is_blocked($node)) {
+			function cryptum_nft_block($node) {
+				if (!cryptum_nft_is_blocked($node)) {
 					$node.addClass("processing").block({
 						message: null,
 						overlayCSS: {
@@ -68,11 +68,11 @@ function show_cryptum_nft_product_data_tab_panel()
 				}
 			};
 
-			function unblock($node) {
+			function cryptum_nft_unblock($node) {
 				$node.removeClass("processing").unblock();
 			};
 
-			function updateProductMetadata(productData) {
+			function cryptum_nft_updateProductMetadata(productData) {
 				jQuery.ajax({
 					url: "/wp-admin/admin-ajax.php",
 					type: "post",
@@ -82,7 +82,7 @@ function show_cryptum_nft_product_data_tab_panel()
 					},
 					error: (xhr, textStatus, error) => {
 						console.error(textStatus, error);
-						unblock(jQuery('#woocommerce-product-data'));
+						cryptum_nft_unblock(jQuery('#woocommerce-product-data'));
 						jQuery('#cryptum_nft_options_product_error_message').text('<?php _e('Error saving product data') ?>');
 						jQuery('#cryptum_nft_options_product_error_message').removeClass('hidden');
 						setTimeout(() => {
@@ -97,7 +97,7 @@ function show_cryptum_nft_product_data_tab_panel()
 					productId.focus();
 					return false;
 				}
-				block(jQuery('#woocommerce-product-data'));
+				cryptum_nft_block(jQuery('#woocommerce-product-data'));
 
 				jQuery.ajax({
 					method: 'get',
@@ -105,25 +105,27 @@ function show_cryptum_nft_product_data_tab_panel()
 						'x-api-key': "<?php echo $options['apikey'] ?>",
 						'content-type': 'application/json'
 					},
-					url: '<?php echo get_cryptum_url($options['environment']) . '/products/' ?>' + productId.val(),
+					url: '<?php echo CryptumNFTUtils::get_cryptum_url($options['environment']) . '/products/' ?>' + productId.val(),
 					success: (data, textStatus) => {
 						console.log('Updated product id', data);
 						jQuery('#cryptum_nft_options_product_error_message').addClass('hidden');
 						// update product metadata
-						updateProductMetadata({
+						cryptum_nft_updateProductMetadata({
 							post_id: <?php echo $post->ID ?>,
 							_cryptum_nft_options_product_id: productId.val(),
 							_cryptum_nft_options_nft_enable: 'yes',
-							_cryptum_nft_options_nft_contract_address: data.nft.contractAddress,
+							_cryptum_nft_options_token_address: data.nft.tokenAddress,
+							_cryptum_nft_options_token_id: data.nft.tokenId,
+							_cryptum_nft_options_token_amount: data.nft.amount,
 							_cryptum_nft_options_nft_blockchain: data.nft.protocol,
 						});
 						setTimeout(() => {
-							unblock(jQuery('#woocommerce-product-data'));
+							cryptum_nft_unblock(jQuery('#woocommerce-product-data'));
 						}, 1000);
 					},
 					error: (xhr, textStatus, error) => {
 						console.error(textStatus, error);
-						unblock(jQuery('#woocommerce-product-data'));
+						cryptum_nft_unblock(jQuery('#woocommerce-product-data'));
 						jQuery('#cryptum_nft_options_product_error_message').text(error || '<?php _e('Invalid product id') ?>');
 						jQuery('#cryptum_nft_options_product_error_message').removeClass('hidden');
 						setTimeout(() => {
@@ -137,28 +139,32 @@ function show_cryptum_nft_product_data_tab_panel()
 <?php
 }
 
-function on_process_product_metadata($post_id)
+function cryptum_nft_on_process_product_metadata($post_id)
 {
 	$product = wc_get_product($post_id);
 	$product->update_meta_data('_cryptum_nft_options_nft_enable', $_POST['_cryptum_nft_options_nft_enable']);
 	$nft_enabled = $_POST['_cryptum_nft_options_nft_enable'];
 	if (!isset($nft_enabled)) {
 		$product->update_meta_data('_cryptum_nft_options_nft_blockchain', '');
-		$product->update_meta_data('_cryptum_nft_options_nft_contract_address', '');
+		$product->update_meta_data('_cryptum_nft_options_token_address', '');
+		$product->update_meta_data('_cryptum_nft_options_token_id', '');
+		$product->update_meta_data('_cryptum_nft_options_token_amount', '');
 		$product->update_meta_data('_cryptum_nft_options_product_id', '');
 	}
 	$product->save();
-	_log("-------------------------\nSaving product custom fields " . $post_id . json_encode($product->get_meta_data()));
+	cryptum_nft__log("-------------------------\nSaving product custom fields " . $post_id . json_encode($product->get_meta_data()));
 }
-function process_product_metadata()
+function cryptum_nft_process_product_metadata()
 {
-	_log("-------------------------\n" . json_encode($_REQUEST['productData']));
+	cryptum_nft__log("-------------------------\n" . json_encode($_REQUEST['productData']));
 	$product_data = $_REQUEST['productData'];
 	$product = wc_get_product($product_data['post_id']);
 	$product->update_meta_data('_cryptum_nft_options_nft_blockchain', $product_data['_cryptum_nft_options_nft_blockchain']);
-	$product->update_meta_data('_cryptum_nft_options_nft_contract_address', $product_data['_cryptum_nft_options_nft_contract_address']);
+	$product->update_meta_data('_cryptum_nft_options_token_address', $product_data['_cryptum_nft_options_token_address']);
+	$product->update_meta_data('_cryptum_nft_options_token_id', $product_data['_cryptum_nft_options_token_id']);
+	$product->update_meta_data('_cryptum_nft_options_token_amount', $product_data['_cryptum_nft_options_token_amount']);
 	$product->update_meta_data('_cryptum_nft_options_product_id', $product_data['_cryptum_nft_options_product_id']);
 	$product->update_meta_data('_cryptum_nft_options_nft_enable', $product_data['_cryptum_nft_options_nft_enable']);
 	$product->save();
-	_log("-------------------------\nAjax Saving product custom fields " . $product->get_id() . json_encode($product->get_meta_data()));
+	cryptum_nft__log("-------------------------\nAjax Saving product custom fields " . $product->get_id() . json_encode($product->get_meta_data()));
 }
