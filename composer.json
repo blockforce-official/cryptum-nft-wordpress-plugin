@@ -1,0 +1,13 @@
+{
+    "name": "cryptum/cryptum-nft-wordpress-plugin",
+    "license": "GPLv3",
+    "autoload": {
+        "psr-4": {
+            "Cryptum\\NFT\\": "src/"
+        }
+    },
+	"minimum-stability": "dev",
+    "require": {
+        "kornrunner/keccak": "dev-master"
+    }
+}
