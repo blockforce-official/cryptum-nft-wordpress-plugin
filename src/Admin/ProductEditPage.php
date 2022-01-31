@@ -44,8 +44,8 @@ class ProductEditPage
 			<hr>
 
 			<div id="cryptum_nft_options_div">
-				<p><?php _e('Input the product id with NFT link from Cryptum Dashboard') ?></p>
-				<?php woocommerce_wp_text_input(
+				<p><?php _e('After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU') ?></p>
+				<?php /*woocommerce_wp_text_input(
 					array(
 						'id' => '_cryptum_nft_options_product_id',
 						'placeholder' => '',
@@ -56,14 +56,15 @@ class ProductEditPage
 							'required' => 'required'
 						)
 					)
-				); ?>
+				);*/ ?>
 				<p id="cryptum_nft_options_product_error_message" class="error-message hidden"></p>
-				<div class="cryptum_nft_options_toolbar">
-					<button id="cryptum_nft_options_button_save" type="button" class="button button-primary"><?php _e('Save') ?></button>
-				</div>
+				<!-- <div class="cryptum_nft_options_toolbar">
+					<button id="cryptum_nft_options_button_save" type="button" class="button button-primary"><?php // _e('Save') 
+																												?></button>
+				</div> -->
 			</div>
-			<?php wp_enqueue_style('product-data', plugins_url('css/product-data.css', __FILE__)); ?>
-			<?php wp_enqueue_script('product-data', plugins_url('js/product-data.js', __FILE__)); ?>
+			<?php wp_enqueue_style('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/product-data.css'); ?>
+			<?php wp_enqueue_script('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/product-data.js'); ?>
 			<script>
 				<?php
 				$options = get_option('cryptum_nft');
@@ -154,36 +155,156 @@ class ProductEditPage
 				});
 			</script>
 		</div>
-<?php
+		<?php
+	}
+	public function skuify($product)
+	{
+		$id = mb_strtoupper(bin2hex(random_bytes(7)));
+		return $product->get_id() . '-' . $id;
 	}
 
 	public function on_process_product_metadata($post_id)
 	{
+		Log::info('on_process_product_metadata');
 		$product = wc_get_product($post_id);
-		$product->update_meta_data('_cryptum_nft_options_nft_enable', $_POST['_cryptum_nft_options_nft_enable']);
+		$old_nft_enabled = $product->get_meta('_cryptum_nft_options_nft_enable', true);
 		$nft_enabled = $_POST['_cryptum_nft_options_nft_enable'];
-		if (!isset($nft_enabled)) {
-			$product->update_meta_data('_cryptum_nft_options_nft_blockchain', '');
-			$product->update_meta_data('_cryptum_nft_options_token_address', '');
-			$product->update_meta_data('_cryptum_nft_options_token_id', '');
-			$product->update_meta_data('_cryptum_nft_options_token_amount', '');
+		$old_sku = get_post_meta($post_id, '_sku', true);
+		$sku = $_POST['_sku'];
+
+		Log::info($product->get_meta_data());
+		Log::info('$old_nft_enabled: ' . (!empty($old_nft_enabled) ? 'true' : 'false') . ' -> ' . gettype($old_nft_enabled));
+		Log::info('$nft_enabled: ' . (!empty($nft_enabled) ? 'true' : 'false'));
+		Log::info('$old_sku: ' . $old_sku);
+		Log::info('$sku: ' . $sku);
+		Log::info('!empty($nft_enabled) and empty($old_nft_enabled): ' . (!empty($nft_enabled) and empty($old_nft_enabled) ? 'true' : 'false'));
+		Log::info('!empty($old_nft_enabled) and !empty($nft_enabled) and $old_nft_enabled == $nft_enabled: ' . (!empty($old_nft_enabled) and !empty($nft_enabled) and $old_nft_enabled == $nft_enabled ? 'true' : 'false'));
+
+		if (!empty($nft_enabled) and empty($old_nft_enabled)) {
+
+			if (empty($old_sku) and empty($sku)) {
+				$sku = $this->skuify($product);
+				// add new product
+				$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
+				if (!$response) {
+					return false;
+				}
+				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
+			} elseif (empty($old_sku) and !empty($sku)) {
+				$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
+				if (!$response) {
+					return false;
+				}
+				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
+			} elseif (!empty($old_sku) and !empty($sku)) {
+				if ($old_sku != $sku) {
+					$id = $product->get_meta('_cryptum_nft_options_product_id', true);
+					$response = $this->call_product_request('PUT', array('cryptum_product_id' => $id, 'name' => $product->get_name(), 'sku' => $sku));
+					if (!$response) {
+						return false;
+					}
+				} else {
+					$response = $this->call_product_request('GET', array('sku' => $sku));
+					if (!$response) {
+						// no product yet, add it
+						$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
+						if (!$response) {
+							return false;
+						}
+						$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
+					} else {
+						$product->update_meta_data('_cryptum_nft_options_product_id', $response['id']);
+					}
+				}
+			} elseif (!empty($old_sku) and empty($sku)) {
+				$response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
+				if (!$response) {
+					return false;
+				}
+				$product->update_meta_data('_cryptum_nft_options_product_id', '');
+			}
+		} elseif (!empty($old_nft_enabled) and empty($nft_enabled)) {
+			// deselecting checkbox for link nft
+			$response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
+			if (!$response) {
+				return false;
+			}
 			$product->update_meta_data('_cryptum_nft_options_product_id', '');
+		} elseif (!empty($old_nft_enabled) and !empty($nft_enabled) and $old_nft_enabled == $nft_enabled) {
+			if ($old_sku != $sku) {
+				$id = $product->get_meta('_cryptum_nft_options_product_id', true);
+				$response = $this->call_product_request('PUT', array('cryptum_product_id' => $id, 'name' => $product->get_name(), 'sku' => $sku));
+				if (!$response) {
+					return false;
+				}
+			}
 		}
+		$product->update_meta_data('_cryptum_nft_options_nft_enable', $_POST['_cryptum_nft_options_nft_enable']);
+		$product->update_meta_data('_cryptum_nft_sku', $sku);
 		$product->save();
-		Log::info("-------------------------\nSaving product custom fields " . $post_id . json_encode($product->get_meta_data()));
 	}
-	public function process_product_metadata()
+
+	public function on_update_product($post_id)
 	{
-		Log::info("-------------------------\n" . json_encode($_REQUEST['productData']));
-		$product_data = $_REQUEST['productData'];
-		$product = wc_get_product($product_data['post_id']);
-		$product->update_meta_data('_cryptum_nft_options_nft_blockchain', $product_data['_cryptum_nft_options_nft_blockchain']);
-		$product->update_meta_data('_cryptum_nft_options_token_address', $product_data['_cryptum_nft_options_token_address']);
-		$product->update_meta_data('_cryptum_nft_options_token_id', $product_data['_cryptum_nft_options_token_id']);
-		$product->update_meta_data('_cryptum_nft_options_token_amount', $product_data['_cryptum_nft_options_token_amount']);
-		$product->update_meta_data('_cryptum_nft_options_product_id', $product_data['_cryptum_nft_options_product_id']);
-		$product->update_meta_data('_cryptum_nft_options_nft_enable', $product_data['_cryptum_nft_options_nft_enable']);
-		$product->save();
-		Log::info("-------------------------\nAjax Saving product custom fields " . $product->get_id() . json_encode($product->get_meta_data()));
+		$product = wc_get_product($post_id);
+		$sku = $product->get_meta('_cryptum_nft_sku', true);
+		update_post_meta($post_id, '_sku', $sku);
+	}
+
+	// public function process_product_metadata()
+	// {
+	// 	Log::info("-------------------------\n" . json_encode($_REQUEST['productData']));
+	// 	$product_data = $_REQUEST['productData'];
+	// 	$product = wc_get_product($product_data['post_id']);
+	// 	$product->update_meta_data('_cryptum_nft_options_nft_blockchain', $product_data['_cryptum_nft_options_nft_blockchain']);
+	// 	$product->update_meta_data('_cryptum_nft_options_token_address', $product_data['_cryptum_nft_options_token_address']);
+	// 	$product->update_meta_data('_cryptum_nft_options_token_id', $product_data['_cryptum_nft_options_token_id']);
+	// 	$product->update_meta_data('_cryptum_nft_options_token_amount', $product_data['_cryptum_nft_options_token_amount']);
+	// 	$product->update_meta_data('_cryptum_nft_options_product_id', $product_data['_cryptum_nft_options_product_id']);
+	// 	$product->update_meta_data('_cryptum_nft_options_nft_enable', $product_data['_cryptum_nft_options_nft_enable']);
+	// 	$product->save();
+	// 	Log::info("-------------------------\nAjax Saving product custom fields " . $product->get_id() . json_encode($product->get_meta_data()));
+	// }
+
+	function call_product_request($method, $request_body)
+	{
+		$body = $request_body;
+		$options = get_option('cryptum_nft');
+		if ($method == 'POST') {
+			$url = Api::get_cryptum_url($options['environment']) . '/products';
+			$request_body['store'] = $options['storeId'];
+			$body = [$request_body];
+		} elseif ($method == 'PUT') {
+			$url = Api::get_cryptum_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+		} elseif ($method == 'DELETE') {
+			$url = Api::get_cryptum_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+		} elseif ($method == 'GET') {
+			$url = Api::get_cryptum_url($options['environment']) . '/products/sku/' . $request_body['sku'];
+			$body = null;
+		}
+		Log::info($method . ' ' . $url);
+		$response = Api::request($url, array(
+			'headers' => array('x-api-key' => $options['apikey'], 'content-type' => 'application/json'),
+			'data_format' => 'body',
+			'method' => $method,
+			'timeout' => 60,
+			'body' => json_encode($body)
+		));
+		if (isset($response['error'])) {
+			Log::error($response);
+			$message = $response['message'];
+			add_action('admin_notices', function () use ($message) {
+				ob_start();
+				Log::error('Showing: ' . $message); ?>
+				<div class="error notice notice-error">
+					<p><?php echo __("Error in configuring product on Cryptum NFT Plugin") ?></p>
+					<p><?php echo __($message) ?></p>
+				</div>
+<?php
+				echo ob_get_clean();
+			});
+			return false;
+		}
+		return $response;
 	}
 }

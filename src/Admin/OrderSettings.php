@@ -3,6 +3,7 @@
 namespace Cryptum\NFT\Admin;
 
 use Cryptum\NFT\Utils\Api;
+use Cryptum\NFT\Utils\Blockchain;
 use Cryptum\NFT\Utils\Log;
 
 class OrderSettings
@@ -21,7 +22,7 @@ class OrderSettings
 
 	public function on_order_status_changed($order_id, $old_status, $new_status)
 	{
-		Log::info($old_status . ' -> ' . $new_status);
+		// Log::info($old_status . ' -> ' . $new_status);
 		if ($new_status == 'processing') {
 			$order = wc_get_order($order_id);
 
@@ -62,13 +63,13 @@ class OrderSettings
 				]),
 				'headers' => array(
 					'x-api-key' => $options['apikey'],
-					'Content-Type' => 'application/json; charset=utf-8'
+					'Content-Type' => 'application/json; charset=utf-8',
+					'x-version' => '1.0.0'
 				),
 				'data_format' => 'body',
 				'method' => 'POST',
 				'timeout' => 60
 			]);
-			Log::info(json_encode($response));
 			if (isset($response['error'])) {
 				$error_message = $response['message'];
 				add_settings_error(
@@ -84,13 +85,21 @@ class OrderSettings
 
 	public function show_transactions_info_panel()
 	{
-		add_meta_box(
-			'cryptum_nft_transactions_info',
-			__('Cryptum NFT Transactions Info'),
-			[$this, 'show_transactions_info'],
-			'shop_order',
-			'normal'
-		);
+		global $pagenow, $post;
+		$post_type = get_post_type($post);
+		if (is_admin() and $post_type == 'shop_order' and $pagenow == 'post.php') {
+			$order = wc_get_order($post);
+
+			if (!empty($order->get_meta('user_wallet_address'))) {
+				add_meta_box(
+					'cryptum_nft_transactions_info',
+					__('Cryptum NFT Transactions Info'),
+					[$this, 'show_transactions_info'],
+					'shop_order',
+					'normal'
+				);
+			}
+		}
 	}
 
 	public function show_transactions_info()
@@ -100,17 +109,24 @@ class OrderSettings
 			global $post;
 			$order = wc_get_order($post);
 
+			$message = $order->get_meta('_cryptum_nft_order_transactions_message');
+			if (!empty($message)) {
+				echo '<p style="font-size:12px;">' . __($message)  . '</p>';
+			}
 			$transactions = json_decode($order->get_meta('_cryptum_nft_order_transactions'));
 			if (isset($transactions) and count($transactions) > 0) {
 				echo '<h4>' . __('NFT transactions hashes') . '</h4>';
 				foreach ($transactions as $transaction) {
-					echo '<p><strong>' . $transaction['protocol'] . ': </strong>' . $transaction['hash'] . '</p>';
+					echo '<p><strong>' . $transaction->protocol . ': </strong> '
+						. '<a href="' . Blockchain::get_tx_explorer_url($transaction->protocol, $transaction->hash) . '" target="_blank">'
+						. $transaction->hash
+						. '</a></p>';
 				}
 			} else {
 				echo '<p>' . __('No NFTs have been transferred yet.') . '</p>';
-			}?>
+			} ?>
 		</div>
-	<?php
+<?php
 	}
 
 	public function nft_order_status_changed_callback()
@@ -132,7 +148,7 @@ class OrderSettings
 			$message = $decoded->message;
 			$transactions = $decoded->transactions;
 
-			if (!isset($storeId) or $this->storeId != $storeId) {
+			if (!isset($storeId) or $options['storeId'] != $storeId) {
 				wp_send_json_error(array('message' => 'Incorrect store id'), 400);
 			}
 			$order = wc_get_order($orderId);

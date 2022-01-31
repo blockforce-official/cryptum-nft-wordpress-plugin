@@ -39,8 +39,9 @@ class PluginInit
 
 		add_filter('woocommerce_product_data_tabs', [ProductEditPage::instance(), 'show_product_data_tab']);
 		add_action('woocommerce_product_data_panels', [ProductEditPage::instance(), 'show_product_data_tab_panel']);
+		add_action('woocommerce_update_product', [ProductEditPage::instance(), 'on_update_product']);
 		add_action('woocommerce_process_product_meta', [ProductEditPage::instance(), 'on_process_product_metadata']);
-		add_action('wp_ajax_process_product_metadata', [ProductEditPage::instance(), 'process_product_metadata']);
+		// add_action('wp_ajax_process_product_metadata', [ProductEditPage::instance(), 'process_product_metadata']);
 
 		add_action('woocommerce_product_thumbnails', [ProductInfoPage::instance(), 'show_product_nft_blockchain_info'], 20);
 
