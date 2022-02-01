@@ -26,7 +26,7 @@ class ProductEditPage
 					<p class="cryptum_nft_title"><?php echo $title ?></p>
 					<p><?php echo $message ?></p>
 				</div>
-				<?php
+		<?php
 				delete_transient('product_edit_page_error.title');
 				delete_transient('product_edit_page_error.message');
 			}
@@ -218,13 +218,13 @@ class ProductEditPage
 				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 			} elseif (!empty($old_sku) and !empty($sku)) {
 				if ($old_sku != $sku) {
-					$id = $product->get_meta('_cryptum_nft_options_product_id', true);
-					$response = $this->call_product_request('PUT', array('cryptum_product_id' => $id, 'name' => $product->get_name(), 'sku' => $sku));
+					$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
 					if (!$response) {
 						return false;
 					}
+					$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 				} else {
-					$response = $this->call_product_request('GET', array('sku' => $sku));
+					$response = $this->call_product_request('GET', array('sku' => $sku), false);
 					if (!$response) {
 						// no product yet, add it
 						$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
@@ -233,30 +233,31 @@ class ProductEditPage
 						}
 						$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 					} else {
-						$product->update_meta_data('_cryptum_nft_options_product_id', $response['id']);
+						$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin"), __('Product SKU is duplicate, try to set another SKU value.'));
+						return false;
 					}
 				}
 			} elseif (!empty($old_sku) and empty($sku)) {
-				$response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
-				if (!$response) {
-					return false;
-				}
+				// $response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
+				// if (!$response) {
+				// 	return false;
+				// }
 				$product->update_meta_data('_cryptum_nft_options_product_id', '');
 			}
 		} elseif (!empty($old_nft_enabled) and empty($nft_enabled)) {
 			// deselecting checkbox for link nft
-			$response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
-			if (!$response) {
-				return false;
-			}
+			// $response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
+			// if (!$response) {
+			// 	return false;
+			// }
 			$product->update_meta_data('_cryptum_nft_options_product_id', '');
 		} elseif (!empty($old_nft_enabled) and !empty($nft_enabled) and $old_nft_enabled == $nft_enabled) {
 			if ($old_sku != $sku) {
-				$id = $product->get_meta('_cryptum_nft_options_product_id', true);
-				$response = $this->call_product_request('PUT', array('cryptum_product_id' => $id, 'name' => $product->get_name(), 'sku' => $sku));
+				$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
 				if (!$response) {
 					return false;
 				}
+				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 			}
 		}
 		$product->update_meta_data('_cryptum_nft_options_nft_enable', $_POST['_cryptum_nft_options_nft_enable']);
@@ -286,7 +287,7 @@ class ProductEditPage
 	// 	Log::info("-------------------------\nAjax Saving product custom fields " . $product->get_id() . json_encode($product->get_meta_data()));
 	// }
 
-	function call_product_request($method, $request_body, $show_admin_notice = false)
+	function call_product_request($method, $request_body, $show_admin_notice = true)
 	{
 		$body = $request_body;
 		$options = get_option('cryptum_nft');

@@ -31,7 +31,7 @@ class ProductInfoPage
 			$explorerUrl = Blockchain::get_explorer_url($blockchain, $contractAddress, $tokenId);
 
 ?>
-			<div id="_cryptum_nft_info" style="background-color: #75757526; padding: 10px;">
+			<div id="_cryptum_nft_info" style="display:none; background-color: #75757526; padding: 10px;">
 				<div style="display: flex;">
 					<h4 style="flex-grow:1;"><?= __('Chain info') ?></h4>
 					<span id="_cryptum_nft_nft_info" title="<?= __('When you buy this product, you will receive a non-fungible token from the ' . $blockchain . ' network. The redemption instructions will be sent by email.') ?>">

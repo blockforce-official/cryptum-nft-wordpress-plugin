@@ -4,6 +4,7 @@ namespace Cryptum\NFT\Admin;
 
 use Cryptum\NFT\Utils\Api;
 use Cryptum\NFT\Utils\Blockchain;
+use Cryptum\NFT\Utils\Log;
 
 class OrderSettings
 {
@@ -163,6 +164,8 @@ class OrderSettings
 			$storeId = $decoded->storeId;
 			$message = $decoded->message;
 			$transactions = $decoded->transactions;
+			$updatedProducts = $decoded->updatedProducts;
+			Log::info($updatedProducts);
 
 			if (!isset($storeId) or $options['storeId'] != $storeId) {
 				wp_send_json_error(array('message' => 'Incorrect store id'), 400);
@@ -171,6 +174,19 @@ class OrderSettings
 			if (!isset($order)) {
 				wp_send_json_error(array('message' => 'Incorrect order id'), 400);
 			}
+
+			foreach ($order->get_items() as $item) {
+				$cryptum_productId = get_post_meta( $item->get_product_id(), '_cryptum_nft_options_product_id', true );
+				$products_columns = array_column($updatedProducts, '_id');
+				$found_product = array_search($cryptum_productId, $products_columns);
+				if ($found_product) {
+					$product = wc_get_product($item->get_product_id());
+					$product->set_manage_stock(true);
+					$product->set_stock_quantity($found_product['nft']['amount']);
+					$product->save();
+				}
+			}
+
 			$order->update_meta_data('_cryptum_nft_order_transactions', json_encode($transactions));
 			$order->update_meta_data('_cryptum_nft_order_transactions_message', $message);
 			$order->save();
