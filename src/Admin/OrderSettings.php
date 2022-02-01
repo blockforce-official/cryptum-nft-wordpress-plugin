@@ -4,7 +4,6 @@ namespace Cryptum\NFT\Admin;
 
 use Cryptum\NFT\Utils\Api;
 use Cryptum\NFT\Utils\Blockchain;
-use Cryptum\NFT\Utils\Log;
 
 class OrderSettings
 {
@@ -18,6 +17,26 @@ class OrderSettings
 	}
 	private function __construct()
 	{
+		wp_enqueue_style('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
+		add_action('admin_notices', function () {
+			$title = get_transient('order_settings_error.title');
+			$message = get_transient('order_settings_error.message');
+			if (!empty($title) or !empty($message)) { ?>
+				<div class="error notice notice-error">
+					<p class="cryptum_nft_title"><?php echo $title ?></p>
+					<p><?php echo $message ?></p>
+				</div>
+				<?php
+				delete_transient('order_settings_error.title');
+				delete_transient('order_settings_error.message');
+			}
+		});
+	}
+
+	function set_admin_notices_error($title = '', $message = '')
+	{
+		set_transient('order_settings_error.title', $title, 10);
+		set_transient('order_settings_error.message', $message, 10);
 	}
 
 	public function on_order_status_changed($order_id, $old_status, $new_status)
@@ -59,7 +78,9 @@ class OrderSettings
 					'ecommerceType' => 'wordpress',
 					'ecommerceOrderId' => $order_id,
 					'clientWallet' => $order->get_meta('user_wallet_address'),
-					'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback')
+					'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback'),
+					'orderTotal' => $order->get_total(),
+					'orderCurrency' => $order->get_currency()
 				]),
 				'headers' => array(
 					'x-api-key' => $options['apikey'],
@@ -71,13 +92,8 @@ class OrderSettings
 				'timeout' => 60
 			]);
 			if (isset($response['error'])) {
-				$error_message = $response['message'];
-				add_settings_error(
-					'cryptum_nft',
-					'Processing error',
-					__($error_message, 'cryptum_nft'),
-					'error'
-				);
+				$message = $response['message'];
+				$this->set_admin_notices_error(__("Error in configuring Cryptum NFT Plugin"), __($message));
 				return;
 			}
 		}

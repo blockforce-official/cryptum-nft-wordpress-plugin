@@ -17,6 +17,26 @@ class ProductEditPage
 	}
 	private function __construct()
 	{
+		wp_enqueue_style('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
+		add_action('admin_notices', function () {
+			$title = get_transient('product_edit_page_error.title');
+			$message = get_transient('product_edit_page_error.message');
+			if (!empty($title) or !empty($message)) { ?>
+				<div class="error notice notice-error">
+					<p class="cryptum_nft_title"><?php echo $title ?></p>
+					<p><?php echo $message ?></p>
+				</div>
+				<?php
+				delete_transient('product_edit_page_error.title');
+				delete_transient('product_edit_page_error.message');
+			}
+		});
+	}
+
+	function set_admin_notices_error($title = '', $message = '')
+	{
+		set_transient('product_edit_page_error.title', $title, 10);
+		set_transient('product_edit_page_error.message', $message, 10);
 	}
 
 	public function show_product_data_tab($tabs)
@@ -30,7 +50,7 @@ class ProductEditPage
 
 	public function show_product_data_tab_panel()
 	{
-?>
+		?>
 		<div id="cryptum_nft_options" class="panel woocommerce_options_panel hidden">
 			<?php woocommerce_wp_checkbox(
 				array(
@@ -155,7 +175,7 @@ class ProductEditPage
 				});
 			</script>
 		</div>
-		<?php
+<?php
 	}
 	public function skuify($product)
 	{
@@ -266,7 +286,7 @@ class ProductEditPage
 	// 	Log::info("-------------------------\nAjax Saving product custom fields " . $product->get_id() . json_encode($product->get_meta_data()));
 	// }
 
-	function call_product_request($method, $request_body)
+	function call_product_request($method, $request_body, $show_admin_notice = false)
 	{
 		$body = $request_body;
 		$options = get_option('cryptum_nft');
@@ -291,18 +311,10 @@ class ProductEditPage
 			'body' => json_encode($body)
 		));
 		if (isset($response['error'])) {
-			Log::error($response);
 			$message = $response['message'];
-			add_action('admin_notices', function () use ($message) {
-				ob_start();
-				Log::error('Showing: ' . $message); ?>
-				<div class="error notice notice-error">
-					<p><?php echo __("Error in configuring product on Cryptum NFT Plugin") ?></p>
-					<p><?php echo __($message) ?></p>
-				</div>
-<?php
-				echo ob_get_clean();
-			});
+			if ($show_admin_notice) {
+				$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin"), __($message));
+			}
 			return false;
 		}
 		return $response;

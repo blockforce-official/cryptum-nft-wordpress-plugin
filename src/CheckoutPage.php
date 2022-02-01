@@ -2,6 +2,8 @@
 
 namespace Cryptum\NFT;
 
+use Cryptum\NFT\Utils\AddressValidator;
+
 class CheckoutPage
 {
 	private static $instance = null;
@@ -58,8 +60,8 @@ class CheckoutPage
 			}
 		}
 		if ($has_nft_enabled) {
-			if (empty($_POST['user_wallet_address'])) {
-				wc_add_notice(__('Please enter user wallet address!'), 'error');
+			if (empty($_POST['user_wallet_address']) or !AddressValidator::isETHAddress($_POST['user_wallet_address'])) {
+				wc_add_notice(__('Please enter a valid user wallet address!'), 'error');
 			}
 		}
 	}

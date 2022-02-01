@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '05918a7a58c44392a9f1fb8dac36b54ce8f069f8',
+        'reference' => '9de9833c4aaa64bd73c48a72d0802566f49bb8cb',
         'name' => 'cryptum/cryptum-nft-wordpress-plugin',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '05918a7a58c44392a9f1fb8dac36b54ce8f069f8',
+            'reference' => '9de9833c4aaa64bd73c48a72d0802566f49bb8cb',
             'dev_requirement' => false,
         ),
         'kornrunner/keccak' => array(
