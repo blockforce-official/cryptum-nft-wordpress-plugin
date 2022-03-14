@@ -160,7 +160,7 @@ class OrderSettings
 
 			$raw_post = file_get_contents('php://input');
 			$decoded  = json_decode($raw_post);
-			$orderId = $decoded->orderId;
+			$ecommerceOrderId = $decoded->ecommerceOrderId;
 			$storeId = $decoded->storeId;
 			$message = $decoded->message;
 			$transactions = $decoded->transactions;
@@ -170,7 +170,7 @@ class OrderSettings
 			if (!isset($storeId) or $options['storeId'] != $storeId) {
 				wp_send_json_error(array('message' => 'Incorrect store id'), 400);
 			}
-			$order = wc_get_order($orderId);
+			$order = wc_get_order($ecommerceOrderId);
 			if (!isset($order)) {
 				wp_send_json_error(array('message' => 'Incorrect order id'), 400);
 			}

@@ -1,9 +1,9 @@
 === Cryptum NFT Plugin ===
 Contributors: Blockforce
 Tags: cryptocurrency, crypto, e-commerce, ecommerce, store, blockchain, nft, token
-Requires at least: 5.5
+Requires at least: 5.7
 Tested up to: 5.7
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,9 +17,9 @@ many blockchains when products have been purchased.
 == Installation ==
 
 = Minimum Requirements =
-* PHP 5.2 or greater is recommended
-* WordPress 5.5 or greater is recommended
-* WooCommerce 5.0 or greater is recommended
+* PHP 7.0 or greater is recommended
+* WordPress 5.7 or greater is recommended
+* WooCommerce 6.0 or greater is recommended
 
 Automatic installation is the easiest option -- WordPress will handle the file transfer, and you won’t need to leave your web browser.
 
