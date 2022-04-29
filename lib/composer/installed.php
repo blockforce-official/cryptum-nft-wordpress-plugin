@@ -1,22 +1,31 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'type' => 'library',
+        'pretty_version' => '2.0.2',
+        'version' => '2.0.2.0',
+        'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '9de9833c4aaa64bd73c48a72d0802566f49bb8cb',
+        'reference' => NULL,
         'name' => 'cryptum/cryptum-nft-wordpress-plugin',
         'dev' => true,
     ),
     'versions' => array(
+        'composer/installers' => array(
+            'pretty_version' => 'v1.0.6',
+            'version' => '1.0.6.0',
+            'type' => 'composer-installer',
+            'install_path' => __DIR__ . '/./installers',
+            'aliases' => array(),
+            'reference' => 'b3bd071ea114a57212c75aa6a2eef5cfe0cc798f',
+            'dev_requirement' => false,
+        ),
         'cryptum/cryptum-nft-wordpress-plugin' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '9de9833c4aaa64bd73c48a72d0802566f49bb8cb',
+            'reference' => NULL,
             'dev_requirement' => false,
         ),
         'kornrunner/keccak' => array(
@@ -30,9 +39,15 @@
             'reference' => 'c22f0e95c900d08d9a20f30122de948c73ba16c2',
             'dev_requirement' => false,
         ),
+        'shama/baton' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
+        ),
         'symfony/polyfill-mbstring' => array(
-            'pretty_version' => 'v1.24.0',
-            'version' => '1.24.0.0',
+            'pretty_version' => 'v1.25.0',
+            'version' => '1.25.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
             'aliases' => array(),
