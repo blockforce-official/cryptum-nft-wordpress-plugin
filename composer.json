@@ -10,14 +10,10 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "php": ">=7",
-    "composer/installers": "v1.0.6",
+    "php": ">=7.2.0",
     "kornrunner/keccak": "dev-master"
   },
   "config": {
-    "vendor-dir": "lib",
-    "allow-plugins": {
-      "composer/installers": true
-    }
+    "vendor-dir": "lib"
   }
 }

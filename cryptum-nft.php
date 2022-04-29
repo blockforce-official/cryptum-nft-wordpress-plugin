@@ -37,6 +37,4 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 
 require_once(plugin_dir_path(__FILE__) . '/lib/autoload.php');
 
-// require_once CRYPTUM_NFT_PLUGIN_DIR . '/src/PluginInit.php';
-
 add_action('plugins_loaded', [Cryptum\NFT\PluginInit::instance(), 'load']);

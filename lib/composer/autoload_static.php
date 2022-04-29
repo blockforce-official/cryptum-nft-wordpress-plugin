@@ -40,56 +40,8 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
         ),
     );
 
-    public static $prefixesPsr0 = array (
-        'C' => 
-        array (
-            'Composer\\Installers\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/composer/installers/src',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Composer\\Installers\\AglInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AglInstaller.php',
-        'Composer\\Installers\\AnnotateCmsInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/AnnotateCmsInstaller.php',
-        'Composer\\Installers\\BaseInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/BaseInstaller.php',
-        'Composer\\Installers\\CakePHPInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CakePHPInstaller.php',
-        'Composer\\Installers\\CodeIgniterInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CodeIgniterInstaller.php',
-        'Composer\\Installers\\CroogoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/CroogoInstaller.php',
-        'Composer\\Installers\\DrupalInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/DrupalInstaller.php',
-        'Composer\\Installers\\FuelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/FuelInstaller.php',
-        'Composer\\Installers\\Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Installer.php',
-        'Composer\\Installers\\JoomlaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/JoomlaInstaller.php',
-        'Composer\\Installers\\KohanaInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/KohanaInstaller.php',
-        'Composer\\Installers\\LaravelInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/LaravelInstaller.php',
-        'Composer\\Installers\\LithiumInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/LithiumInstaller.php',
-        'Composer\\Installers\\MODULEWorkInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MODULEWorkInstaller.php',
-        'Composer\\Installers\\MagentoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MagentoInstaller.php',
-        'Composer\\Installers\\MakoInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MakoInstaller.php',
-        'Composer\\Installers\\MediaWikiInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/MediaWikiInstaller.php',
-        'Composer\\Installers\\OxidInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/OxidInstaller.php',
-        'Composer\\Installers\\PPIInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PPIInstaller.php',
-        'Composer\\Installers\\PhpBBInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/PhpBBInstaller.php',
-        'Composer\\Installers\\SilverStripeInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/SilverStripeInstaller.php',
-        'Composer\\Installers\\Symfony1Installer' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/Symfony1Installer.php',
-        'Composer\\Installers\\TYPO3CmsInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TYPO3CmsInstaller.php',
-        'Composer\\Installers\\TYPO3FlowInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/TYPO3FlowInstaller.php',
-        'Composer\\Installers\\WordPressInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/WordPressInstaller.php',
-        'Composer\\Installers\\ZendInstaller' => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers/ZendInstaller.php',
-        'Cryptum\\NFT\\Admin\\AdminSettings' => __DIR__ . '/../..' . '/src/Admin/AdminSettings.php',
-        'Cryptum\\NFT\\Admin\\OrderSettings' => __DIR__ . '/../..' . '/src/Admin/OrderSettings.php',
-        'Cryptum\\NFT\\Admin\\ProductEditPage' => __DIR__ . '/../..' . '/src/Admin/ProductEditPage.php',
-        'Cryptum\\NFT\\CheckoutPage' => __DIR__ . '/../..' . '/src/CheckoutPage.php',
-        'Cryptum\\NFT\\PluginInit' => __DIR__ . '/../..' . '/src/PluginInit.php',
-        'Cryptum\\NFT\\ProductInfoPage' => __DIR__ . '/../..' . '/src/ProductInfoPage.php',
-        'Cryptum\\NFT\\Utils\\AddressValidator' => __DIR__ . '/../..' . '/src/Utils/AddressValidator.php',
-        'Cryptum\\NFT\\Utils\\Api' => __DIR__ . '/../..' . '/src/Utils/Api.php',
-        'Cryptum\\NFT\\Utils\\Blockchain' => __DIR__ . '/../..' . '/src/Utils/Blockchain.php',
-        'Cryptum\\NFT\\Utils\\Log' => __DIR__ . '/../..' . '/src/Utils/Log.php',
-        'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
-        'kornrunner\\Keccak' => __DIR__ . '/..' . '/kornrunner/keccak/src/Keccak.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -97,7 +49,6 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$classMap;
 
         }, null, ClassLoader::class);
