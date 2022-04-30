@@ -20,7 +20,9 @@ class NFTViewPage
 
 	public function init()
 	{
-		$this->create_page(__('NFT View'), $this->get_content());
+		$this->create_page(__('Your NFTs'), $this->get_content());
+		wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
+		wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery'], true, true);
 	}
 
 	private function create_page($title_of_the_page, $content, $parent_id = NULL)
@@ -48,28 +50,6 @@ class NFTViewPage
 	}
 	private function get_content()
 	{
-		$nfts = [array(
-			'img' => 'https://blockforce.mypinata.cloud/ipfs/bafkreiatf4viunwlrdy625zsdafg5nvr76ucyn7xezqjzuw5ng7xrt2jfq',
-			'title' => 'NFT 1',
-			'text' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-		)];
-		$html = '<!-- wp:columns --><div id="nft-columns" class="wp-block-columns">';
-		foreach ($nfts as $value) {
-			$html .= <<<HTML
-				<!-- wp:column -->
-				<div class="wp-block-column">
-					<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
-					<figure class="wp-block-image size-large"><img src="{$value['img']}" alt="" /></figure>
-					<!-- /wp:image -->
-
-					<!-- wp:paragraph {"style":{"typography":{"fontSize":"14px"}}} -->
-					<p style="font-size:14px"><strong>{$value['title']}</strong><br>{$value['text']}</p>
-					<!-- /wp:paragraph -->
-				</div>
-				<!-- /wp:column -->
-			HTML;
-		}
-		$html .= '</div><!-- /wp:columns -->';
-		return $html;
+		return '<!-- wp:columns --><div id="nft-columns" class="wp-block-columns nft-columns">'. __('No NFTs found yet.') .'</div><!-- /wp:columns -->';
 	}
 }
