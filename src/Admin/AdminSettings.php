@@ -30,7 +30,7 @@ class AdminSettings
 			$storeId = $input['storeId'];
 			$apikey = $input['apikey'];
 
-			$url = Api::get_cryptum_url($input['environment']);
+			$url = Api::get_cryptum_store_url($input['environment']);
 			$response = Api::request($url . '/stores/' . $storeId, array(
 				'headers' => array(
 					'x-api-key' => $apikey,

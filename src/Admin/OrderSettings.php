@@ -70,7 +70,7 @@ class OrderSettings
 			}
 
 			$emailAddress = !empty($order->get_billing_email()) ? $order->get_billing_email() : $user->get('email');
-			$url = Api::get_cryptum_url($options['environment']);
+			$url = Api::get_cryptum_store_url($options['environment']);
 			$response = Api::request($url . '/nft/checkout', [
 				'body' => json_encode([
 					'store' => $storeId,

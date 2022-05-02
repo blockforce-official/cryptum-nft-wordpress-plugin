@@ -10,7 +10,7 @@ class Blockchain
 	static function get_nft_product_info($product_id)
 	{
 		$options = get_option('cryptum_nft');
-		$url = Api::get_cryptum_url($options['environment']);
+		$url = Api::get_cryptum_store_url($options['environment']);
 		$res = Api::request($url . '/products/' . $product_id, array('method' => 'GET'));
 		return $res;
 	}

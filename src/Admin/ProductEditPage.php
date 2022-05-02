@@ -144,7 +144,7 @@ class ProductEditPage
 							'x-api-key': "<?php echo $options['apikey'] ?>",
 							'content-type': 'application/json'
 						},
-						url: '<?php echo Api::get_cryptum_url($options['environment']) . '/products/' ?>' + productId.val(),
+						url: '<?php echo Api::get_cryptum_store_url($options['environment']) . '/products/' ?>' + productId.val(),
 						success: (data, textStatus) => {
 							console.log('Updated product id', data);
 							jQuery('#cryptum_nft_options_product_error_message').addClass('hidden');
@@ -292,15 +292,15 @@ class ProductEditPage
 		$body = $request_body;
 		$options = get_option('cryptum_nft');
 		if ($method == 'POST') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products';
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products';
 			$request_body['store'] = $options['storeId'];
 			$body = [$request_body];
 		} elseif ($method == 'PUT') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
 		} elseif ($method == 'DELETE') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
 		} elseif ($method == 'GET') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products/sku/' . $request_body['sku'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/sku/' . $request_body['sku'];
 			$body = null;
 		}
 		Log::info($method . ' ' . $url);
