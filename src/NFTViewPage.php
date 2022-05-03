@@ -3,6 +3,7 @@
 namespace Cryptum\NFT;
 
 use Cryptum\NFT\Utils\Api;
+use Cryptum\NFT\Utils\Db;
 use Cryptum\NFT\Utils\Log;
 
 class NFTViewPage
@@ -33,19 +34,30 @@ class NFTViewPage
 			wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
 		});
 
-		$environment = get_option('cryptum_nft');
+		$this->init_db();
+
+		$environment = get_option('cryptum_nft') || '';
+		$walletAddress = '0x31ec6686ee1597a41747507A931b5e12cacb920e';
+		$tokenAddresses = Db::get_key('_token_addresses');
 		wc_enqueue_js(<<<JS
 			jQuery(function() {
-				const walletAddress = '0x31ec6686ee1597a41747507A931b5e12cacb920e';
-				const tokenAddress = '0xC7c0CC29217cB615d45587b2ce2D06b10f7d25f3';
 				const protocol = 'CELO';
-				loadNftsFromWallet(walletAddress, tokenAddress, protocol)
-					.then(data => formatNftData(tokenAddress, {$environment}, protocol, data))
-					.then(nfts => showNftColumns(nfts));
+				const walletAddress = "{$walletAddress}";
+				const tokenAddresses = "{$tokenAddresses}".split(',');
+				for (const tokenAddress of tokenAddresses) {
+					loadNftsFromWallet(walletAddress, tokenAddress, protocol)
+						.then(data => formatNftData(tokenAddress, "{$environment}", protocol, data))
+						.then(nfts => showNftColumns(nfts));
+				}
 			});
 		JS);
 		add_action('wp_ajax_load_nft_info', [$this::$instance, 'load_nft_info']);
 		add_action('wp_ajax_nopriv_load_nft_info', [$this::$instance, 'load_nft_info']);
+	}
+
+	private function init_db()
+	{
+		Db::create_cryptum_nft_meta_table();
 	}
 
 	public function load_nft_info()
@@ -83,12 +95,24 @@ class NFTViewPage
 				'post_parent'    =>  $parent_id
 			)
 		);
-		Log::info("Created page_id=" . $page_id . " for page '" . $title_of_the_page);
+		Log::info("Created page_id = '" . $page_id . "' for page '" . $title_of_the_page . "'");
 		$this->page_id = $page_id;
 		return $page_id;
 	}
+	public function delete_page()
+	{
+		wp_delete_post($this->page_id);
+	}
 	private function get_content()
 	{
-		return '<!-- wp:columns --><div id="nft-columns" class="wp-block-columns nft-columns">' . __('No NFTs found yet.') . '</div><!-- /wp:columns -->';
+		$walletAddress = '0x31ec6686ee1597a41747507A931b5e12cacb920e';
+		$walletAddressText = __('Wallet address');
+		$notFoundText = __('No NFTs found yet.');
+		return <<<HTML
+			<p><strong>{$walletAddressText}:</strong> {$walletAddress}</p>
+			<!-- wp:columns -->
+			<div id="nft-columns" class="wp-block-columns nft-columns">{$notFoundText}</div>
+			<!-- /wp:columns -->
+		HTML;
 	}
 }

@@ -42,6 +42,19 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Cryptum\\NFT\\Admin\\AdminSettings' => __DIR__ . '/../..' . '/src/Admin/AdminSettings.php',
+        'Cryptum\\NFT\\Admin\\OrderSettings' => __DIR__ . '/../..' . '/src/Admin/OrderSettings.php',
+        'Cryptum\\NFT\\Admin\\ProductEditPage' => __DIR__ . '/../..' . '/src/Admin/ProductEditPage.php',
+        'Cryptum\\NFT\\CheckoutPage' => __DIR__ . '/../..' . '/src/CheckoutPage.php',
+        'Cryptum\\NFT\\NFTViewPage' => __DIR__ . '/../..' . '/src/NFTViewPage.php',
+        'Cryptum\\NFT\\PluginInit' => __DIR__ . '/../..' . '/src/PluginInit.php',
+        'Cryptum\\NFT\\ProductInfoPage' => __DIR__ . '/../..' . '/src/ProductInfoPage.php',
+        'Cryptum\\NFT\\Utils\\AddressValidator' => __DIR__ . '/../..' . '/src/Utils/AddressValidator.php',
+        'Cryptum\\NFT\\Utils\\Api' => __DIR__ . '/../..' . '/src/Utils/Api.php',
+        'Cryptum\\NFT\\Utils\\Blockchain' => __DIR__ . '/../..' . '/src/Utils/Blockchain.php',
+        'Cryptum\\NFT\\Utils\\Log' => __DIR__ . '/../..' . '/src/Utils/Log.php',
+        'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
+        'kornrunner\\Keccak' => __DIR__ . '/..' . '/kornrunner/keccak/src/Keccak.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
