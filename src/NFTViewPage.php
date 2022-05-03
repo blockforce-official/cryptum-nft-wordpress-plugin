@@ -7,6 +7,7 @@ use Cryptum\NFT\Utils\Log;
 
 class NFTViewPage
 {
+	private $page_id;
 	private static $instance = null;
 	public static function instance()
 	{
@@ -22,32 +23,25 @@ class NFTViewPage
 	public function init()
 	{
 		$this->create_page(__('Your NFTs'), $this->get_content());
+
+		global $post;
+		if ($this->page_id != $post->ID) {
+			return;
+		}
 		add_action('wp_enqueue_scripts', function () {
 			wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
-			wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery'], true, true);
+			wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
 		});
+
+		$environment = get_option('cryptum_nft');
 		wc_enqueue_js(<<<JS
-			jQuery(async function() {
-				// const nfts = [{
-				// 	'img': 'https://blockforce.mypinata.cloud/ipfs/bafkreiatf4viunwlrdy625zsdafg5nvr76ucyn7xezqjzuw5ng7xrt2jfq',
-				// 	'title': 'NFT 1 title bla bla bla bbbbbbbb wwww',
-				// 	'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-				// 	'tokenId': 18337,
-				// 	'address': '0x88663cedfe505c144b19295504760de075d20335',
-				// 	'url': 'https://alfajores-blockscout.celo-testnet.org/token/0x88663cedfe505c144b19295504760de075d20335/instance/18337/token-transfers'
-				// }, {
-				// 	'img': 'https://blockforce.mypinata.cloud/ipfs/bafkreiatf4viunwlrdy625zsdafg5nvr76ucyn7xezqjzuw5ng7xrt2jfq',
-				// 	'title': 'NFT 2 title',
-				// 	'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-				// 	'tokenId': 29,
-				// 	'address': '0x88663cedfe505c144b19295504760de075d20335',
-				// 	'url': 'https://alfajores-blockscout.celo-testnet.org/token/0x88663cedfe505c144b19295504760de075d20335/instance/29/token-transfers'
-				// }];
+			jQuery(function() {
 				const walletAddress = '0x31ec6686ee1597a41747507A931b5e12cacb920e';
-				const tokenAddress = '0xdd461d17800797581030d936c3155fe37bd67436';
+				const tokenAddress = '0xC7c0CC29217cB615d45587b2ce2D06b10f7d25f3';
 				const protocol = 'CELO';
-				const nfts = await loadNftsFromWallet(walletAddress, tokenAddress, protocol);
-				showNftColumns(nfts);
+				loadNftsFromWallet(walletAddress, tokenAddress, protocol)
+					.then(data => formatNftData(tokenAddress, {$environment}, protocol, data))
+					.then(nfts => showNftColumns(nfts));
 			});
 		JS);
 		add_action('wp_ajax_load_nft_info', [$this::$instance, 'load_nft_info']);
@@ -62,6 +56,8 @@ class NFTViewPage
 		$info = Api::get_nft_info_from_wallet($nftInfo['walletAddress'], $nftInfo['tokenAddress'], $nftInfo['protocol']);
 		if (isset($info['error'])) {
 			wp_send_json_error($info, 400);
+		} else {
+			wp_send_json($info);
 		}
 
 		wp_die();
@@ -88,6 +84,7 @@ class NFTViewPage
 			)
 		);
 		Log::info("Created page_id=" . $page_id . " for page '" . $title_of_the_page);
+		$this->page_id = $page_id;
 		return $page_id;
 	}
 	private function get_content()

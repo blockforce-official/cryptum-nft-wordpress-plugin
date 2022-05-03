@@ -21,17 +21,15 @@ const ERC1155_BALANCEOF_ABI = [array(
 	'type' => 'function',
 )];
 const ERC721_TOKENSOFOWNER_ABI = [array(
-	'inputs' => [array('name' => 'account', 'type' => 'address'), array('name' => 'startIndex', 'type' => 'uint256')],
+	'inputs' => [array('name' => 'owner', 'type' => 'address'), array('name' => 'startIndex', 'type' => 'uint256')],
 	'name' => 'tokensOfOwner',
-	'outputs' => array(
+	'outputs' => [array(
 		"components" => [
 			array(
-				"internalType" => "uint256",
 				"name" => "id",
 				"type" => "uint256"
 			),
 			array(
-				"internalType" => "string",
 				"name" => "uri",
 				"type" => "string"
 			)
@@ -39,7 +37,7 @@ const ERC721_TOKENSOFOWNER_ABI = [array(
 		"internalType" => "struct TokenERC721.Token[]",
 		"name" => "",
 		"type" => "tuple[]"
-	),
+	)],
 	'stateMutability' => 'view',
 	'type' => 'function',
 )];
@@ -73,8 +71,10 @@ class Api
 				'message' => $response->get_error_message()
 			];
 		}
+
+		$responseObj = $response['response'];
 		$responseBody = json_decode($response['body'], true);
-		if (isset($responseBody['error'])) {
+		if (isset($responseBody['error']) || (isset($responseObj) && $responseObj['code'] >= 400)) {
 			$error_message = isset($responseBody['error']['message']) ? $responseBody['error']['message'] : $responseBody['message'];
 			Log::error(json_encode($responseBody, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 			return [
@@ -89,7 +89,6 @@ class Api
 	{
 		$options = get_option('cryptum_nft');
 		$url = Api::get_cryptum_url($options['environment']);
-		Log::info($url);
 		$balanceResponse = Api::request("{$url}/tx/call-method?protocol={$protocol}", array(
 			'method' => 'POST',
 			'headers' => array(
@@ -106,10 +105,10 @@ class Api
 				'contractAbi' => $isErc721 ? ERC721_BALANCEOF_ABI : ERC1155_BALANCEOF_ABI,
 			]),
 		));
-		Log::info($balanceResponse);
 		if (isset($balanceResponse['error'])) {
 			return $balanceResponse;
 		}
+
 		$tokensResponse = Api::request("{$url}/tx/call-method?protocol={$protocol}", array(
 			'method' => 'POST',
 			'headers' => array(
