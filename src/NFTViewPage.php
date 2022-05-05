@@ -8,7 +8,8 @@ use Cryptum\NFT\Utils\Log;
 
 class NFTViewPage
 {
-	private $page_id;
+	private $pageId;
+	private $pageName;
 	private static $instance = null;
 	public static function instance()
 	{
@@ -19,40 +20,60 @@ class NFTViewPage
 	}
 	private function __construct()
 	{
+		$this->pageId = 0;
+		$this->pageName = __('Your NFTs');
 	}
 
-	public function init()
+	public function create_page()
 	{
-		$this->create_page(__('Your NFTs'), $this->get_content());
+		$this->try_create_page($this->pageName, $this->get_content());
+	}
 
-		global $post;
-		if ($this->page_id != $post->ID) {
-			return;
-		}
-		add_action('wp_enqueue_scripts', function () {
-			wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
-			wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
-		});
+	public function load_page()
+	{
+		global $_SERVER;
 
-		$this->init_db();
+		$pageName = sanitize_title($this->pageName);
+		if ($_SERVER['REQUEST_URI'] == "/{$pageName}/") {
+			Log::info('Page "Your NFTs"');
 
-		$environment = get_option('cryptum_nft') || '';
-		$walletAddress = '0x31ec6686ee1597a41747507A931b5e12cacb920e';
-		$tokenAddresses = Db::get_key('_token_addresses');
-		wc_enqueue_js(<<<JS
-			jQuery(function() {
-				const protocol = 'CELO';
-				const walletAddress = "{$walletAddress}";
-				const tokenAddresses = "{$tokenAddresses}".split(',');
-				for (const tokenAddress of tokenAddresses) {
-					loadNftsFromWallet(walletAddress, tokenAddress, protocol)
-						.then(data => formatNftData(tokenAddress, "{$environment}", protocol, data))
-						.then(nfts => showNftColumns(nfts));
-				}
+			add_action('wp_enqueue_scripts', function () {
+				wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
+				wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
 			});
-		JS);
-		add_action('wp_ajax_load_nft_info', [$this::$instance, 'load_nft_info']);
-		add_action('wp_ajax_nopriv_load_nft_info', [$this::$instance, 'load_nft_info']);
+
+			$this->init_db();
+
+			$environment = get_option('cryptum_nft') || '';
+
+			$current_user = wp_get_current_user();
+			// Log::info($current_user);
+			$walletAddress = '';
+			$userWallet = json_decode(get_user_meta($current_user->ID, '_cryptum_nft_user_wallet', true));
+			// Log::info($userWallet);
+			if (isset($userWallet)) {
+				$walletAddress = $userWallet->address;
+			}
+			if (!empty($walletAddress)) {
+				$tokenAddresses = Db::get_key('_token_addresses');
+				// Log::info($tokenAddresses);
+				wc_enqueue_js(<<<JS
+					jQuery(function() {
+						const protocol = 'CELO';
+						const walletAddress = "{$walletAddress}";
+						const tokenAddresses = "{$tokenAddresses}".split(',');
+						console.log(walletAddress, tokenAddresses);
+						for (const tokenAddress of tokenAddresses) {
+							loadNftsFromWallet(walletAddress, tokenAddress, protocol)
+								.then(data => formatNftData(tokenAddress, "{$environment}", protocol, data))
+								.then(nfts => showNftColumns(nfts));
+						}
+					});
+				JS);
+				add_action('wp_ajax_load_nft_info', [$this::$instance, 'load_nft_info']);
+				add_action('wp_ajax_nopriv_load_nft_info', [$this::$instance, 'load_nft_info']);
+			}
+		}
 	}
 
 	private function init_db()
@@ -75,14 +96,15 @@ class NFTViewPage
 		wp_die();
 	}
 
-	private function create_page($title_of_the_page, $content, $parent_id = NULL)
+	private function try_create_page($title_of_the_page, $content, $parent_id = NULL)
 	{
 		$objPage = get_page_by_title($title_of_the_page, 'OBJECT', 'page');
 		if (!empty($objPage)) {
+			$this->pageId = $objPage->ID;
 			return $objPage->ID;
 		}
 
-		$page_id = wp_insert_post(
+		$pageId = wp_insert_post(
 			array(
 				'comment_status' => 'close',
 				'ping_status'    => 'close',
@@ -95,21 +117,18 @@ class NFTViewPage
 				'post_parent'    =>  $parent_id
 			)
 		);
-		Log::info("Created page_id = '" . $page_id . "' for page '" . $title_of_the_page . "'");
-		$this->page_id = $page_id;
-		return $page_id;
+		Log::info("Created pageId = '" . $pageId . "' for page '" . $title_of_the_page . "'");
+		$this->pageId = $pageId;
 	}
 	public function delete_page()
 	{
-		wp_delete_post($this->page_id);
+		wp_delete_post($this->pageId);
 	}
 	private function get_content()
 	{
-		$walletAddress = '0x31ec6686ee1597a41747507A931b5e12cacb920e';
-		$walletAddressText = __('Wallet address');
 		$notFoundText = __('No NFTs found yet.');
 		return <<<HTML
-			<p><strong>{$walletAddressText}:</strong> {$walletAddress}</p>
+			<p id="user-wallet-address"></p>
 			<!-- wp:columns -->
 			<div id="nft-columns" class="wp-block-columns nft-columns">{$notFoundText}</div>
 			<!-- /wp:columns -->

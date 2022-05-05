@@ -17,6 +17,7 @@ return array(
     'Cryptum\\NFT\\Utils\\AddressValidator' => $baseDir . '/src/Utils/AddressValidator.php',
     'Cryptum\\NFT\\Utils\\Api' => $baseDir . '/src/Utils/Api.php',
     'Cryptum\\NFT\\Utils\\Blockchain' => $baseDir . '/src/Utils/Blockchain.php',
+    'Cryptum\\NFT\\Utils\\Db' => $baseDir . '/src/Utils/Db.php',
     'Cryptum\\NFT\\Utils\\Log' => $baseDir . '/src/Utils/Log.php',
     'Symfony\\Polyfill\\Mbstring\\Mbstring' => $vendorDir . '/symfony/polyfill-mbstring/Mbstring.php',
     'kornrunner\\Keccak' => $vendorDir . '/kornrunner/keccak/src/Keccak.php',

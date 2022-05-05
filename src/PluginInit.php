@@ -53,6 +53,7 @@ class PluginInit
 		add_action('woocommerce_api_cryptum_nft_order_status_changed_callback', [OrderSettings::instance(), 'nft_order_status_changed_callback']);
 		add_action('add_meta_boxes', [OrderSettings::instance(), 'show_transactions_info_panel']);
 
-		add_action('wp_loaded', [NFTViewPage::instance(), 'init'], 20);
+		add_action('admin_init', [NFTViewPage::instance(), 'create_page']);
+		add_action('wp_loaded', [NFTViewPage::instance(), 'load_page']);
 	}
 }
