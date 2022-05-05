@@ -1,0 +1,21 @@
+
+.user-wallet-form-field {
+	margin-bottom: 5px;
+}
+.user-wallet-generator-label {
+	margin-bottom: 5px;
+}
+.user-wallet-generator-button {
+	font-size: 13px;
+}
+.no-close .ui-dialog-titlebar-close {
+	display: none;
+}
+.ui-dialog, .ui-dialog-buttonpane {
+	font-family: inherit;
+	font-size: 14px;
+}
+.ui-dialog button {
+	font-family: inherit;
+	font-size: 14px;
+}
