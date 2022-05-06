@@ -35,7 +35,7 @@ class CheckoutPage
 				break;
 			}
 		}
-		// if ($has_nft_enabled) {
+		if ($has_nft_enabled) {
 			$current_user = wp_get_current_user();
 			$wallet_address = '';
 			$user_wallet = json_decode(get_user_meta($current_user->ID, '_cryptum_nft_user_wallet', true));
@@ -55,7 +55,7 @@ class CheckoutPage
 				),
 				$wallet_address
 			);
-			?>
+?>
 			<p class="user-wallet-generator-label"><?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below') ?>:</p>
 			<button class="button alt user-wallet-generator-button">
 				<?php echo __('Generate new wallet') ?>
@@ -65,8 +65,8 @@ class CheckoutPage
 				<p><strong><?php echo __('Private Key') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
 				<p style="color:red;"><strong><?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again') ?></strong></p>
 			</div>
-			<?php
-		// }
+<?php
+		}
 	}
 
 	public function save_user_meta()
@@ -75,7 +75,7 @@ class CheckoutPage
 		Log::info($address);
 		$user = wp_get_current_user();
 
-		update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"'. $address .'"}');
+		update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');
 
 		wp_die();
 	}
