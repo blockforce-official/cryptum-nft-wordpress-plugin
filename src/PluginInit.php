@@ -48,6 +48,8 @@ class PluginInit
 		add_action('woocommerce_after_checkout_billing_form', [CheckoutPage::instance(), 'show_checkout_page']);
 		add_action('woocommerce_checkout_process', [CheckoutPage::instance(), 'checkout_validation_process']);
 		add_action('woocommerce_checkout_update_order_meta', [CheckoutPage::instance(), 'checkout_field_update_order_meta']);
+		add_action('wp_ajax_save_user_meta', [CheckoutPage::instance(), 'save_user_meta']);
+		add_action('wp_ajax_nopriv_save_user_meta', [CheckoutPage::instance(), 'save_user_meta']);
 
 		add_action('woocommerce_order_status_changed', [OrderSettings::instance(), 'on_order_status_changed'], 10, 3);
 		add_action('woocommerce_api_cryptum_nft_order_status_changed_callback', [OrderSettings::instance(), 'nft_order_status_changed_callback']);

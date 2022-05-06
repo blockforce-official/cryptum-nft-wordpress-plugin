@@ -56,16 +56,28 @@ class CheckoutPage
 				$wallet_address
 			);
 			?>
-			<p class="user-wallet-generator-label"><?php echo __('Click below to generate a new wallet') ?>:</p>
+			<p class="user-wallet-generator-label"><?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below') ?>:</p>
 			<button class="button alt user-wallet-generator-button">
 				<?php echo __('Generate new wallet') ?>
 			</button>
 			<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet') ?>">
 				<p><strong><?php echo __('Address') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
 				<p><strong><?php echo __('Private Key') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
+				<p style="color:red;"><strong><?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again') ?></strong></p>
 			</div>
 			<?php
 		// }
+	}
+
+	public function save_user_meta()
+	{
+		$address = $_POST['address'];
+		Log::info($address);
+		$user = wp_get_current_user();
+
+		update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"'. $address .'"}');
+
+		wp_die();
 	}
 
 	public function checkout_validation_process()

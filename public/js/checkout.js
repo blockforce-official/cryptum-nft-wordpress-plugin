@@ -15,7 +15,19 @@
       width: 500,
       buttons: {
         'Save': function () {
-          $(this).dialog("close");
+          $.ajax({
+            method: 'POST',
+            url: '/wp-admin/admin-ajax.php',
+            data: {
+              action: 'save_user_meta',
+              address: account.address,
+            },
+            success: (data) => {
+              $('#user_wallet_address').val(account.address);
+              $(this).dialog("close");
+            },
+            error: (xhr, status, error) => { console(error); },
+          });
         },
         'Cancel': function () {
           $(this).dialog('close');
