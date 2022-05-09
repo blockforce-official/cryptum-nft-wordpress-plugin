@@ -42,7 +42,7 @@ class ProductEditPage
 	public function show_product_data_tab($tabs)
 	{
 		$tabs['cryptum_nft_options'] = [
-			'label' => __('Cryptum NFT Options', 'txtdomain'),
+			'label' => __('Cryptum NFT Options', 'cryptum-nft-domain'),
 			'target' => 'cryptum_nft_options'
 		];
 		return $tabs;
@@ -56,21 +56,21 @@ class ProductEditPage
 				array(
 					'id' => '_cryptum_nft_options_nft_enable',
 					'placeholder' => '',
-					'label' => __('Enable NFT link'),
-					'description' => __('Enable/Disable link between this product and NFT'),
+					'label' => __('Enable NFT link', 'cryptum-nft-domain'),
+					'description' => __('Enable/Disable link between this product and NFT', 'cryptum-nft-domain'),
 					'desc_tip' => 'true'
 				)
 			); ?>
 			<hr>
 
 			<div id="cryptum_nft_options_div">
-				<p><?php _e('After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU') ?></p>
+				<p><?php _e('After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU', 'cryptum-nft-domain') ?></p>
 				<?php /*woocommerce_wp_text_input(
 					array(
 						'id' => '_cryptum_nft_options_product_id',
 						'placeholder' => '',
-						'label' => __('Product id', 'woocommerce'),
-						'description' => __('Product id with NFT link from Cryptum Dashboard'),
+						'label' => __('Product id', 'cryptum-nft-domain'),
+						'description' => __('Product id with NFT link from Cryptum Dashboard', 'cryptum-nft-domain'),
 						'desc_tip' => 'true',
 						'custom_attributes' => array(
 							'required' => 'required'
@@ -233,7 +233,7 @@ class ProductEditPage
 						}
 						$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 					} else {
-						$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin"), __('Product SKU is duplicate, try to set another SKU value.'));
+						$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'), __('Product SKU is duplicate, try to set another SKU value.', 'cryptum-nft-domain'));
 						return false;
 					}
 				}
@@ -314,7 +314,7 @@ class ProductEditPage
 		if (isset($response['error'])) {
 			$message = $response['message'];
 			if ($show_admin_notice) {
-				$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin"), __($message));
+				$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'), __($message, 'cryptum-nft-domain'));
 			}
 			return false;
 		}

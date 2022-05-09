@@ -33,16 +33,16 @@ class ProductInfoPage
 ?>
 			<div id="_cryptum_nft_info" style="display:none; background-color: #75757526; padding: 10px;">
 				<div style="display: flex;">
-					<h4 style="flex-grow:1;"><?= __('Chain info') ?></h4>
-					<span id="_cryptum_nft_nft_info" title="<?= __('When you buy this product, you will receive a non-fungible token from the ' . $blockchain . ' network. The redemption instructions will be sent by email.') ?>">
+					<h4 style="flex-grow:1;"><?= __('Chain info', 'cryptum-nft-domain') ?></h4>
+					<span id="_cryptum_nft_nft_info" title="<?= __('When you buy this product, you will receive a non-fungible token from the ' . $blockchain . ' network. The redemption instructions will be sent by email.', 'cryptum-nft-domain') ?>">
 						<i class="fa fa-info-circle dashicons dashicons-info"></i>
 					</span>
 				</div>
 				<hr style="margin: 5px 0;">
-				<p style="font-size: 14px;"><?= __('Contract Address') ?>: <?php echo $contractAddress ?></p>
-				<p style="font-size: 14px;"><?= __('Token Id') ?> : <?php echo $tokenId ?></p>
+				<p style="font-size: 14px;"><?= __('Contract Address', 'cryptum-nft-domain') ?>: <?php echo $contractAddress ?></p>
+				<p style="font-size: 14px;"><?= __('Token Id', 'cryptum-nft-domain') ?> : <?php echo $tokenId ?></p>
 				<p style="font-size: 14px;">Blockchain: <?php echo $blockchain ?></p>
-				<p style="font-size: 14px;"><a href="<?php echo $explorerUrl ?>" target="_blank"><?= __('View in explorer') ?></a></p>
+				<p style="font-size: 14px;"><a href="<?php echo $explorerUrl ?>" target="_blank"><?= __('View in explorer', 'cryptum-nft-domain') ?></a></p>
 			</div>
 <?php
 			wc_enqueue_js('

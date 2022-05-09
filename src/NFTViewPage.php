@@ -21,7 +21,7 @@ class NFTViewPage
 	private function __construct()
 	{
 		$this->pageId = 0;
-		$this->pageName = __('Your NFTs');
+		$this->pageName = __('Your NFTs', 'cryptum-nft-domain');
 	}
 
 	public function create_page()
@@ -126,7 +126,7 @@ class NFTViewPage
 	}
 	private function get_content()
 	{
-		$notFoundText = __('No NFTs found yet.');
+		$notFoundText = __('No NFTs found yet.', 'cryptum-nft-domain');
 		return <<<HTML
 			<p id="user-wallet-address"></p>
 			<!-- wp:columns -->

@@ -45,7 +45,7 @@ class AdminSettings
 				add_settings_error(
 					'cryptum_nft_settings',
 					'error',
-					__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first'),
+					__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
 					'error'
 				);
 				return $options;
@@ -53,7 +53,7 @@ class AdminSettings
 			add_settings_error(
 				'cryptum_nft_settings',
 				'success',
-				__('Changes updated successfully'),
+				__('Changes updated successfully', 'cryptum-nft-domain'),
 				'success'
 			);
 			return $input;
@@ -63,7 +63,7 @@ class AdminSettings
 	public function show_plugin_action_links($links)
 	{
 		$plugin_links = array(
-			'<a href="admin.php?page=cryptum_nft_settings">' . __('Settings') . '</a>'
+			'<a href="admin.php?page=cryptum_nft_settings">' . __('Settings', 'cryptum-nft-domain') . '</a>'
 		);
 		return array_merge($plugin_links, $links);
 	}
@@ -85,7 +85,7 @@ class AdminSettings
 		<link rel="stylesheet" href="<?php echo CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css' ?>">
 		<div class="cryptum_nft_admin_wrap">
 			<div class="cryptum_nft_admin_top">
-				<h1><?php echo __('Cryptum NFT Settings') ?></h1>
+				<h1><?php echo __('Cryptum NFT Settings', 'cryptum-nft-domain') ?></h1>
 				<hr>
 			</div>
 			<div class="cryptum_nft_admin_main_wrap">
@@ -94,10 +94,10 @@ class AdminSettings
 				?>
 				<div class="cryptum_nft_admin_main_left">
 					<p class="cryptum_nft_admin_main_p">
-						<?php echo __('This plugin allows to configure your store environment.') ?>
+						<?php echo __('This plugin allows to configure your store environment.', 'cryptum-nft-domain') ?>
 						<br>
 						<?php echo __('It is necessary to create an account in
-						Cryptum Dashboard to receive the store id and API key to fill out the fields below.') ?>
+						Cryptum Dashboard to receive the store id and API key to fill out the fields below.', 'cryptum-nft-domain') ?>
 					</p>
 					<br>
 
@@ -110,7 +110,7 @@ class AdminSettings
 						<table class="form-table">
 
 							<tr valign="top">
-								<th scope="row"><label for="order"><?php echo __('Environment'); ?></label></th>
+								<th scope="row"><label for="order"><?php echo __('Environment', 'cryptum-nft-domain'); ?></label></th>
 								<td>
 									<select name="cryptum_nft[environment]">
 										<option value="production" <?php if ($options['environment'] == 'production') {
@@ -121,27 +121,27 @@ class AdminSettings
 																} ?>>Test</option>
 									</select>
 									<br>
-									<p><?php echo __('Choose your environment. The Test environment should be used for testing only.'); ?></p>
+									<p><?php echo __('Choose your environment. The Test environment should be used for testing only.', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="storeId">Store Id</label></th>
 								<td>
 									<input id="storeId" type="text" name="cryptum_nft[storeId]" value="<?php echo $options['storeId']; ?>" style="width: 70%" />
-									<p><?php echo __('Enter your Store ID generated in Cryptum Dashboard'); ?></p>
+									<p><?php echo __('Enter your Store ID generated in Cryptum Dashboard', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="apikey">API key</label></th>
 								<td>
 									<input id="apikey" type="text" name="cryptum_nft[apikey]" value="<?php echo $options['apikey']; ?>" style="width: 70%" />
-									<p><?php echo __('Enter your Cryptum API Key (Generated in Cryptum Dashboard)'); ?></p>
+									<p><?php echo __('Enter your Cryptum API Key (Generated in Cryptum Dashboard)', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 						</table>
 
 						<p class="submit">
-							<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+							<input type="submit" class="button-primary" value="<?php _e('Save Changes', 'cryptum-nft-domain') ?>" />
 						</p>
 					</form>
 				</div>

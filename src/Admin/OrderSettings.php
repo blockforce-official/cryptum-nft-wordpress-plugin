@@ -94,7 +94,7 @@ class OrderSettings
 			]);
 			if (isset($response['error'])) {
 				$message = $response['message'];
-				$this->set_admin_notices_error(__("Error in configuring Cryptum NFT Plugin"), __($message));
+				$this->set_admin_notices_error(__("Error in configuring Cryptum NFT Plugin", 'cryptum-nft-domain'), __($message, 'cryptum-nft-domain'));
 				return;
 			}
 		}
@@ -110,7 +110,7 @@ class OrderSettings
 			if (!empty($order->get_meta('user_wallet_address'))) {
 				add_meta_box(
 					'cryptum_nft_transactions_info',
-					__('Cryptum NFT Transactions Info'),
+					__('Cryptum NFT Transactions Info', 'cryptum-nft-domain'),
 					[$this, 'show_transactions_info'],
 					'shop_order',
 					'normal'
@@ -128,11 +128,11 @@ class OrderSettings
 
 			$message = $order->get_meta('_cryptum_nft_order_transactions_message');
 			if (!empty($message)) {
-				echo '<p style="font-size:12px;">' . __($message)  . '</p>';
+				echo '<p style="font-size:12px;">' . __($message, 'cryptum-nft-domain')  . '</p>';
 			}
 			$transactions = json_decode($order->get_meta('_cryptum_nft_order_transactions'));
 			if (isset($transactions) and count($transactions) > 0) {
-				echo '<h4>' . __('NFT transactions hashes') . '</h4>';
+				echo '<h4>' . __('NFT transactions hashes', 'cryptum-nft-domain') . '</h4>';
 				foreach ($transactions as $transaction) {
 					echo '<p><strong>' . $transaction->protocol . ': </strong> '
 						. '<a href="' . Blockchain::get_tx_explorer_url($transaction->protocol, $transaction->hash) . '" target="_blank">'
@@ -140,7 +140,7 @@ class OrderSettings
 						. '</a></p>';
 				}
 			} else {
-				echo '<p>' . __('No NFTs have been transferred yet.') . '</p>';
+				echo '<p>' . __('No NFTs have been transferred yet.', 'cryptum-nft-domain') . '</p>';
 			} ?>
 		</div>
 <?php

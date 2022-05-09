@@ -6,7 +6,6 @@
     const web3 = new Web3();
     const account = web3.eth.accounts.create();
 
-    console.log(account);
     $('#user-wallet-modal-address').text(account.address);
     $('#user-wallet-modal-privateKey').text(account.privateKey);
     $('#user-wallet-generator-modal').dialog({
@@ -14,7 +13,7 @@
       dialogClass: 'no-close',
       width: 500,
       buttons: {
-        'Save': function () {
+        [objectL10n['save']]: function () {
           $.ajax({
             method: 'POST',
             url: '/wp-admin/admin-ajax.php',
@@ -26,10 +25,14 @@
               $('#user_wallet_address').val(account.address);
               $(this).dialog("close");
             },
-            error: (xhr, status, error) => { console(error); },
+            error: (xhr, status, error) => {
+              $('#user-wallet-modal-error').text(error);
+              $('#user-wallet-modal-error').css('display', 'block');
+              console(error);
+            },
           });
         },
-        'Cancel': function () {
+        [objectL10n['cancel']]: function () {
           $(this).dialog('close');
         }
       }
