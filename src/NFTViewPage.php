@@ -26,11 +26,19 @@ class NFTViewPage
 
 	public function create_page()
 	{
+		$options = get_option('cryptum_nft');
+		if ($options['isNFTViewEnabled'] != 'yes') {
+			return;
+		}
 		$this->try_create_page($this->pageName, $this->get_content());
 	}
 
 	public function load_page()
 	{
+		$options = get_option('cryptum_nft');
+		if ($options['isNFTViewEnabled'] != 'yes') {
+			return;
+		}
 		global $_SERVER;
 
 		$pageName = sanitize_title($this->pageName);
@@ -42,9 +50,7 @@ class NFTViewPage
 				wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
 			});
 
-			$this->init_db();
-
-			$environment = get_option('cryptum_nft') || '';
+			// $this->init_db();
 
 			$current_user = wp_get_current_user();
 			// Log::info($current_user);
@@ -55,8 +61,8 @@ class NFTViewPage
 				$walletAddress = $userWallet->address;
 			}
 			if (!empty($walletAddress)) {
-				$tokenAddresses = Db::get_key('_token_addresses');
-				// Log::info($tokenAddresses);
+				$tokenAddresses = $options['tokenAddresses'];
+				// Log::info($options);
 				wc_enqueue_js(<<<JS
 					jQuery(function() {
 						const protocol = 'CELO';
@@ -65,7 +71,7 @@ class NFTViewPage
 						console.log(walletAddress, tokenAddresses);
 						for (const tokenAddress of tokenAddresses) {
 							loadNftsFromWallet(walletAddress, tokenAddress, protocol)
-								.then(data => formatNftData(tokenAddress, "{$environment}", protocol, data))
+								.then(data => formatNftData(tokenAddress, "{$options['environment']}", protocol, data))
 								.then(nfts => showNftColumns(nfts));
 						}
 					});

@@ -138,6 +138,20 @@ class AdminSettings
 									<p><?php echo __('Enter your Cryptum API Key (Generated in Cryptum Dashboard)', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
+							<br>
+							<tr valign="top">
+								<th scope="row"><label for="enable-nft-view"><?php _e('Enable NFT View page', 'cryptum-nft-domain'); ?></label></th>
+								<td>
+									<input id="enable-nft-view" type="checkbox" name="cryptum_nft[isNFTViewEnabled]" value="<?php echo $options['isNFTViewEnabled']; ?>" />
+								</td>
+							</tr>
+							<tr valign="top">
+								<th scope="row"><label for="token-addresses">Token Addresses</label></th>
+								<td>
+									<textarea id="token-addresses" type="text" name="cryptum_nft[tokenAddresses]" style="width: 70%;"><?php echo $options['tokenAddresses']; ?></textarea>
+									<p><?php echo __('Enter token addresses', 'cryptum-nft-domain'); ?></p>
+								</td>
+							</tr>
 						</table>
 
 						<p class="submit">

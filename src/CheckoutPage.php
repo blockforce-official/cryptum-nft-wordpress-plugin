@@ -39,7 +39,7 @@ class CheckoutPage
 				break;
 			}
 		}
-		if ($has_nft_enabled) {
+		if (!$has_nft_enabled) {
 			$current_user = wp_get_current_user();
 			$wallet_address = '';
 			$user_wallet = json_decode(get_user_meta($current_user->ID, '_cryptum_nft_user_wallet', true));
