@@ -57,5 +57,7 @@ class PluginInit
 
 		add_action('admin_init', [NFTViewPage::instance(), 'create_page']);
 		add_action('wp_loaded', [NFTViewPage::instance(), 'load_page']);
+		add_action('wp_ajax_load_nft_info', [NFTViewPage::instance(), 'load_nft_info']);
+		add_action('wp_ajax_nopriv_load_nft_info', [NFTViewPage::instance(), 'load_nft_info']);
 	}
 }

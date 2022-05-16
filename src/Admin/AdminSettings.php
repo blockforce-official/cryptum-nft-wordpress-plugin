@@ -115,24 +115,24 @@ class AdminSettings
 									<select name="cryptum_nft[environment]">
 										<option value="production" <?php if ($options['environment'] == 'production') {
 																		echo ' selected="selected"';
-																	} ?>>Production</option>
+																	} ?>><?php _e('Production', 'cryptum-nft-domain'); ?></option>
 										<option value="test" <?php if ($options['environment'] == 'test') {
 																	echo ' selected="selected"';
-																} ?>>Test</option>
+																} ?>><?php _e('Test', 'cryptum-nft-domain'); ?></option>
 									</select>
 									<br>
 									<p><?php echo __('Choose your environment. The Test environment should be used for testing only.', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="storeId">Store Id</label></th>
+								<th scope="row"><label for="storeId"><?php _e('Store Id', 'cryptum-nft-domain'); ?></label></th>
 								<td>
 									<input id="storeId" type="text" name="cryptum_nft[storeId]" value="<?php echo $options['storeId']; ?>" style="width: 70%" />
 									<p><?php echo __('Enter your Store ID generated in Cryptum Dashboard', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="apikey">API key</label></th>
+								<th scope="row"><label for="apikey"><?php _e('API key', 'cryptum-nft-domain'); ?></label></th>
 								<td>
 									<input id="apikey" type="text" name="cryptum_nft[apikey]" value="<?php echo $options['apikey']; ?>" style="width: 70%" />
 									<p><?php echo __('Enter your Cryptum API Key (Generated in Cryptum Dashboard)', 'cryptum-nft-domain'); ?></p>
@@ -142,11 +142,17 @@ class AdminSettings
 							<tr valign="top">
 								<th scope="row"><label for="enable-nft-view"><?php _e('Enable NFT View page', 'cryptum-nft-domain'); ?></label></th>
 								<td>
-									<input id="enable-nft-view" type="checkbox" name="cryptum_nft[isNFTViewEnabled]" value="<?php echo $options['isNFTViewEnabled']; ?>" />
+									<input
+										id="enable-nft-view"
+										type="checkbox"
+										name="cryptum_nft[isNFTViewEnabled]"
+										value="yes"
+										<?php echo $options['isNFTViewEnabled'] == 'yes' ? 'checked="checked"' : '' ?>
+									/>
 								</td>
 							</tr>
 							<tr valign="top">
-								<th scope="row"><label for="token-addresses">Token Addresses</label></th>
+								<th scope="row"><label for="token-addresses"><?php _e('Token Addresses Filter', 'cryptum-nft-domain'); ?></label></th>
 								<td>
 									<textarea id="token-addresses" type="text" name="cryptum_nft[tokenAddresses]" style="width: 70%;"><?php echo $options['tokenAddresses']; ?></textarea>
 									<p><?php echo __('Enter token addresses', 'cryptum-nft-domain'); ?></p>

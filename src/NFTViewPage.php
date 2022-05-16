@@ -30,13 +30,14 @@ class NFTViewPage
 		if ($options['isNFTViewEnabled'] != 'yes') {
 			return;
 		}
-		$this->try_create_page($this->pageName, $this->get_content());
+		$this->try_create_page($this->get_content());
 	}
 
 	public function load_page()
 	{
 		$options = get_option('cryptum_nft');
 		if ($options['isNFTViewEnabled'] != 'yes') {
+			$this->delete_page();
 			return;
 		}
 		global $_SERVER;
@@ -48,6 +49,12 @@ class NFTViewPage
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
 				wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
+				$script_data = array(
+					'ajaxUrl' => admin_url('admin-ajax.php'),
+					'action' => 'load_nft_info',
+					'security' => wp_create_nonce('load_nft_info'),
+				);
+				wp_localize_script('nft-view', 'wpScriptObject', $script_data);
 			});
 
 			// $this->init_db();
@@ -76,24 +83,18 @@ class NFTViewPage
 						}
 					});
 				JS);
-				add_action('wp_ajax_load_nft_info', [$this::$instance, 'load_nft_info']);
-				add_action('wp_ajax_nopriv_load_nft_info', [$this::$instance, 'load_nft_info']);
 			}
 		}
 	}
 
-	private function init_db()
-	{
-		Db::create_cryptum_nft_meta_table();
-	}
-
 	public function load_nft_info()
 	{
+		check_ajax_referer('load_nft_info', 'security');
 		$nftInfo = $_POST['nftInfo'];
-		Log::info($nftInfo);
 
 		$info = Api::get_nft_info_from_wallet($nftInfo['walletAddress'], $nftInfo['tokenAddress'], $nftInfo['protocol']);
 		if (isset($info['error'])) {
+			Log::error($info);
 			wp_send_json_error($info, 400);
 		} else {
 			wp_send_json($info);
@@ -102,9 +103,9 @@ class NFTViewPage
 		wp_die();
 	}
 
-	private function try_create_page($title_of_the_page, $content, $parent_id = NULL)
+	private function try_create_page($content, $parent_id = NULL)
 	{
-		$objPage = get_page_by_title($title_of_the_page, 'OBJECT', 'page');
+		$objPage = get_page_by_title($this->pageName, 'OBJECT', 'page');
 		if (!empty($objPage)) {
 			$this->pageId = $objPage->ID;
 			return $objPage->ID;
@@ -115,20 +116,25 @@ class NFTViewPage
 				'comment_status' => 'close',
 				'ping_status'    => 'close',
 				'post_author'    => 1,
-				'post_title'     => ucwords($title_of_the_page),
-				'post_name'      => sanitize_title($title_of_the_page),
+				'post_title'     => ucwords($this->pageName),
+				'post_name'      => sanitize_title($this->pageName),
 				'post_status'    => 'publish',
 				'post_content'   => $content,
 				'post_type'      => 'page',
 				'post_parent'    =>  $parent_id
 			)
 		);
-		Log::info("Created pageId = '" . $pageId . "' for page '" . $title_of_the_page . "'");
+		Log::info("Created pageId = '" . $pageId . "' for page '" . $this->pageName . "'");
 		$this->pageId = $pageId;
 	}
 	public function delete_page()
 	{
-		wp_delete_post($this->pageId);
+		$objPage = get_page_by_title($this->pageName, 'OBJECT', 'page');
+		if (empty($objPage)) {
+			return;
+		}
+		Log::info('Deleting page ' . $objPage->ID);
+		wp_delete_post($objPage->ID, true);
 	}
 	private function get_content()
 	{

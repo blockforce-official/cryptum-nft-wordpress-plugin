@@ -8,14 +8,16 @@ async function loadNftsFromWallet(walletAddress, tokenAddress, protocol) {
   if (!walletAddress || !tokenAddress || !protocol) {
     return [];
   }
-  var data = {
-    action: 'load_nft_info',
-    nftInfo: { walletAddress, tokenAddress, protocol }
-  };
   return new Promise((resolve, reject) => {
+    const data = {
+      action: wpScriptObject.action,
+      security: wpScriptObject.security,
+      nftInfo: { walletAddress, tokenAddress, protocol }
+    };
+    console.log(data);
     jQuery.ajax({
       method: 'POST',
-      url: '/wp-admin/admin-ajax.php',
+      url: wpScriptObject.ajaxUrl,
       data,
       success: (data) => {
         console.log('Got this from the server: ', data);
