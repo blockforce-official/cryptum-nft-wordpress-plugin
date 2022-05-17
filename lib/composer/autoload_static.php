@@ -45,6 +45,7 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
         'Cryptum\\NFT\\Admin\\AdminSettings' => __DIR__ . '/../..' . '/src/Admin/AdminSettings.php',
         'Cryptum\\NFT\\Admin\\OrderSettings' => __DIR__ . '/../..' . '/src/Admin/OrderSettings.php',
         'Cryptum\\NFT\\Admin\\ProductEditPage' => __DIR__ . '/../..' . '/src/Admin/ProductEditPage.php',
+        'Cryptum\\NFT\\Admin\\TokenAddressesTable' => __DIR__ . '/../..' . '/src/Admin/TokenAddressesTable.php',
         'Cryptum\\NFT\\CheckoutPage' => __DIR__ . '/../..' . '/src/CheckoutPage.php',
         'Cryptum\\NFT\\NFTViewPage' => __DIR__ . '/../..' . '/src/NFTViewPage.php',
         'Cryptum\\NFT\\PluginInit' => __DIR__ . '/../..' . '/src/PluginInit.php',

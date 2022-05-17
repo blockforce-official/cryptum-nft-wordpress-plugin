@@ -48,7 +48,7 @@ class NFTViewPage
 
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
-				wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery', 'utils'], true, true);
+				wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery'], true, true);
 				$script_data = array(
 					'ajaxUrl' => admin_url('admin-ajax.php'),
 					'action' => 'load_nft_info',
@@ -68,18 +68,21 @@ class NFTViewPage
 				$walletAddress = $userWallet->address;
 			}
 			if (!empty($walletAddress)) {
-				$tokenAddresses = $options['tokenAddresses'];
-				// Log::info($options);
+				$tokenAddresses = str_replace("\n", ",", $options['tokenAddresses']);
+
 				wc_enqueue_js(<<<JS
 					jQuery(function() {
-						const protocol = 'CELO';
 						const walletAddress = "{$walletAddress}";
+						jQuery('#user-wallet-address-title').css('display', 'block');
+						jQuery('#user-wallet-address').text(walletAddress);
 						const tokenAddresses = "{$tokenAddresses}".split(',');
 						console.log(walletAddress, tokenAddresses);
 						for (const tokenAddress of tokenAddresses) {
-							loadNftsFromWallet(walletAddress, tokenAddress, protocol)
-								.then(data => formatNftData(tokenAddress, "{$options['environment']}", protocol, data))
-								.then(nfts => showNftColumns(nfts));
+							const [protocol, address, tokenId] = tokenAddress.split('#');
+							console.log([protocol, address, tokenId]);
+							loadNftsFromWallet(walletAddress, protocol, address, tokenId)
+								.then(data => formatNftData(tokenAddress, "{$options['environment']}", protocol, data), console.error)
+								.then(nfts => showNftColumns(nfts), console.error);
 						}
 					});
 				JS);
@@ -91,8 +94,15 @@ class NFTViewPage
 	{
 		check_ajax_referer('load_nft_info', 'security');
 		$nftInfo = $_POST['nftInfo'];
+		$tokenAddress = $nftInfo['tokenAddress'];
+		$walletAddress = $nftInfo['walletAddress'];
+		$protocol = $nftInfo['protocol'];
+		$tokenId = $nftInfo['tokenId'];
+		if (isset($tokenId) && !is_array($tokenId)) {
+			$tokenId = [$tokenId];
+		}
 
-		$info = Api::get_nft_info_from_wallet($nftInfo['walletAddress'], $nftInfo['tokenAddress'], $nftInfo['protocol']);
+		$info = Api::get_nft_info_from_wallet($walletAddress, $tokenAddress, $protocol, $tokenId);
 		if (isset($info['error'])) {
 			Log::error($info);
 			wp_send_json_error($info, 400);
@@ -139,8 +149,11 @@ class NFTViewPage
 	private function get_content()
 	{
 		$notFoundText = __('No NFTs found yet.', 'cryptum-nft-domain');
+		$userWalletText = __('User wallet address', 'cryptum-nft-domain');
 		return <<<HTML
-			<p id="user-wallet-address"></p>
+			<p id="user-wallet-address-title" style="display:none;">
+				<strong>{$userWalletText}:</strong> <span id="user-wallet-address"></span>
+			</p>
 			<!-- wp:columns -->
 			<div id="nft-columns" class="wp-block-columns nft-columns">{$notFoundText}</div>
 			<!-- /wp:columns -->

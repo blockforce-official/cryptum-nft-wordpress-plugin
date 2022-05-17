@@ -80,6 +80,29 @@ class AdminSettings
 		);
 	}
 
+	private function show_token_addresses_table()
+	{
+		$options = get_option('cryptum_nft');
+		$tokenAddresses = explode(",", $options['tokenAddresses']);
+		$tokenAddressesTable = new TokenAddressesTable();
+		$tokenItems = [];
+		foreach ($tokenAddresses as $i => $tokenAddress) {
+			$tokenItems[$i] = array('ID' => $i);
+			$tokenWithId = explode("#", $tokenAddress);
+			if (sizeof($tokenWithId) == 2) {
+				$tokenItems[$i]['tokenId'] = $tokenWithId[1];
+			}
+			$tokenItems[$i]['tokenAddress'] = $tokenWithId[0];
+		}
+		$tokenAddressesTable->add_items($tokenItems);
+		$tokenAddressesTable->prepare_items();
+?>
+		<div id="token-addresses-table" class="wrap">
+			<?php $tokenAddressesTable->display() ?>
+		</div>
+	<?php
+	}
+
 	public function cryptum_nft_settings()
 	{ ?>
 		<link rel="stylesheet" href="<?php echo CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css' ?>">
@@ -142,20 +165,24 @@ class AdminSettings
 							<tr valign="top">
 								<th scope="row"><label for="enable-nft-view"><?php _e('Enable NFT View page', 'cryptum-nft-domain'); ?></label></th>
 								<td>
-									<input
-										id="enable-nft-view"
-										type="checkbox"
-										name="cryptum_nft[isNFTViewEnabled]"
-										value="yes"
-										<?php echo $options['isNFTViewEnabled'] == 'yes' ? 'checked="checked"' : '' ?>
-									/>
+									<input id="enable-nft-view" type="checkbox" name="cryptum_nft[isNFTViewEnabled]" value="yes" <?php echo $options['isNFTViewEnabled'] == 'yes' ? 'checked="checked"' : '' ?> />
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="token-addresses"><?php _e('Token Addresses Filter', 'cryptum-nft-domain'); ?></label></th>
 								<td>
-									<textarea id="token-addresses" type="text" name="cryptum_nft[tokenAddresses]" style="width: 70%;"><?php echo $options['tokenAddresses']; ?></textarea>
-									<p><?php echo __('Enter token addresses', 'cryptum-nft-domain'); ?></p>
+									<textarea id="token-addresses" type="text" name="cryptum_nft[tokenAddresses]" style="width: 100%; height:100px;"><?php echo $options['tokenAddresses']; ?></textarea>
+									<p>
+										<?php echo __('Enter token addresses following the pattern: ', 'cryptum-nft-domain'); ?>
+										<strong>{PROTOCOL}#{ADDRESS}#{ID}</strong> separated by newline.
+										<br>
+										{PROTOCOL} - should be CELO, ETHEREUM, BSC<br>
+										{ADDRESS} - token address<br>
+										{ID} - token id if ERC1155 contract used<br>
+										Ex.:<br> 
+										CELO#0x8C7BD13aa2faE6994d3aE4cb40521A79E54A1A66<br>
+										BSC#0x3AF85f2F10ba6832E9cb14AEC35AD65C2541C298#137
+									</p>
 								</td>
 							</tr>
 						</table>

@@ -21,7 +21,7 @@ const ERC1155_BALANCEOF_ABI = [array(
 	'type' => 'function',
 )];
 const ERC721_TOKENSOFOWNER_ABI = [array(
-	'inputs' => [array('name' => 'owner', 'type' => 'address'), array('name' => 'startIndex', 'type' => 'uint256')],
+	'inputs' => [array('name' => 'owner', 'type' => 'address'), array('name' => 'startIndex', 'type' => 'uint256'), array('name' => 'endIndex', 'type' => 'uint256')],
 	'name' => 'tokensOfOwner',
 	'outputs' => [array(
 		"components" => [
@@ -42,13 +42,30 @@ const ERC721_TOKENSOFOWNER_ABI = [array(
 	'type' => 'function',
 )];
 const ERC1155_TOKENSOFOWNER_ABI = [array(
-	'inputs' => [array('name' => 'account', 'type' => 'address'), array('name' => 'id', 'type' => 'uint256')],
+	'inputs' => [array('name' => 'account', 'type' => 'address'), array('name' => 'ids', 'type' => 'uint256[]')],
 	'name' => 'tokensOfOwner',
-	'outputs' => [array('name' => '', 'type' => 'uint256')],
+	'outputs' => [array(
+		"components" => [
+			array(
+				"name" => "id",
+				"type" => "uint256"
+			),
+			array(
+				"name" => "amount",
+				"type" => "uint256"
+			),
+			array(
+				"name" => "uri",
+				"type" => "string"
+			)
+		],
+		"internalType" => "struct TokenERC1155.Token[]",
+		"name" => "",
+		"type" => "tuple[]"
+	)],
 	'stateMutability' => 'view',
 	'type' => 'function',
 )];
-
 
 class Api
 {
@@ -85,28 +102,13 @@ class Api
 		return $responseBody;
 	}
 
-	static function get_nft_info_from_wallet($walletAddress, $tokenAddress, $protocol, $id = 0, $isErc721 = true)
+	static function get_nft_info_from_wallet($walletAddress, $tokenAddress, $protocol, $ids = [])
 	{
 		$options = get_option('cryptum_nft');
 		$url = Api::get_cryptum_url($options['environment']);
-		$balanceResponse = Api::request("{$url}/tx/call-method?protocol={$protocol}", array(
-			'method' => 'POST',
-			'headers' => array(
-				'x-api-key' => $options['apikey'],
-				'Content-type' => 'application/json'
-			),
-			'data_format' => 'body',
-			'timeout' => 60,
-			'body' => json_encode([
-				'from' => $walletAddress,
-				'contractAddress' => $tokenAddress,
-				'method' => 'balanceOf',
-				'params' => $isErc721 ? [$walletAddress] : [$walletAddress, $id],
-				'contractAbi' => $isErc721 ? ERC721_BALANCEOF_ABI : ERC1155_BALANCEOF_ABI,
-			]),
-		));
-		if (isset($balanceResponse['error'])) {
-			return $balanceResponse;
+		$isERC1155 = false;
+		if (isset($ids) && is_array($ids) && sizeof($ids) > 0) {
+			$isERC1155 = true;
 		}
 
 		$tokensResponse = Api::request("{$url}/tx/call-method?protocol={$protocol}", array(
@@ -121,8 +123,8 @@ class Api
 				'from' => $walletAddress,
 				'contractAddress' => $tokenAddress,
 				'method' => 'tokensOfOwner',
-				'params' => $isErc721 ? [$walletAddress, 0] : [$walletAddress, $id],
-				'contractAbi' => $isErc721 ? ERC721_TOKENSOFOWNER_ABI : ERC1155_TOKENSOFOWNER_ABI,
+				'params' => !$isERC1155 ? [$walletAddress, 0, 100] : [$walletAddress, $ids],
+				'contractAbi' => !$isERC1155 ? ERC721_TOKENSOFOWNER_ABI : ERC1155_TOKENSOFOWNER_ABI,
 			]),
 		));
 		if (isset($tokensResponse['error'])) {

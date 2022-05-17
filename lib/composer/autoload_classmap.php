@@ -10,6 +10,7 @@ return array(
     'Cryptum\\NFT\\Admin\\AdminSettings' => $baseDir . '/src/Admin/AdminSettings.php',
     'Cryptum\\NFT\\Admin\\OrderSettings' => $baseDir . '/src/Admin/OrderSettings.php',
     'Cryptum\\NFT\\Admin\\ProductEditPage' => $baseDir . '/src/Admin/ProductEditPage.php',
+    'Cryptum\\NFT\\Admin\\TokenAddressesTable' => $baseDir . '/src/Admin/TokenAddressesTable.php',
     'Cryptum\\NFT\\CheckoutPage' => $baseDir . '/src/CheckoutPage.php',
     'Cryptum\\NFT\\NFTViewPage' => $baseDir . '/src/NFTViewPage.php',
     'Cryptum\\NFT\\PluginInit' => $baseDir . '/src/PluginInit.php',

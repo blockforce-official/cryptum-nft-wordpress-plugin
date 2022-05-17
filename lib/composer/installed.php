@@ -31,12 +31,14 @@
             'dev_requirement' => false,
         ),
         'symfony/polyfill-mbstring' => array(
-            'pretty_version' => 'v1.25.0',
-            'version' => '1.25.0.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
-            'aliases' => array(),
-            'reference' => '0abb51d2f102e00a4eefcf46ba7fec406d245825',
+            'aliases' => array(
+                0 => '1.26.x-dev',
+            ),
+            'reference' => '240259a291e16e306dbf46dfe139d50c7fcb2d34',
             'dev_requirement' => false,
         ),
     ),

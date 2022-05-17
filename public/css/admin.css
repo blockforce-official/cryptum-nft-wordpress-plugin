@@ -141,3 +141,14 @@ p.cryptum_nft_title {
   font-weight: bold;
   font-size: smaller;
 }
+
+#token-addresses-table {
+  max-width: 50em;
+}
+.wp-list-table .column-tokenType {
+  padding-left: 10px;
+  width: 15%;
+}
+.wp-list-table .column-tokenAddress {
+  width: 50%;
+}
