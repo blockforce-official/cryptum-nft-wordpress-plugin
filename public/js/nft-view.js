@@ -38,21 +38,33 @@ async function loadNftsFromWallet(walletAddress, protocol, tokenAddress, tokenId
 async function formatNftData(tokenAddress, environment, protocol, data) {
   const nfts = [];
   for (let i = 0; i < data.length; ++i) {
-    const [id, uri] = data[i];
+    let id, uri, amount;
+    console.log(data[i]);
+    if (data[i] && data[i].length === 3) {
+      ([id, amount, uri] = data[i]);
+      if (amount && Number(amount) === 0) {
+        continue;
+      }
+    } else {
+      ([id, uri] = data[i]);
+    }
+
     const json = await new Promise((resolve, reject) => {
       jQuery.ajax({
         url: formatIpfsUri(uri),
         method: 'GET',
         success: (data) => { resolve(data); },
-        error: (xhr, status, error) => { reject(error); },
+        error: (xhr, status, error) => { console.error(error); resolve({}); },
       });
     });
+    console.log('push')
     nfts.push({
       tokenId: id,
-      img: formatIpfsUri(json.image),
+      img: json.image ? formatIpfsUri(json.image) : '',
       title: json.name,
       description: json.description,
       address: tokenAddress,
+      amount,
       url: getTokenExplorerUrl(id, tokenAddress, environment, protocol)
     });
   }
@@ -66,25 +78,18 @@ function showNftColumns(nfts = []) {
   const $ = jQuery;
   const nftColumnsDiv = $('#nft-columns');
 
-  if (nfts.length === 0) {
-    nftColumnsDiv.html('No NFTs found yet.');
-    return;
-  }
-  console.log(nfts);
-  nftColumnsDiv.html('');
-
   for (let i = 0; i < nfts.length; ++i) {
     let title = nfts[i]['title'];
     let address = nfts[i]['address'];
     let description = nfts[i]['description'];
     const url = nfts[i]['url'];
-    if (title.length > 40) {
+    if (title && title.length > 40) {
       title = title.slice(0, 40) + '...';
     }
-    if (address.length > 30) {
+    if (address && address.length > 30) {
       address = address.slice(0, 30) + '...';
     }
-    if (description.length > 100) {
+    if (description && description.length > 100) {
       description = description.slice(0, 100) + '...';
     }
     const nftColumn = `
@@ -98,6 +103,7 @@ function showNftColumns(nfts = []) {
         <strong class="title">${title}</strong><br>
         <p class="text">
           <span><strong>ID:</strong> ${nfts[i]['tokenId']}</span><br>
+          ${nfts[i]['amount'] ? `<span><strong>Amount:</strong> ${nfts[i]['amount']}</span><br>` : ''}
           <span><strong>Address: </strong><a href="${url}" target="_blank">${address} <i class="fa fa-external-link"></i></a></span>
           <span class="description">${description}</span>
         </p>

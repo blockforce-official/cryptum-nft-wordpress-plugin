@@ -77,12 +77,14 @@ class NFTViewPage
 						jQuery('#user-wallet-address').text(walletAddress);
 						const tokenAddresses = "{$tokenAddresses}".split(',');
 						console.log(walletAddress, tokenAddresses);
+						
+						jQuery('#nft-columns').html('');
 						for (const tokenAddress of tokenAddresses) {
 							const [protocol, address, tokenId] = tokenAddress.split('#');
 							console.log([protocol, address, tokenId]);
 							loadNftsFromWallet(walletAddress, protocol, address, tokenId)
-								.then(data => formatNftData(tokenAddress, "{$options['environment']}", protocol, data), console.error)
-								.then(nfts => showNftColumns(nfts), console.error);
+								.then(data => formatNftData(address, "{$options['environment']}", protocol, data))
+								.then(nfts => showNftColumns(nfts));
 						}
 					});
 				JS);
@@ -98,9 +100,6 @@ class NFTViewPage
 		$walletAddress = $nftInfo['walletAddress'];
 		$protocol = $nftInfo['protocol'];
 		$tokenId = $nftInfo['tokenId'];
-		if (isset($tokenId) && !is_array($tokenId)) {
-			$tokenId = [$tokenId];
-		}
 
 		$info = Api::get_nft_info_from_wallet($walletAddress, $tokenAddress, $protocol, $tokenId);
 		if (isset($info['error'])) {

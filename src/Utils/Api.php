@@ -2,6 +2,8 @@
 
 namespace Cryptum\NFT\Utils;
 
+use function PHPSTORM_META\type;
+
 // @codeCoverageIgnoreStart
 defined('ABSPATH') or exit;
 // @codeCoverageIgnoreEnd
@@ -102,15 +104,18 @@ class Api
 		return $responseBody;
 	}
 
-	static function get_nft_info_from_wallet($walletAddress, $tokenAddress, $protocol, $ids = [])
+	/**
+	 * @param string $walletAddress
+	 * @param string $tokenAddress
+	 * @param string $protocol
+	 * @param string $id
+	 */
+	static function get_nft_info_from_wallet($walletAddress, $tokenAddress, $protocol, $id)
 	{
 		$options = get_option('cryptum_nft');
 		$url = Api::get_cryptum_url($options['environment']);
-		$isERC1155 = false;
-		if (isset($ids) && is_array($ids) && sizeof($ids) > 0) {
-			$isERC1155 = true;
-		}
 
+		$isERC1155 = !is_null($id) && $id != '';
 		$tokensResponse = Api::request("{$url}/tx/call-method?protocol={$protocol}", array(
 			'method' => 'POST',
 			'headers' => array(
@@ -123,12 +128,22 @@ class Api
 				'from' => $walletAddress,
 				'contractAddress' => $tokenAddress,
 				'method' => 'tokensOfOwner',
-				'params' => !$isERC1155 ? [$walletAddress, 0, 100] : [$walletAddress, $ids],
+				'params' => !$isERC1155 ? [$walletAddress, 0, 100] : [$walletAddress, [$id]],
 				'contractAbi' => !$isERC1155 ? ERC721_TOKENSOFOWNER_ABI : ERC1155_TOKENSOFOWNER_ABI,
 			]),
 		));
 		if (isset($tokensResponse['error'])) {
-			return $tokensResponse;
+			Log::info([
+				'request' => array(
+					'from' => $walletAddress,
+					'contractAddress' => $tokenAddress,
+					'method' => 'tokensOfOwner',
+					'params' => !$isERC1155 ? [$walletAddress, 0, 100] : [$walletAddress, [$id]],
+					'isERC1155' => $isERC1155,
+					'id' => $id
+				),
+				'response' => $tokensResponse
+			]);
 		}
 		return $tokensResponse;
 	}
