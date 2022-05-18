@@ -143,3 +143,22 @@ function getTokenExplorerUrl(tokenId, tokenAddress, environment, protocol) {
       return ``;
   }
 }
+
+jQuery(function () {
+  const walletAddress = wpScriptObject.walletAddress;
+  const tokenAddresses = wpScriptObject.tokenAddresses;
+  const environment = wpScriptObject.environment;
+
+  jQuery('#user-wallet-address-title').css('display', 'block');
+  jQuery('#user-wallet-address').text(walletAddress);
+  console.log(wpScriptObject);
+
+  jQuery('#nft-columns').html('');
+  for (const tokenAddress of tokenAddresses) {
+    const [protocol, address, tokenId] = tokenAddress.split('#');
+    console.log([protocol, address, tokenId]);
+    loadNftsFromWallet(walletAddress, protocol, address, tokenId)
+      .then(data => formatNftData(address, environment, protocol, data))
+      .then(nfts => showNftColumns(nfts));
+  }
+});

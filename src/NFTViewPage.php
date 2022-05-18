@@ -48,13 +48,6 @@ class NFTViewPage
 
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
-				wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery'], true, true);
-				$script_data = array(
-					'ajaxUrl' => admin_url('admin-ajax.php'),
-					'action' => 'load_nft_info',
-					'security' => wp_create_nonce('load_nft_info'),
-				);
-				wp_localize_script('nft-view', 'wpScriptObject', $script_data);
 			});
 
 			// $this->init_db();
@@ -68,26 +61,20 @@ class NFTViewPage
 				$walletAddress = $userWallet->address;
 			}
 			if (!empty($walletAddress)) {
-				$tokenAddresses = str_replace("\n", ",", $options['tokenAddresses']);
+				$tokenAddresses = preg_split("/[\s,]+/", $options['tokenAddresses']);
 
-				wc_enqueue_js(<<<JS
-					jQuery(function() {
-						const walletAddress = "{$walletAddress}";
-						jQuery('#user-wallet-address-title').css('display', 'block');
-						jQuery('#user-wallet-address').text(walletAddress);
-						const tokenAddresses = "{$tokenAddresses}".split(',');
-						console.log(walletAddress, tokenAddresses);
-						
-						jQuery('#nft-columns').html('');
-						for (const tokenAddress of tokenAddresses) {
-							const [protocol, address, tokenId] = tokenAddress.split('#');
-							console.log([protocol, address, tokenId]);
-							loadNftsFromWallet(walletAddress, protocol, address, tokenId)
-								.then(data => formatNftData(address, "{$options['environment']}", protocol, data))
-								.then(nfts => showNftColumns(nfts));
-						}
-					});
-				JS);
+				add_action('wp_enqueue_scripts', function () use ($walletAddress, $tokenAddresses, $options) {
+					// Log::info($tokenAddresses);
+					wp_enqueue_script('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/nft-view.js', ['jquery'], true, true);
+					wp_localize_script('nft-view', 'wpScriptObject', array(
+						'walletAddress' => $walletAddress,
+						'tokenAddresses' => $tokenAddresses,
+						'environment' => $options['environment'],
+						'ajaxUrl' => admin_url('admin-ajax.php'),
+						'action' => 'load_nft_info',
+						'security' => wp_create_nonce('load_nft_info'),
+					));
+				});
 			}
 		}
 	}
