@@ -4,6 +4,7 @@ namespace Cryptum\NFT\Admin;
 
 use Cryptum\NFT\Utils\Api;
 use Cryptum\NFT\Utils\Log;
+use Cryptum\NFT\Utils\Misc;
 
 class ProductEditPage
 {
@@ -17,20 +18,26 @@ class ProductEditPage
 	}
 	private function __construct()
 	{
-		wp_enqueue_style('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
-		add_action('admin_notices', function () {
-			$title = get_transient('product_edit_page_error.title');
-			$message = get_transient('product_edit_page_error.message');
-			if (!empty($title) or !empty($message)) { ?>
-				<div class="error notice notice-error">
-					<p class="cryptum_nft_title"><?php echo $title ?></p>
-					<p><?php echo $message ?></p>
-				</div>
-		<?php
-				delete_transient('product_edit_page_error.title');
-				delete_transient('product_edit_page_error.message');
-			}
-		});
+		$postType = Misc::get_post_type_from_querystring($_SERVER['QUERY_STRING']);
+		if (is_admin() && strcmp($postType, 'product') == 0) {
+			Log::info($postType);
+			add_action('wp_enqueue_scripts', function () {
+				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
+			});
+			add_action('admin_notices', function () {
+				$title = get_transient('product_edit_page_error.title');
+				$message = get_transient('product_edit_page_error.message');
+				if (!empty($title) or !empty($message)) { ?>
+					<div class="error notice notice-error">
+						<p class="cryptum_nft_title"><?php echo $title ?></p>
+						<p><?php echo $message ?></p>
+					</div>
+			<?php
+					delete_transient('product_edit_page_error.title');
+					delete_transient('product_edit_page_error.message');
+				}
+			});
+		}
 	}
 
 	function set_admin_notices_error($title = '', $message = '')

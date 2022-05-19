@@ -44,7 +44,6 @@ class NFTViewPage
 
 		$pageName = sanitize_title($this->pageName);
 		if ($_SERVER['REQUEST_URI'] == "/{$pageName}/") {
-			Log::info('Page "Your NFTs"');
 
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');

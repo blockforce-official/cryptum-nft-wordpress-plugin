@@ -22,6 +22,20 @@ const ERC1155_BALANCEOF_ABI = [array(
 	'stateMutability' => 'view',
 	'type' => 'function',
 )];
+const ERC721_URI_ABI = [array(
+	'inputs' => [array('name' => 'id', 'type' => 'uint256')],
+	'name' => 'tokenURI',
+	'outputs' => [array('name' => '', 'type' => 'string')],
+	'stateMutability' => 'view',
+	'type' => 'function',
+)];
+const ERC1155_URI_ABI = [array(
+	'inputs' => [array('name' => 'id', 'type' => 'uint256')],
+	'name' => 'uri',
+	'outputs' => [array('name' => '', 'type' => 'string')],
+	'stateMutability' => 'view',
+	'type' => 'function',
+)];
 const ERC721_TOKENSOFOWNER_ABI = [array(
 	'inputs' => [array('name' => 'owner', 'type' => 'address'), array('name' => 'startIndex', 'type' => 'uint256'), array('name' => 'endIndex', 'type' => 'uint256')],
 	'name' => 'tokensOfOwner',
@@ -77,7 +91,8 @@ class Api
 	}
 	static function get_cryptum_store_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-dev.cryptum.io/plugins';
+		return 'https://6bd1-2804-14d-4482-282-f125-91ed-e324-8a2.ngrok.io/plugins';
+		// return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-dev.cryptum.io/plugins';
 	}
 
 	static function request($url, $args = array())
@@ -134,6 +149,8 @@ class Api
 		));
 		if (isset($tokensResponse['error'])) {
 			Log::info([
+				'url' => "{$url}/tx/call-method?protocol={$protocol}",
+				'method' => 'POST',
 				'request' => array(
 					'from' => $walletAddress,
 					'contractAddress' => $tokenAddress,
@@ -146,5 +163,70 @@ class Api
 			]);
 		}
 		return $tokensResponse;
+	}
+	static function get_nft_uri($tokenAddress, $protocol, $id)
+	{
+		$options = get_option('cryptum_nft');
+		$url = Api::get_cryptum_url($options['environment']);
+
+		$isERC1155 = !is_null($id) && $id != '';
+		$tokensResponse = Api::request("{$url}/tx/call-method?protocol={$protocol}", array(
+			'method' => 'POST',
+			'headers' => array(
+				'x-api-key' => $options['apikey'],
+				'Content-type' => 'application/json'
+			),
+			'data_format' => 'body',
+			'timeout' => 60,
+			'body' => json_encode([
+				'contractAddress' => $tokenAddress,
+				'method' => !$isERC1155 ? 'tokenURI' : 'uri',
+				'params' => !$isERC1155 ? [$id] : [$id],
+				'contractAbi' => !$isERC1155 ? ERC721_URI_ABI : ERC1155_URI_ABI,
+			]),
+		));
+		if (isset($tokensResponse['error'])) {
+			Log::info([
+				'url' => "{$url}/tx/call-method?protocol={$protocol}",
+				'method' => 'POST',
+				'request' => array(
+					'contractAddress' => $tokenAddress,
+					'method' => !$isERC1155 ? 'tokenURI' : 'uri',
+					'params' => !$isERC1155 ? [$id] : [$id],
+					'contractAbi' => !$isERC1155 ? ERC721_URI_ABI : ERC1155_URI_ABI,
+				),
+				'response' => $tokensResponse
+			]);
+		}
+		if (isset($tokensResponse['result'])) {
+			return Blockchain::get_formatted_uri($tokensResponse['result']);
+		}
+		return '';
+	}
+
+	static function get_product_nft_info($productId)
+	{
+		$options = get_option('cryptum_nft');
+		$url = Api::get_cryptum_store_url($options['environment']);
+
+		$res = Api::request("{$url}/products/{$productId}", array(
+			'method' => 'GET',
+			'headers' => array(
+				'x-api-key' => $options['apikey'],
+				'Content-type' => 'application/json'
+			),
+			'timeout' => 60
+		));
+		if (isset($res['error'])) {
+			Log::info([
+				'url' => "{$url}/products/{$productId}",
+				'method' => 'GET',
+				'request' => array(
+					'productId' => $productId,
+				),
+				'response' => $res
+			]);
+		}
+		return $res;
 	}
 }

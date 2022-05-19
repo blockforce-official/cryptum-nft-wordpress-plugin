@@ -25,39 +25,41 @@ class AdminSettings
 
 	public function load()
 	{
-		register_setting('cryptum_nft_settings', 'cryptum_nft', function ($input) {
-			$options = get_option('cryptum_nft');
-			$storeId = $input['storeId'];
-			$apikey = $input['apikey'];
+		if (is_admin()) {
+			register_setting('cryptum_nft_settings', 'cryptum_nft', function ($input) {
+				$options = get_option('cryptum_nft');
+				$storeId = $input['storeId'];
+				$apikey = $input['apikey'];
 
-			$url = Api::get_cryptum_store_url($input['environment']);
-			$response = Api::request($url . '/stores/' . $storeId, array(
-				'headers' => array(
-					'x-api-key' => $apikey,
-					'Content-type' => 'application/json'
-				),
-				'data_format' => 'body',
-				'method' => 'GET',
-				'timeout' => 60
-			));
-			if (isset($response['error'])) {
-				Log::error($response);
+				$url = Api::get_cryptum_store_url($input['environment']);
+				$response = Api::request($url . '/stores/' . $storeId, array(
+					'headers' => array(
+						'x-api-key' => $apikey,
+						'Content-type' => 'application/json'
+					),
+					'data_format' => 'body',
+					'method' => 'GET',
+					'timeout' => 60
+				));
+				if (isset($response['error'])) {
+					Log::error($response);
+					add_settings_error(
+						'cryptum_nft_settings',
+						'error',
+						__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
+						'error'
+					);
+					return $options;
+				}
 				add_settings_error(
 					'cryptum_nft_settings',
-					'error',
-					__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
-					'error'
+					'success',
+					__('Changes updated successfully', 'cryptum-nft-domain'),
+					'success'
 				);
-				return $options;
-			}
-			add_settings_error(
-				'cryptum_nft_settings',
-				'success',
-				__('Changes updated successfully', 'cryptum-nft-domain'),
-				'success'
-			);
-			return $input;
-		});
+				return $input;
+			});
+		}
 	}
 
 	public function show_plugin_action_links($links)

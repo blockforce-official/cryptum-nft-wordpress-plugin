@@ -5,16 +5,10 @@ namespace Cryptum\NFT\Utils;
 defined('ABSPATH') or exit;
 // @codeCoverageIgnoreEnd
 
+define('CRYPTUM_IPFS_GATEWAY', 'https://blockforce.mypinata.cloud/ipfs/');
+
 class Blockchain
 {
-	static function get_nft_product_info($product_id)
-	{
-		$options = get_option('cryptum_nft');
-		$url = Api::get_cryptum_store_url($options['environment']);
-		$res = Api::request($url . '/products/' . $product_id, array('method' => 'GET'));
-		return $res;
-	}
-
 	static function get_explorer_url($protocol, $tokenAddress, $tokenId)
 	{
 		$options = get_option("cryptum_nft");
@@ -56,5 +50,12 @@ class Blockchain
 			default:
 				return "";
 		}
+	}
+	static function get_formatted_uri($uri)
+	{
+		if (str_starts_with($uri, 'ipfs://')) {
+			return str_replace('ipfs://', CRYPTUM_IPFS_GATEWAY, $uri);
+		}
+		return $uri;
 	}
 }

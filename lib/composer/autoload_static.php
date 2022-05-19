@@ -55,6 +55,7 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
         'Cryptum\\NFT\\Utils\\Blockchain' => __DIR__ . '/../..' . '/src/Utils/Blockchain.php',
         'Cryptum\\NFT\\Utils\\Db' => __DIR__ . '/../..' . '/src/Utils/Db.php',
         'Cryptum\\NFT\\Utils\\Log' => __DIR__ . '/../..' . '/src/Utils/Log.php',
+        'Cryptum\\NFT\\Utils\\Misc' => __DIR__ . '/../..' . '/src/Utils/Misc.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'kornrunner\\Keccak' => __DIR__ . '/..' . '/kornrunner/keccak/src/Keccak.php',
     );

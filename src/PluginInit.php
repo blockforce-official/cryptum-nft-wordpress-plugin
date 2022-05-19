@@ -31,6 +31,7 @@ class PluginInit
 			wp_enqueue_style('jquery-ui', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
 			wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css');
 			wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', ['jquery'], true);
+			wp_enqueue_script('myutils', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/utils.js', [], true);
 		});
 
 		add_filter('plugin_action_links_' . plugin_basename(__FILE__), [AdminSettings::instance(), 'show_plugin_action_links']);
@@ -41,7 +42,7 @@ class PluginInit
 		add_action('woocommerce_product_data_panels', [ProductEditPage::instance(), 'show_product_data_tab_panel']);
 		add_action('woocommerce_update_product', [ProductEditPage::instance(), 'on_update_product']);
 		add_action('woocommerce_process_product_meta', [ProductEditPage::instance(), 'on_process_product_metadata']);
-		// add_action('wp_ajax_process_product_metadata', [ProductEditPage::instance(), 'process_product_metadata']);
+		add_action('wp_ajax_process_product_metadata', [ProductEditPage::instance(), 'process_product_metadata']);
 
 		add_action('woocommerce_product_thumbnails', [ProductInfoPage::instance(), 'show_product_nft_blockchain_info'], 20);
 

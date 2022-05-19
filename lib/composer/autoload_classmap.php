@@ -20,6 +20,7 @@ return array(
     'Cryptum\\NFT\\Utils\\Blockchain' => $baseDir . '/src/Utils/Blockchain.php',
     'Cryptum\\NFT\\Utils\\Db' => $baseDir . '/src/Utils/Db.php',
     'Cryptum\\NFT\\Utils\\Log' => $baseDir . '/src/Utils/Log.php',
+    'Cryptum\\NFT\\Utils\\Misc' => $baseDir . '/src/Utils/Misc.php',
     'Symfony\\Polyfill\\Mbstring\\Mbstring' => $vendorDir . '/symfony/polyfill-mbstring/Mbstring.php',
     'kornrunner\\Keccak' => $vendorDir . '/kornrunner/keccak/src/Keccak.php',
 );
