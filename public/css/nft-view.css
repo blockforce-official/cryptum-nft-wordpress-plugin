@@ -1,0 +1,23 @@
+
+.nft-columns {
+  /* border: 1px red solid; */
+  flex-wrap: wrap !important;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+}
+.nft-column {
+  /* border: 1px gray solid; */
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  padding: 10px;
+  max-width: 20em;
+  margin-right: 20px;
+  margin-bottom: 25px;
+}
+.nft-column .text {
+  font-size: 14px;
+}
+.nft-column .title {
+  font-size: 15px;
+}

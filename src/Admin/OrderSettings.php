@@ -5,6 +5,7 @@ namespace Cryptum\NFT\Admin;
 use Cryptum\NFT\Utils\Api;
 use Cryptum\NFT\Utils\Blockchain;
 use Cryptum\NFT\Utils\Log;
+use Cryptum\NFT\Utils\Misc;
 
 class OrderSettings
 {
@@ -18,20 +19,26 @@ class OrderSettings
 	}
 	private function __construct()
 	{
-		wp_enqueue_style('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
-		add_action('admin_notices', function () {
-			$title = get_transient('order_settings_error.title');
-			$message = get_transient('order_settings_error.message');
-			if (!empty($title) or !empty($message)) { ?>
-				<div class="error notice notice-error">
-					<p class="cryptum_nft_title"><?php echo $title ?></p>
-					<p><?php echo $message ?></p>
-				</div>
-				<?php
-				delete_transient('order_settings_error.title');
-				delete_transient('order_settings_error.message');
-			}
-		});
+		$postType = Misc::get_post_type_from_querystring($_SERVER['QUERY_STRING']);
+		if (is_admin() && strcmp($postType, 'shop_order') == 0) {
+			Log::info($postType);
+			add_action('wp_enqueue_scripts', function () {
+				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
+			});
+			add_action('admin_notices', function () {
+				$title = get_transient('order_settings_error.title');
+				$message = get_transient('order_settings_error.message');
+				if (!empty($title) or !empty($message)) { ?>
+					<div class="error notice notice-error">
+						<p class="cryptum_nft_title"><?php echo $title ?></p>
+						<p><?php echo $message ?></p>
+					</div>
+					<?php
+					delete_transient('order_settings_error.title');
+					delete_transient('order_settings_error.message');
+				}
+			});
+		}
 	}
 
 	function set_admin_notices_error($title = '', $message = '')
@@ -70,7 +77,7 @@ class OrderSettings
 			}
 
 			$emailAddress = !empty($order->get_billing_email()) ? $order->get_billing_email() : $user->get('email');
-			$url = Api::get_cryptum_url($options['environment']);
+			$url = Api::get_cryptum_store_url($options['environment']);
 			$response = Api::request($url . '/nft/checkout', [
 				'body' => json_encode([
 					'store' => $storeId,
@@ -94,7 +101,7 @@ class OrderSettings
 			]);
 			if (isset($response['error'])) {
 				$message = $response['message'];
-				$this->set_admin_notices_error(__("Error in configuring Cryptum NFT Plugin"), __($message));
+				$this->set_admin_notices_error(__("Error in configuring Cryptum NFT Plugin", 'cryptum-nft-domain'), __($message, 'cryptum-nft-domain'));
 				return;
 			}
 		}
@@ -110,7 +117,7 @@ class OrderSettings
 			if (!empty($order->get_meta('user_wallet_address'))) {
 				add_meta_box(
 					'cryptum_nft_transactions_info',
-					__('Cryptum NFT Transactions Info'),
+					__('Cryptum NFT Transactions Info', 'cryptum-nft-domain'),
 					[$this, 'show_transactions_info'],
 					'shop_order',
 					'normal'
@@ -128,11 +135,11 @@ class OrderSettings
 
 			$message = $order->get_meta('_cryptum_nft_order_transactions_message');
 			if (!empty($message)) {
-				echo '<p style="font-size:12px;">' . __($message)  . '</p>';
+				echo '<p style="font-size:12px;">' . __($message, 'cryptum-nft-domain')  . '</p>';
 			}
 			$transactions = json_decode($order->get_meta('_cryptum_nft_order_transactions'));
 			if (isset($transactions) and count($transactions) > 0) {
-				echo '<h4>' . __('NFT transactions hashes') . '</h4>';
+				echo '<h4>' . __('NFT transactions hashes', 'cryptum-nft-domain') . '</h4>';
 				foreach ($transactions as $transaction) {
 					echo '<p><strong>' . $transaction->protocol . ': </strong> '
 						. '<a href="' . Blockchain::get_tx_explorer_url($transaction->protocol, $transaction->hash) . '" target="_blank">'
@@ -140,7 +147,7 @@ class OrderSettings
 						. '</a></p>';
 				}
 			} else {
-				echo '<p>' . __('No NFTs have been transferred yet.') . '</p>';
+				echo '<p>' . __('No NFTs have been transferred yet.', 'cryptum-nft-domain') . '</p>';
 			} ?>
 		</div>
 <?php

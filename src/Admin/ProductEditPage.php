@@ -4,6 +4,7 @@ namespace Cryptum\NFT\Admin;
 
 use Cryptum\NFT\Utils\Api;
 use Cryptum\NFT\Utils\Log;
+use Cryptum\NFT\Utils\Misc;
 
 class ProductEditPage
 {
@@ -17,20 +18,26 @@ class ProductEditPage
 	}
 	private function __construct()
 	{
-		wp_enqueue_style('product-data', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
-		add_action('admin_notices', function () {
-			$title = get_transient('product_edit_page_error.title');
-			$message = get_transient('product_edit_page_error.message');
-			if (!empty($title) or !empty($message)) { ?>
-				<div class="error notice notice-error">
-					<p class="cryptum_nft_title"><?php echo $title ?></p>
-					<p><?php echo $message ?></p>
-				</div>
-		<?php
-				delete_transient('product_edit_page_error.title');
-				delete_transient('product_edit_page_error.message');
-			}
-		});
+		$postType = Misc::get_post_type_from_querystring($_SERVER['QUERY_STRING']);
+		if (is_admin() && strcmp($postType, 'product') == 0) {
+			Log::info($postType);
+			add_action('wp_enqueue_scripts', function () {
+				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
+			});
+			add_action('admin_notices', function () {
+				$title = get_transient('product_edit_page_error.title');
+				$message = get_transient('product_edit_page_error.message');
+				if (!empty($title) or !empty($message)) { ?>
+					<div class="error notice notice-error">
+						<p class="cryptum_nft_title"><?php echo $title ?></p>
+						<p><?php echo $message ?></p>
+					</div>
+			<?php
+					delete_transient('product_edit_page_error.title');
+					delete_transient('product_edit_page_error.message');
+				}
+			});
+		}
 	}
 
 	function set_admin_notices_error($title = '', $message = '')
@@ -42,7 +49,7 @@ class ProductEditPage
 	public function show_product_data_tab($tabs)
 	{
 		$tabs['cryptum_nft_options'] = [
-			'label' => __('Cryptum NFT Options', 'txtdomain'),
+			'label' => __('Cryptum NFT Options', 'cryptum-nft-domain'),
 			'target' => 'cryptum_nft_options'
 		];
 		return $tabs;
@@ -56,21 +63,21 @@ class ProductEditPage
 				array(
 					'id' => '_cryptum_nft_options_nft_enable',
 					'placeholder' => '',
-					'label' => __('Enable NFT link'),
-					'description' => __('Enable/Disable link between this product and NFT'),
+					'label' => __('Enable NFT link', 'cryptum-nft-domain'),
+					'description' => __('Enable/Disable link between this product and NFT', 'cryptum-nft-domain'),
 					'desc_tip' => 'true'
 				)
 			); ?>
 			<hr>
 
 			<div id="cryptum_nft_options_div">
-				<p><?php _e('After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU') ?></p>
+				<p><?php _e('After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU', 'cryptum-nft-domain') ?></p>
 				<?php /*woocommerce_wp_text_input(
 					array(
 						'id' => '_cryptum_nft_options_product_id',
 						'placeholder' => '',
-						'label' => __('Product id', 'woocommerce'),
-						'description' => __('Product id with NFT link from Cryptum Dashboard'),
+						'label' => __('Product id', 'cryptum-nft-domain'),
+						'description' => __('Product id with NFT link from Cryptum Dashboard', 'cryptum-nft-domain'),
 						'desc_tip' => 'true',
 						'custom_attributes' => array(
 							'required' => 'required'
@@ -144,7 +151,7 @@ class ProductEditPage
 							'x-api-key': "<?php echo $options['apikey'] ?>",
 							'content-type': 'application/json'
 						},
-						url: '<?php echo Api::get_cryptum_url($options['environment']) . '/products/' ?>' + productId.val(),
+						url: '<?php echo Api::get_cryptum_store_url($options['environment']) . '/products/' ?>' + productId.val(),
 						success: (data, textStatus) => {
 							console.log('Updated product id', data);
 							jQuery('#cryptum_nft_options_product_error_message').addClass('hidden');
@@ -233,7 +240,7 @@ class ProductEditPage
 						}
 						$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 					} else {
-						$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin"), __('Product SKU is duplicate, try to set another SKU value.'));
+						$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'), __('Product SKU is duplicate, try to set another SKU value.', 'cryptum-nft-domain'));
 						return false;
 					}
 				}
@@ -292,15 +299,15 @@ class ProductEditPage
 		$body = $request_body;
 		$options = get_option('cryptum_nft');
 		if ($method == 'POST') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products';
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products';
 			$request_body['store'] = $options['storeId'];
 			$body = [$request_body];
 		} elseif ($method == 'PUT') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
 		} elseif ($method == 'DELETE') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
 		} elseif ($method == 'GET') {
-			$url = Api::get_cryptum_url($options['environment']) . '/products/sku/' . $request_body['sku'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/sku/' . $request_body['sku'];
 			$body = null;
 		}
 		Log::info($method . ' ' . $url);
@@ -314,7 +321,7 @@ class ProductEditPage
 		if (isset($response['error'])) {
 			$message = $response['message'];
 			if ($show_admin_notice) {
-				$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin"), __($message));
+				$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'), __($message, 'cryptum-nft-domain'));
 			}
 			return false;
 		}

@@ -3,6 +3,7 @@
 namespace Cryptum\NFT;
 
 use Cryptum\NFT\Utils\AddressValidator;
+use Cryptum\NFT\Utils\Log;
 
 class CheckoutPage
 {
@@ -20,6 +21,14 @@ class CheckoutPage
 
 	public function show_checkout_page($checkout)
 	{
+		wp_enqueue_style('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/checkout.css');
+		wp_enqueue_script('web3', 'https://unpkg.com/web3@latest/dist/web3.min.js', [], false, false);
+		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery'], true, true);
+		wp_localize_script('checkout', 'objectL10n', array(
+			'save'  => esc_html('Save'),
+			'cancel' => esc_html('Cancel'),
+		));
+
 		$cart = WC()->cart->get_cart();
 		$has_nft_enabled = false;
 		foreach ($cart as $cart_item) {
@@ -31,20 +40,53 @@ class CheckoutPage
 			}
 		}
 		if ($has_nft_enabled) {
+			$current_user = wp_get_current_user();
+			$wallet_address = '';
+			$user_wallet = json_decode(get_user_meta($current_user->ID, '_cryptum_nft_user_wallet', true));
+			if (isset($user_wallet)) {
+				$wallet_address = $user_wallet->address;
+			}
 			woocommerce_form_field(
 				'user_wallet_address',
 				array(
 					'type' => 'text',
 					'class' => array(
-						'my-field-class form-row-wide'
+						'my-field-class form-row-wide user-wallet-form-field'
 					),
-					'label' => __('User wallet address'),
+					'label' => __('User wallet address', 'cryptum-nft-domain'),
 					'placeholder' => '',
 					'required' => true
 				),
-				$checkout->get_value('user_wallet_address')
+				$wallet_address
 			);
+?>
+			<p class="user-wallet-generator-label">
+				<?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below', 'cryptum-nft-domain') ?>:
+			</p>
+			<button class="button alt user-wallet-generator-button">
+				<?php echo __('Generate new wallet', 'cryptum-nft-domain') ?>
+			</button>
+			<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet', 'cryptum-nft-domain') ?>">
+				<p><strong><?php echo __('Address', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
+				<p><strong><?php echo __('Private Key', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
+				<p style="color:red;">
+					<strong><?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again', 'cryptum-nft-domain') ?></strong>
+				</p>
+				<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
+			</div>
+<?php
 		}
+	}
+
+	public function save_user_meta()
+	{
+		$address = $_POST['address'];
+		Log::info($address);
+		$user = wp_get_current_user();
+
+		update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');
+
+		wp_die();
 	}
 
 	public function checkout_validation_process()
@@ -61,7 +103,7 @@ class CheckoutPage
 		}
 		if ($has_nft_enabled) {
 			if (empty($_POST['user_wallet_address']) or !AddressValidator::isETHAddress($_POST['user_wallet_address'])) {
-				wc_add_notice(__('Please enter a valid user wallet address!'), 'error');
+				wc_add_notice(__('Please enter a valid user wallet address!', 'cryptum-nft-domain'), 'error');
 			}
 		}
 	}

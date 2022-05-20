@@ -7,5 +7,14 @@
 			"path": "../../../bitnami-docker-wordpress"
 		}
 	],
-	"settings": {}
+	"settings": {},
+	"launch": {
+		"configurations": [{
+			"name": "Listen for Xdebug",
+			"type": "php",
+			"request": "launch",
+			"port": 9003
+		}],
+		"compounds": []
+	}
 }
