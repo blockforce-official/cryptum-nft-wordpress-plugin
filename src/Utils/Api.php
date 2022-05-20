@@ -91,8 +91,7 @@ class Api
 	}
 	static function get_cryptum_store_url($environment)
 	{
-		return 'https://6bd1-2804-14d-4482-282-f125-91ed-e324-8a2.ngrok.io/plugins';
-		// return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-dev.cryptum.io/plugins';
+		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-dev.cryptum.io/plugins';
 	}
 
 	static function request($url, $args = array())

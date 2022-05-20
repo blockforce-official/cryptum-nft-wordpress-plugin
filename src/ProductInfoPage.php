@@ -39,7 +39,7 @@ class ProductInfoPage
 					<p style="flex-grow:1;"><?= __('This product is linked by an NFT', 'cryptum-nft-domain') ?></p>
 				</div>
 				<?php if (isset($nft)) :
-					$uri = Api::get_nft_uri($nft['tokenAddress'], $nft['protocol'], $nft['tokenId']);
+					/*$uri = Api::get_nft_uri($nft['tokenAddress'], $nft['protocol'], $nft['tokenId']);
 
 					wc_enqueue_js(<<<JS
 						jQuery(function() {
@@ -52,7 +52,7 @@ class ProductInfoPage
 								error: (xhr, status, error) => { console.error(error); },
 							});
 						});
-					JS);
+					JS);*/
 				?>
 					<hr>
 					<p style="font-size: 14px;"><?= __('Token Address', 'cryptum-nft-domain') ?>: <?php echo $nft['tokenAddress'] ?></p>
