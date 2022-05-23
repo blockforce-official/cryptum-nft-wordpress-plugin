@@ -2,11 +2,25 @@
 .user-wallet-form-field {
 	margin-bottom: 5px;
 }
-.user-wallet-generator-label {
+.user-wallet-label {
 	margin-bottom: 5px;
 }
-.user-wallet-generator-button {
-	font-size: 13px;
+#user-wallet-generator-button {
+	font-size: 14px;
+}
+#user-wallet-connection-button {
+	font-size: 14px;
+	display: flex;
+}
+#user-wallet-connection-button div {
+	margin: 0;
+	padding: 0;
+}
+#user-wallet-connection-img-div {
+	height: 1rem;
+}
+#user-wallet-connection-img-div img {
+	height: 100%;
 }
 .no-close .ui-dialog-titlebar-close {
 	display: none;

@@ -23,6 +23,12 @@ class CheckoutPage
 	{
 		wp_enqueue_style('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/checkout.css');
 		wp_enqueue_script('web3', 'https://unpkg.com/web3@latest/dist/web3.min.js', [], false, false);
+		wp_enqueue_script('walletconnect', 'https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js', [], false, false);
+		wp_enqueue_script('walletconnection', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/walletconnect.js', ['jquery', 'walletconnect'], true, false);
+		wp_localize_script('walletconnection', 'wpScriptObject', array(
+			'nonce' => wp_generate_uuid4(),
+			'signMessage'  => esc_html("Sign this message to prove you have access to this wallet and we'll log you in. This won't cost you anything. To stop hackers using your wallet, here's a unique message ID they can't guess "),
+		));
 		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery'], true, true);
 		wp_localize_script('checkout', 'objectL10n', array(
 			'save'  => esc_html('Save'),
@@ -60,19 +66,40 @@ class CheckoutPage
 				$wallet_address
 			);
 ?>
-			<p class="user-wallet-generator-label">
-				<?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below', 'cryptum-nft-domain') ?>:
-			</p>
-			<button class="button alt user-wallet-generator-button">
-				<?php echo __('Generate new wallet', 'cryptum-nft-domain') ?>
-			</button>
-			<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet', 'cryptum-nft-domain') ?>">
-				<p><strong><?php echo __('Address', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
-				<p><strong><?php echo __('Private Key', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
-				<p style="color:red;">
-					<strong><?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again', 'cryptum-nft-domain') ?></strong>
-				</p>
-				<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
+			<div id="user-wallet-block">
+				<div id="user-wallet-connection-block">
+					<p class="user-wallet-label">
+						<?php echo __('Click the button to connect your wallet', 'cryptum-nft-domain') ?>:
+					</p>
+					<div class="loading-icon" style="display:none;">
+						<i class="fas fa-spinner-third fa-fw fa-2x fa-spin" style="--fa-animation-duration:3s;"></i>
+						Connecting...
+					</div>
+					<button id="user-wallet-connection-button" class="button alt">
+						<div id="user-wallet-connection-img-div">
+							<img src="https://docs.walletconnect.com/img/walletconnect-logo.svg" alt="" />
+						</div>
+						<div>&nbsp;&nbsp;<?php echo __('Connect to WalletConnect', 'cryptum-nft-domain') ?></div>
+					</button>
+				</div>
+				<div id="user-wallet-generator-block">
+					<p class="user-wallet-label">
+						<?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below', 'cryptum-nft-domain') ?>:
+					</p>
+					<button id="user-wallet-generator-button" class="button alt">
+						<?php echo __('Generate new wallet', 'cryptum-nft-domain') ?>
+					</button>
+					<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet', 'cryptum-nft-domain') ?>">
+						<p><strong><?php echo __('Address', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
+						<p><strong><?php echo __('Private Key', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
+						<p style="color:red;">
+							<strong>
+								<?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again', 'cryptum-nft-domain') ?>
+							</strong>
+						</p>
+						<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
+					</div>
+				</div>
 			</div>
 <?php
 		}
@@ -81,7 +108,7 @@ class CheckoutPage
 	public function save_user_meta()
 	{
 		$address = $_POST['address'];
-		Log::info($address);
+		// Log::info($address);
 		$user = wp_get_current_user();
 
 		update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');

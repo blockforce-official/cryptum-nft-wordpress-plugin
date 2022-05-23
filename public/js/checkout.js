@@ -1,6 +1,37 @@
 
 (function ($) {
-  $('.user-wallet-generator-button').click(function (event) {
+  function showLoadingIcon(show = true) {
+    jQuery('.loading-icon').css('display', show ? 'block' : 'none');
+    jQuery('#user-wallet-connection-button').css('display', show ? 'none' : 'flex');
+  }
+
+  $('#user-wallet-connection-button').click(function (event) {
+    event.preventDefault();
+
+    showLoadingIcon();
+    connectWithWalletConnect()
+      .then(address => signWithWalletConnect(address))
+      .then(({ address, signature }) => {
+        console.log(address, signature);
+        showLoadingIcon(false);
+        $.ajax({
+          method: 'POST',
+          url: '/wp-admin/admin-ajax.php',
+          data: {
+            action: 'save_user_meta',
+            address: address,
+          },
+          success: (data) => {
+            $('#user_wallet_address').val(address);
+          },
+          error: (xhr, status, error) => {
+            console(error);
+          },
+        });
+      }).catch(e => { console.error(e); showLoadingIcon(false); });
+  });
+
+  $('#user-wallet-generator-button').click(function (event) {
     event.preventDefault();
 
     const web3 = new Web3();
