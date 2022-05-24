@@ -2,8 +2,6 @@
 
 namespace Cryptum\NFT\Utils;
 
-use function PHPSTORM_META\type;
-
 // @codeCoverageIgnoreStart
 defined('ABSPATH') or exit;
 // @codeCoverageIgnoreEnd

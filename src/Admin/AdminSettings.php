@@ -32,13 +32,16 @@ class AdminSettings
 				$apikey = $input['apikey'];
 
 				$url = Api::get_cryptum_store_url($input['environment']);
-				$response = Api::request($url . '/stores/' . $storeId, array(
+				$response = Api::request("{$url}/stores/verification", array(
+					'body' => json_encode(array(
+						'storeId' => $storeId
+					)),
 					'headers' => array(
 						'x-api-key' => $apikey,
 						'Content-type' => 'application/json'
 					),
 					'data_format' => 'body',
-					'method' => 'GET',
+					'method' => 'POST',
 					'timeout' => 60
 				));
 				if (isset($response['error'])) {
