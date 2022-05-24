@@ -38,7 +38,7 @@
             'aliases' => array(
                 0 => '1.26.x-dev',
             ),
-            'reference' => '240259a291e16e306dbf46dfe139d50c7fcb2d34',
+            'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
             'dev_requirement' => false,
         ),
     ),
