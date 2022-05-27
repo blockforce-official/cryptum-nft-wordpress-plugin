@@ -34,7 +34,9 @@ class AdminSettings
 				$url = Api::get_cryptum_store_url($input['environment']);
 				$response = Api::request("{$url}/stores/verification", array(
 					'body' => json_encode(array(
-						'storeId' => $storeId
+						'storeId' => $storeId,
+						'plugin' => 'nft',
+						'ecommerceType' => 'wordpress'
 					)),
 					'headers' => array(
 						'x-api-key' => $apikey,
@@ -184,7 +186,7 @@ class AdminSettings
 										{PROTOCOL} - should be CELO, ETHEREUM, BSC<br>
 										{ADDRESS} - token address<br>
 										{ID} - token id if ERC1155 contract used<br>
-										Ex.:<br> 
+										Ex.:<br>
 										CELO#0x8C7BD13aa2faE6994d3aE4cb40521A79E54A1A66<br>
 										BSC#0x3AF85f2F10ba6832E9cb14AEC35AD65C2541C298#137
 									</p>
