@@ -43,21 +43,25 @@ class NFTViewPage
 		global $_SERVER;
 
 		$pageName = sanitize_title($this->pageName);
-		if ($_SERVER['REQUEST_URI'] == "/{$pageName}/") {
+		if (str_contains($_SERVER['REQUEST_URI'], "/{$pageName}/")) {
 
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('nft-view', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/nft-view.css');
 			});
 
-			// $this->init_db();
-
-			$current_user = wp_get_current_user();
-			// Log::info($current_user);
 			$walletAddress = '';
-			$userWallet = json_decode(get_user_meta($current_user->ID, '_cryptum_nft_user_wallet', true));
-			// Log::info($userWallet);
-			if (isset($userWallet)) {
-				$walletAddress = $userWallet->address;
+			$current_user = wp_get_current_user();
+			if (isset($current_user)) {
+				$userWallet = json_decode(get_user_meta($current_user->ID, '_cryptum_nft_user_wallet', true));
+				// Log::info($userWallet);
+				if (isset($userWallet)) {
+					$walletAddress = $userWallet->address;
+				}
+			}
+
+			if (isset($_REQUEST['address'])) {
+				// address querystring is set
+				$walletAddress = $_REQUEST['address'];
 			}
 			if (!empty($walletAddress)) {
 				$tokenAddresses = preg_split("/[\s,]+/", $options['tokenAddresses']);
