@@ -72,8 +72,10 @@ class CheckoutPage
 						<?php echo __('Click the button to connect your wallet', 'cryptum-nft-domain') ?>:
 					</p>
 					<div class="loading-icon" style="display:none;">
-						<i class="fas fa-spinner-third fa-fw fa-2x fa-spin" style="--fa-animation-duration:3s;"></i>
-						Connecting...
+						<div class="">
+							<i class="fa fa-spinner fa-spin" style="--fa-animation-duration:2s;"></i>
+							Connecting...
+						</div>
 					</div>
 					<button id="user-wallet-connection-button" class="button alt">
 						<div id="user-wallet-connection-img-div">
@@ -81,6 +83,7 @@ class CheckoutPage
 						</div>
 						<div>&nbsp;&nbsp;<?php echo __('Connect to WalletConnect', 'cryptum-nft-domain') ?></div>
 					</button>
+					<p id="user-walletconnect-error" style="color:red;"></p>
 				</div>
 				<div id="user-wallet-generator-block">
 					<p class="user-wallet-label">
@@ -110,8 +113,9 @@ class CheckoutPage
 		$address = $_POST['address'];
 		// Log::info($address);
 		$user = wp_get_current_user();
-
-		update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');
+		if (!empty($user)) {
+			update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');
+		}
 
 		wp_die();
 	}

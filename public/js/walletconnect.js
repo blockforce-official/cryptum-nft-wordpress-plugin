@@ -9,6 +9,7 @@ function getProvider() {
 }
 
 async function connectWithWalletConnect() {
+  window.localStorage.removeItem('walletconnect');
   if (walletConnectProvider && walletConnectProvider.connected) {
     await walletConnectProvider.disconnect();
     walletConnectProvider = null;
@@ -25,20 +26,28 @@ async function connectWithWalletConnect() {
     },
   });
 
+  setTimeout(() => {
+    if ((walletConnectProvider.isConnecting || walletConnectProvider.connected) && walletConnectProvider.accounts.length === 0) {
+      showLoadingIcon(false);
+      jQuery('#user-walletconnect-error').text('');
+    }
+  }, 10000);
+  
   await walletConnectProvider.enable();
-  // console.log(walletConnectProvider);
 
-  walletConnectProvider.on("accountsChanged", (accounts) => {
-    console.log(accounts);
-  });
-  walletConnectProvider.on("chainChanged", (chainId) => {
-    console.log(chainId);
+  walletConnectProvider.on("connect", () => {
+    alert('connected');
+    showLoadingIcon(false);
   });
 
   walletConnectProvider.on("disconnect", (code, reason) => {
     console.log(code, reason);
     jQuery('#user_wallet_address').val('');
+    jQuery('#user-walletconnect-error').text(reason);
+    showLoadingIcon(false);
+    setTimeout(() => jQuery('#user-walletconnect-error').text(''), 8000);
   });
+
   return walletConnectProvider.accounts[0];
 }
 

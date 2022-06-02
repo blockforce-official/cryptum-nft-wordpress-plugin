@@ -1,9 +1,9 @@
 
+function showLoadingIcon(show = true) {
+  jQuery('.loading-icon').css('display', show ? 'block' : 'none');
+  jQuery('#user-wallet-connection-button').css('display', show ? 'none' : 'flex');
+}
 (function ($) {
-  function showLoadingIcon(show = true) {
-    jQuery('.loading-icon').css('display', show ? 'block' : 'none');
-    jQuery('#user-wallet-connection-button').css('display', show ? 'none' : 'flex');
-  }
 
   $('#user-wallet-connection-button').click(function (event) {
     event.preventDefault();
@@ -25,10 +25,11 @@
             $('#user_wallet_address').val(address);
           },
           error: (xhr, status, error) => {
-            console(error);
+            console.log(error);
+            alert(error);
           },
         });
-      }).catch(e => { console.error(e); showLoadingIcon(false); });
+      }).catch(e => { console.error(e); alert(e && e.message); showLoadingIcon(false); });
   });
 
   $('#user-wallet-generator-button').click(function (event) {
