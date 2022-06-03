@@ -7,6 +7,7 @@ function showLoadingIcon(show = true) {
 
   $('#user-wallet-connection-button').click(function (event) {
     event.preventDefault();
+    $('#user_wallet_address').val('');
 
     showLoadingIcon();
     connectWithWalletConnect()
@@ -16,20 +17,25 @@ function showLoadingIcon(show = true) {
         showLoadingIcon(false);
         $.ajax({
           method: 'POST',
-          url: '/wp-admin/admin-ajax.php',
+          url: checkout_wpScriptObject.ajaxUrl,
           data: {
-            action: 'save_user_meta',
-            address: address,
+            security: checkout_wpScriptObject.security,
+            action: checkout_wpScriptObject.action,
+            address,
           },
           success: (data) => {
             $('#user_wallet_address').val(address);
           },
           error: (xhr, status, error) => {
             console.log(error);
-            alert(error);
+            $('#user_wallet_address').val(address);
           },
         });
-      }).catch(e => { console.error(e); alert(e && e.message); showLoadingIcon(false); });
+      }).catch(e => {
+        console.error(e);
+        // alert(e && e.message);
+        showLoadingIcon(false);
+      });
   });
 
   $('#user-wallet-generator-button').click(function (event) {
@@ -45,12 +51,13 @@ function showLoadingIcon(show = true) {
       dialogClass: 'no-close',
       width: 500,
       buttons: {
-        [objectL10n['save']]: function () {
+        [checkout_wpScriptObject['save']]: function () {
           $.ajax({
             method: 'POST',
-            url: '/wp-admin/admin-ajax.php',
+            url: checkout_wpScriptObject.ajaxUrl,
             data: {
-              action: 'save_user_meta',
+              security: checkout_wpScriptObject.security,
+              action: checkout_wpScriptObject.action,
               address: account.address,
             },
             success: (data) => {
@@ -58,13 +65,15 @@ function showLoadingIcon(show = true) {
               $(this).dialog("close");
             },
             error: (xhr, status, error) => {
+              console.log(error);
               $('#user-wallet-modal-error').text(error);
               $('#user-wallet-modal-error').css('display', 'block');
-              console(error);
+              $('#user_wallet_address').val(account.address);
+              $(this).dialog("close");
             },
           });
         },
-        [objectL10n['cancel']]: function () {
+        [checkout_wpScriptObject['cancel']]: function () {
           $(this).dialog('close');
         }
       }

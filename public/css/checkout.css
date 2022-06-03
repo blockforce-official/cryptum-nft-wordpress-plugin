@@ -1,4 +1,7 @@
 
+li.payment_method_cryptumcheckout_gateway label img {
+	max-width: 150px;
+}
 .user-wallet-form-field {
 	margin-bottom: 5px;
 }

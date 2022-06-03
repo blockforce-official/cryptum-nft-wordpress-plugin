@@ -36,7 +36,7 @@ async function connectWithWalletConnect() {
   await walletConnectProvider.enable();
 
   walletConnectProvider.on("connect", () => {
-    alert('connected');
+    // alert('connected');
     showLoadingIcon(false);
   });
 
@@ -52,7 +52,11 @@ async function connectWithWalletConnect() {
 }
 
 async function signWithWalletConnect(address) {
-  const message = wpScriptObject['signMessage'] + wpScriptObject['nonce'];
+  const message = walletconnection_wpScriptObject['signMessage'] + walletconnection_wpScriptObject['nonce'];
+  console.log({
+    method: 'personal_sign',
+    params: [message, address],
+  })
   const signature = await walletConnectProvider.request({
     method: 'personal_sign',
     params: [message, address],
