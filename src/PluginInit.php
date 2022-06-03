@@ -46,8 +46,8 @@ class PluginInit
 
 		add_action('woocommerce_product_thumbnails', [ProductInfoPage::instance(), 'show_product_nft_blockchain_info'], 20);
 
-		add_action('woocommerce_after_checkout_billing_form', [CheckoutPage::instance(), 'show_checkout_page']);
-		add_action('woocommerce_checkout_process', [CheckoutPage::instance(), 'checkout_validation_process']);
+		add_action('woocommerce_checkout_billing', [CheckoutPage::instance(), 'show_wallet_connection_form']);
+		add_action('woocommerce_before_checkout_process', [CheckoutPage::instance(), 'checkout_validation_process']);
 		add_action('woocommerce_checkout_update_order_meta', [CheckoutPage::instance(), 'checkout_field_update_order_meta']);
 		add_action('wp_ajax_save_user_meta', [CheckoutPage::instance(), 'save_user_meta']);
 		add_action('wp_ajax_nopriv_save_user_meta', [CheckoutPage::instance(), 'save_user_meta']);

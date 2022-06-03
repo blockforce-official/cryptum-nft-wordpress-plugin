@@ -8,6 +8,7 @@
  * Author: Blockforce
  * Author URI: https://blockforce.in
  * Domain Path: /languages
+ * Text Domain: cryptum-nft-domain
  * Requires at least: 5.7
  * Requires PHP: 7.0
  * License: GNU General Public License v3.0
@@ -24,7 +25,6 @@ define('WP_DEBUG', true);
 define('WP_DEBUG_LOG', true);
 define('CRYPTUM_NFT_PATH', dirname(__FILE__));
 define('CRYPTUM_NFT_PLUGIN_DIR', plugin_dir_url(__FILE__));
-define('TEXT_DOMAIN', 'cryptum-nft');
 
 // Make sure WooCommerce is active
 if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
@@ -39,3 +39,7 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 require_once(plugin_dir_path(__FILE__) . '/lib/autoload.php');
 
 add_action('plugins_loaded', [Cryptum\NFT\PluginInit::instance(), 'load']);
+
+add_action('init', function () {
+	load_plugin_textdomain('cryptum-nft-domain', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});

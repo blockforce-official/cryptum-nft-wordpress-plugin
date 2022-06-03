@@ -19,7 +19,7 @@ class CheckoutPage
 	{
 	}
 
-	public function show_checkout_page($checkout)
+	public function show_wallet_connection_form()
 	{
 		wp_enqueue_style('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/checkout.css');
 		wp_enqueue_script('web3', 'https://unpkg.com/web3@latest/dist/web3.min.js', [], false, false);
@@ -55,58 +55,66 @@ class CheckoutPage
 			if (isset($user_wallet)) {
 				$wallet_address = $user_wallet->address;
 			}
-			woocommerce_form_field(
-				'user_wallet_address',
-				array(
-					'type' => 'text',
-					'class' => array(
-						'my-field-class form-row-wide user-wallet-form-field'
-					),
-					'label' => __('User wallet address', 'cryptum-nft-domain'),
-					'placeholder' => '',
-					'required' => true
-				),
-				$wallet_address
-			);
+
 ?>
-			<div id="user-wallet-block">
-				<div id="user-wallet-connection-block">
-					<p class="user-wallet-label">
-						<?php echo __('Click the button to connect your wallet', 'cryptum-nft-domain') ?>:
-					</p>
-					<div class="loading-icon" style="display:none;">
-						<div class="">
-							<i class="fa fa-spinner fa-spin" style="--fa-animation-duration:2s;"></i>
-							Connecting...
-						</div>
-					</div>
-					<button id="user-wallet-connection-button" class="button alt">
-						<div id="user-wallet-connection-img-div">
-							<img src="https://docs.walletconnect.com/img/walletconnect-logo.svg" alt="" />
-						</div>
-						<div>&nbsp;&nbsp;<?php echo __('Connect to WalletConnect', 'cryptum-nft-domain') ?></div>
-					</button>
-					<p id="user-walletconnect-error" style="color:red;"></p>
-				</div>
-				<div id="user-wallet-generator-block">
-					<p class="user-wallet-label">
-						<?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below', 'cryptum-nft-domain') ?>:
-					</p>
-					<button id="user-wallet-generator-button" class="button alt">
-						<?php echo __('Generate new wallet', 'cryptum-nft-domain') ?>
-					</button>
-					<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet', 'cryptum-nft-domain') ?>">
-						<p><strong><?php echo __('Address', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
-						<p><strong><?php echo __('Private Key', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
-						<p style="color:red;">
-							<strong>
-								<?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again', 'cryptum-nft-domain') ?>
-							</strong>
+			<div class="cryptum-nft-wallet-info">
+				<h3><?php echo __('Wallet information', 'cryptum-nft-domain') ?></h3>
+				<?php
+
+				woocommerce_form_field(
+					'user_wallet_address',
+					array(
+						'type' => 'text',
+						'class' => array(
+							'my-field-class form-row-wide user-wallet-form-field'
+						),
+						'label' => __('User wallet address', 'cryptum-nft-domain'),
+						'placeholder' => '',
+						'required' => true
+					),
+					$wallet_address
+				);
+				?>
+				<div id="user-wallet-block">
+					<div id="user-wallet-connection-block">
+						<p class="user-wallet-label">
+							<?php echo __('Click the button to connect your wallet', 'cryptum-nft-domain') ?>:
 						</p>
-						<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
+						<div class="loading-icon" style="display:none;">
+							<div class="">
+								<i class="fa fa-spinner fa-spin" style="--fa-animation-duration:2s;"></i>
+								Connecting...
+							</div>
+						</div>
+						<button id="user-wallet-connection-button" class="button alt">
+							<div id="user-wallet-connection-img-div">
+								<img src="https://docs.walletconnect.com/img/walletconnect-logo.svg" alt="" />
+							</div>
+							<div>&nbsp;&nbsp;<?php echo __('Connect to WalletConnect', 'cryptum-nft-domain') ?></div>
+						</button>
+						<p id="user-walletconnect-error" style="color:red;"></p>
+					</div>
+					<div id="user-wallet-generator-block">
+						<p class="user-wallet-label">
+							<?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below', 'cryptum-nft-domain') ?>:
+						</p>
+						<button id="user-wallet-generator-button" class="button alt">
+							<?php echo __('Generate new wallet', 'cryptum-nft-domain') ?>
+						</button>
+						<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet', 'cryptum-nft-domain') ?>">
+							<p><strong><?php echo __('Address', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
+							<p><strong><?php echo __('Private Key', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
+							<p style="color:red;">
+								<strong>
+									<?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again', 'cryptum-nft-domain') ?>
+								</strong>
+							</p>
+							<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
+						</div>
 					</div>
 				</div>
 			</div>
+			<br>
 <?php
 		}
 	}
@@ -138,7 +146,7 @@ class CheckoutPage
 		}
 		if ($has_nft_enabled) {
 			if (empty($_POST['user_wallet_address']) or !AddressValidator::isETHAddress($_POST['user_wallet_address'])) {
-				wc_add_notice(__('Please enter a valid user wallet address!', 'cryptum-nft-domain'), 'error');
+				wc_add_notice(__('Please enter a valid user wallet address.', 'cryptum-nft-domain'), 'error');
 			}
 		}
 	}
