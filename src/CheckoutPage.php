@@ -59,6 +59,8 @@ class CheckoutPage
 ?>
 			<div class="cryptum-nft-wallet-info">
 				<h3><?php echo __('Wallet information', 'cryptum-nft-domain') ?></h3>
+
+				<p><?php echo __('Insert or connect your wallet address below to receive the NFTs later.', 'cryptum-nft-domain') ?></p>
 				<?php
 
 				woocommerce_form_field(

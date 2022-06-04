@@ -7,5 +7,5 @@ many blockchains when products have been purchased in Woocommerce.
 ## Requirements
 -------------
 - Cryptum Dashboard account
-- Store with Woocommerce 5.0+ and Wordpress 5.5+
+- Store with Woocommerce 5.0+ and Wordpress 5.7+
 - PHP 7.0+ recommended

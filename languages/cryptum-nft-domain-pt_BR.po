@@ -3,9 +3,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cryptum NFT Plugin 2.0.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cryptum-nft-wordpress-plugin\n"
-"POT-Creation-Date: 2022-06-03 17:52-0300\n"
-"PO-Revision-Date: 2022-06-03 18:45-0300\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cryptum-nft-"
+"wordpress-plugin\n"
+"POT-Creation-Date: 2022-06-04T11:15:16-03:00\n"
+"PO-Revision-Date: 2022-06-04 11:36-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -35,10 +36,11 @@ msgstr ""
 
 #: src/Admin/AdminSettings.php:54
 msgid ""
-"Store not configured yet or not existent. You must configure a store in Cryptum dashboard first"
+"Store not configured yet or not existent. You must configure a store in "
+"Cryptum dashboard first"
 msgstr ""
-"A Loja não existe ou não foi configurada ainda. É preciso primeiro configurá-la no Cryptum "
-"dashboard"
+"A Loja não existe ou não foi configurada ainda. É preciso primeiro configurá-"
+"la no Cryptum dashboard"
 
 #: src/Admin/AdminSettings.php:62
 msgid "Changes updated successfully"
@@ -59,11 +61,12 @@ msgstr "Este plugin permite configurar sua loja."
 #: src/Admin/AdminSettings.php:129
 msgid ""
 "It is necessary to create an account in\n"
-"\t\t\t\t\t\tCryptum Dashboard to receive the store id and API key to fill out the fields below."
+"\t\t\t\t\t\tCryptum Dashboard to receive the store id and API key to fill "
+"out the fields below."
 msgstr ""
 "É necessário criar uma conta no \n"
-"\t\t\t\t\t\t\tCryptum Dashboard para receber o store id e a API key para preencher os campos "
-"abaixo."
+"\t\t\t\t\t\t\tCryptum Dashboard para receber o store id e a API key para "
+"preencher os campos abaixo."
 
 #: src/Admin/AdminSettings.php:143
 msgid "Environment"
@@ -78,8 +81,11 @@ msgid "Test"
 msgstr "Teste"
 
 #: src/Admin/AdminSettings.php:154
-msgid "Choose your environment. The Test environment should be used for testing only."
-msgstr "Escolha seu ambiente. O ambiente de Teste deve ser usado somente para testes."
+msgid ""
+"Choose your environment. The Test environment should be used for testing "
+"only."
+msgstr ""
+"Escolha seu ambiente. O ambiente de Teste deve ser usado somente para testes."
 
 #: src/Admin/AdminSettings.php:158
 msgid "Store Id"
@@ -139,12 +145,15 @@ msgstr "Habilitar vínculo com NFT"
 
 #: src/Admin/ProductEditPage.php:67
 msgid "Enable/Disable link between this product and NFT"
-msgstr ""
+msgstr "Habilitar vínculo entre produto e NFT"
 
 #: src/Admin/ProductEditPage.php:74
 msgid ""
-"After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU"
+"After updating this product, go to Cryptum Dashboard to mint and link the "
+"NFT to this product SKU"
 msgstr ""
+"Vá até o Cryptum Dashboard depois que atualizar o produto para poder "
+"vincular o NFT a esse SKU do produto"
 
 #: src/Admin/ProductEditPage.php:243 src/Admin/ProductEditPage.php:324
 #, fuzzy
@@ -153,7 +162,7 @@ msgstr "Ocorreu um erro na configuração do plugin"
 
 #: src/Admin/ProductEditPage.php:243
 msgid "Product SKU is duplicate, try to set another SKU value."
-msgstr ""
+msgstr "SKU do produto está duplicado, informe outro valor."
 
 #: src/Admin/TokenAddressesTable.php:28
 msgid "Token Type"
@@ -171,45 +180,55 @@ msgstr "Token ID"
 msgid "Wallet information"
 msgstr "Informações de carteira"
 
-#: src/CheckoutPage.php:71 src/NFTViewPage.php:141
+#: src/CheckoutPage.php:63
+msgid "Insert or connect your wallet address below to receive the NFTs later."
+msgstr ""
+"Insira ou conecte sua carteira abaixo para poder receber seus NFTs depois."
+
+#: src/CheckoutPage.php:73 src/NFTViewPage.php:141
 msgid "User wallet address"
 msgstr "Endereço de carteira"
 
-#: src/CheckoutPage.php:81
+#: src/CheckoutPage.php:83
 msgid "Click the button to connect your wallet"
 msgstr "Clique abaixo para se conectar a sua carteira"
 
-#: src/CheckoutPage.php:93
+#: src/CheckoutPage.php:95
 msgid "Connect to WalletConnect"
 msgstr "Conectar com WalletConnect"
 
-#: src/CheckoutPage.php:99
-msgid "If you don't have a wallet yet or would like to generate a new one, click below"
-msgstr "Se você não tiver uma carteira ou gostaria de gerar uma nova, clique abaixo"
+#: src/CheckoutPage.php:101
+msgid ""
+"If you don't have a wallet yet or would like to generate a new one, click "
+"below"
+msgstr ""
+"Se você não tiver uma carteira ou gostaria de gerar uma nova, clique abaixo"
 
-#: src/CheckoutPage.php:102
+#: src/CheckoutPage.php:104
 msgid "Generate new wallet"
 msgstr "Gerar nova carteira"
 
-#: src/CheckoutPage.php:104
+#: src/CheckoutPage.php:106
 msgid "New Wallet"
 msgstr "Nova Carteira"
 
-#: src/CheckoutPage.php:105
+#: src/CheckoutPage.php:107
 msgid "Address"
 msgstr "Endereço"
 
-#: src/CheckoutPage.php:106
+#: src/CheckoutPage.php:108
 msgid "Private Key"
 msgstr "Chave Privada"
 
-#: src/CheckoutPage.php:109
+#: src/CheckoutPage.php:111
 msgid ""
-"Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to "
-"you again"
-msgstr "Copie esta chave e salve em lugar seguro. Por razões de segurança, não a mostraremos de novo"
+"Obs: Copy this private key and save it somewhere safe. For security reasons, "
+"we cannot show it to you again"
+msgstr ""
+"Copie esta chave e salve em lugar seguro. Por razões de segurança, não a "
+"mostraremos de novo"
 
-#: src/CheckoutPage.php:149
+#: src/CheckoutPage.php:151
 msgid "Please enter a valid user wallet address."
 msgstr "Endereço de carteira inválido."
 
