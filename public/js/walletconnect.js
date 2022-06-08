@@ -1,70 +1,67 @@
-var walletConnectProvider = null;
+var walletProvider = null;
+var web3Modal = null;
 
 async function delay(ms) {
   return new Promise(resolve => setTimeout(() => resolve(1), ms));
 }
 
 function getProvider() {
-  return walletConnectProvider;
+  return walletProvider;
 }
 
-async function connectWithWalletConnect() {
-  window.localStorage.removeItem('walletconnect');
-  window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
-  if (walletConnectProvider && walletConnectProvider.connected) {
-    await walletConnectProvider.disconnect();
-    walletConnectProvider = null;
-  }
-
-  await delay(1500);
-
-  return new Promise((resolve, reject) => {
-    walletConnectProvider = new WalletConnectProvider.default({
-      rpc: {
-        1: 'https://rpc.ankr.com/eth',
-        4: 'https://rpc.ankr.com/eth_rinkeby',
-        44787: "https://alfajores-forno.celo-testnet.org",
-        42220: "https://forno.celo.org",
-      },
-    });
-
-    setTimeout(() => {
-      if ((walletConnectProvider.isConnecting || walletConnectProvider.connected) && walletConnectProvider.accounts.length === 0) {
-        showLoadingIcon(false);
-        jQuery('#user-walletconnect-error').text('');
+async function connectWithWallet() {
+  
+  web3Modal = new window.Web3Modal.default({
+    cacheProvider: false, // optional
+    disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
+    providerOptions: {
+      walletconnect: {
+        package: window.WalletConnectProvider.default,
+        options: {
+          rpc: {
+            1: 'https://rpc.ankr.com/eth',
+            4: 'https://rpc.ankr.com/eth_rinkeby',
+            44787: 'https://alfajores-forno.celo-testnet.org',
+            42220: 'https://forno.celo.org',
+          },
+        },
       }
-    }, 10000);
-
-    walletConnectProvider.enable().then(console.log).catch(console.error);
-
-    walletConnectProvider.on("connect", () => {
-      // alert('connected');
-      showLoadingIcon(false);
-      resolve(walletConnectProvider.accounts[0]);
-    });
-
-    walletConnectProvider.on("disconnect", (code, reason) => {
-      console.log(code, reason);
-      jQuery('#user_wallet_address').val('');
-      jQuery('#user-walletconnect-error').text(reason);
-      showLoadingIcon(false);
-      setTimeout(() => jQuery('#user-walletconnect-error').text(''), 8000);
-      reject(reason);
-    });
+    }
   });
-}
 
-async function disconnectWalletConnect() {
   window.localStorage.removeItem('walletconnect');
   window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
-  if (walletConnectProvider) {
-    await walletConnectProvider.disconnect();
+  await delay(1500);
+  
+  await web3Modal.clearCachedProvider();
+
+  walletProvider = await web3Modal.connect();
+  walletProvider.on("disconnect", (error) => {
+    console.log(error);
+  });
+
+  const web3 = new window.Web3(walletProvider);
+  const accounts = await web3.eth.getAccounts();
+  if (!accounts || accounts.length === 0) {
+    throw new Error('Error trying to connect wallet');
+  }
+  return accounts[0];
+}
+
+async function disconnectWallet() {
+  window.localStorage.removeItem('walletconnect');
+  window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
+  if (walletProvider && walletProvider.disconnect) {
+    await walletProvider.disconnect();
+  }
+  if (walletProvider && walletProvider.close) {
+    await walletProvider.close();
   }
 }
 
-async function signWithWalletConnect(address) {
+async function signWithWallet(address) {
   const message = walletconnection_wpScriptObject['signMessage'] + walletconnection_wpScriptObject['nonce'];
-  const signature = await walletConnectProvider.request({
+  const signature = await walletProvider.request({
     method: 'personal_sign',
     params: [message, address],
   });

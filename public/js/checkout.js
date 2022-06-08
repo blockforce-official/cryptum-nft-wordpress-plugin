@@ -11,11 +11,11 @@ function showLoadingIcon(show = true) {
       buttons: {
         [checkout_wpScriptObject['cancel']]: function () {
           showLoadingIcon(false);
-          disconnectWalletConnect();
+          disconnectWallet();
           $(this).dialog('close');
         },
         [checkout_wpScriptObject['sign']]: function () {
-          signWithWalletConnect(address)
+          signWithWallet(address)
             .then(({ address, signature }) => {
               console.log(address, signature);
               showLoadingIcon(false);
@@ -59,8 +59,12 @@ function showLoadingIcon(show = true) {
     $('#user_wallet_address').val('');
 
     showLoadingIcon(true);
-    connectWithWalletConnect()
-      .then(address => showSignModal(address));
+    connectWithWallet()
+      .then(address => showSignModal(address))
+      .catch(e => {
+        console.error(e);
+        showLoadingIcon(false);
+      });
   });
 
   $('#user-wallet-generator-button').click(function (event) {
