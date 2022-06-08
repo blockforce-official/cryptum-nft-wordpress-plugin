@@ -5,12 +5,7 @@ async function delay(ms) {
   return new Promise(resolve => setTimeout(() => resolve(1), ms));
 }
 
-function getProvider() {
-  return walletProvider;
-}
-
-async function connectWithWallet() {
-  
+function initWalletConnection() {
   web3Modal = new window.Web3Modal.default({
     cacheProvider: false, // optional
     disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
@@ -28,7 +23,9 @@ async function connectWithWallet() {
       }
     }
   });
+}
 
+async function connectWithWallet() {
   window.localStorage.removeItem('walletconnect');
   window.localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
   await delay(1500);

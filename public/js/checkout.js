@@ -54,13 +54,15 @@ function showLoadingIcon(show = true) {
     });
   }
 
+  initWalletConnection();
+
   $('#user-wallet-connection-button').click(function (event) {
     event.preventDefault();
     $('#user_wallet_address').val('');
 
     showLoadingIcon(true);
     connectWithWallet()
-      .then(address => showSignModal(address))
+      .then(address => delay(1500).then(() => showSignModal(address)))
       .catch(e => {
         console.error(e);
         showLoadingIcon(false);

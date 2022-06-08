@@ -30,7 +30,7 @@ class CheckoutPage
 			'nonce' => wp_generate_uuid4(),
 			'signMessage'  => esc_html__("Sign this message to prove you have access to this wallet and we'll log you in. This won't cost you anything. To stop hackers using your wallet, here's a unique message ID they can't guess "),
 		));
-		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery'], true, true);
+		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery', 'walletconnection'], true, true);
 		wp_localize_script('checkout', 'checkout_wpScriptObject', array(
 			'ajaxUrl' => admin_url('admin-ajax.php'),
 			'action' => 'save_user_meta',
