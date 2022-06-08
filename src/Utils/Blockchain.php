@@ -15,8 +15,8 @@ class Blockchain
 		switch ($protocol)
 		{
 			case 'CELO':
-				$middle = $options['environment'] == "production" ? 'explorer.celo' : 'alfajores-blockscout.celo-testnet';
-				return "https://$middle.org/token/$tokenAddress/instance/$tokenId/token-transfers";
+				$middle = $options['environment'] == "production" ? 'celoscan' : 'alfajores.celoscan';
+				return "https://$middle.xyz/token/$tokenAddress?a=$tokenId";
 			case 'ETHEREUM':
 				$middle = $options['environment'] == "production" ? 'etherscan' : 'rinkeby.etherscan';
 				return "https://$middle.io/token/$tokenAddress?a=$tokenId";
@@ -36,8 +36,8 @@ class Blockchain
 		switch ($protocol)
 		{
 			case 'CELO':
-				$middle = $options['environment'] == "production" ? 'explorer.celo' : 'alfajores-blockscout.celo-testnet';
-				return "https://$middle.org/tx/$hash";
+				$middle = $options['environment'] == "production" ? 'celoscan' : 'alfajores.celoscan';
+				return "https://$middle.xyz/tx/$hash";
 			case 'ETHEREUM':
 				$middle = $options['environment'] == "production" ? 'etherscan' : 'rinkeby.etherscan';
 				return "https://$middle.io/tx/$hash";
