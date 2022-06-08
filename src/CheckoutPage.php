@@ -22,20 +22,23 @@ class CheckoutPage
 	public function show_wallet_connection_form()
 	{
 		wp_enqueue_style('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/checkout.css');
+		// wp_enqueue_script('web3modal', 'https://unpkg.com/web3modal@1.9.7/dist/index.js', [], false, false);
 		wp_enqueue_script('web3', 'https://unpkg.com/web3@latest/dist/web3.min.js', [], false, false);
 		wp_enqueue_script('walletconnect', 'https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js', [], false, false);
 		wp_enqueue_script('walletconnection', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/walletconnect.js', ['jquery', 'walletconnect'], true, false);
 		wp_localize_script('walletconnection', 'walletconnection_wpScriptObject', array(
 			'nonce' => wp_generate_uuid4(),
-			'signMessage'  => esc_html("Sign this message to prove you have access to this wallet and we'll log you in. This won't cost you anything. To stop hackers using your wallet, here's a unique message ID they can't guess "),
+			'signMessage'  => esc_html__("Sign this message to prove you have access to this wallet and we'll log you in. This won't cost you anything. To stop hackers using your wallet, here's a unique message ID they can't guess "),
 		));
 		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery'], true, true);
 		wp_localize_script('checkout', 'checkout_wpScriptObject', array(
 			'ajaxUrl' => admin_url('admin-ajax.php'),
 			'action' => 'save_user_meta',
 			'security' => wp_create_nonce('save_user_meta'),
-			'save'  => esc_html('Save'),
-			'cancel' => esc_html('Cancel'),
+			'sign'  => esc_html__('Sign', 'cryptum-nft-domain'),
+			'save'  => esc_html__('Save', 'cryptum-nft-domain'),
+			'cancel' => esc_html__('Cancel', 'cryptum-nft-domain'),
+			'walletConnectedMessage' => esc_html__('Wallet connected successfully', 'cryptum-nft-domain'),
 		));
 
 		$cart = WC()->cart->get_cart();
@@ -77,6 +80,12 @@ class CheckoutPage
 					$wallet_address
 				);
 				?>
+
+				<div id="wallet-sign-modal" style="display:none;">
+					<p><strong><?php echo __('Click to sign message in order to verify your wallet', 'cryptum-nft-domain') ?></p>
+					<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
+				</div>
+
 				<div id="user-wallet-block">
 					<div id="user-wallet-connection-block">
 						<p class="user-wallet-label">
@@ -94,6 +103,7 @@ class CheckoutPage
 							</div>
 							<div>&nbsp;&nbsp;<?php echo __('Connect to WalletConnect', 'cryptum-nft-domain') ?></div>
 						</button>
+						<p id="user-walletconnect-info" style="color:green;"></p>
 						<p id="user-walletconnect-error" style="color:red;"></p>
 					</div>
 					<div id="user-wallet-generator-block">

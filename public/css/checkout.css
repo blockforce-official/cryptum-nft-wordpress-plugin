@@ -28,6 +28,17 @@ li.payment_method_cryptumcheckout_gateway label img {
 .no-close .ui-dialog-titlebar-close {
 	display: none;
 }
+.no-title .ui-dialog-titlebar {
+	background-color: transparent;
+	border: none;
+}
+.ui-widget-overlay {
+	opacity: .7;
+}
+.ui-dialog {
+	border-radius: 15px;
+	min-width: 500px;
+}
 .ui-dialog, .ui-dialog-buttonpane {
 	font-family: inherit;
 	font-size: 14px;
@@ -36,9 +47,13 @@ li.payment_method_cryptumcheckout_gateway label img {
 	font-family: inherit;
 	font-size: 14px;
 }
-@media screen and (max-width: 400px) {
+.ui-dialog-content {
+	font-size: 16px;
+}
+@media screen and (max-width: 500px) {
 	.ui-dialog {
 		width: 100% !important;
+		min-width: inherit;
 	}
 }
 .walletconnect-modal__headerLogo {

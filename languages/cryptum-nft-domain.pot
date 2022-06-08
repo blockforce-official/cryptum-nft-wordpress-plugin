@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-06-04T11:15:16-03:00\n"
+"POT-Creation-Date: 2022-06-08T15:29:46-03:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: cryptum-nft-domain\n"
@@ -159,52 +159,72 @@ msgstr ""
 msgid "Token ID"
 msgstr ""
 
-#: src/CheckoutPage.php:61
+#: src/CheckoutPage.php:38
+msgid "Sign"
+msgstr ""
+
+#: src/CheckoutPage.php:39
+msgid "Save"
+msgstr ""
+
+#: src/CheckoutPage.php:40
+msgid "Cancel"
+msgstr ""
+
+#: src/CheckoutPage.php:41
+msgid "Wallet connected successfully"
+msgstr ""
+
+#: src/CheckoutPage.php:64
 msgid "Wallet information"
 msgstr ""
 
-#: src/CheckoutPage.php:63
+#: src/CheckoutPage.php:66
 msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 
-#: src/CheckoutPage.php:73
+#: src/CheckoutPage.php:76
 #: src/NFTViewPage.php:141
 msgid "User wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:83
+#: src/CheckoutPage.php:85
+msgid "Click to sign message in order to verify your wallet"
+msgstr ""
+
+#: src/CheckoutPage.php:92
 msgid "Click the button to connect your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:95
+#: src/CheckoutPage.php:104
 msgid "Connect to WalletConnect"
 msgstr ""
 
-#: src/CheckoutPage.php:101
+#: src/CheckoutPage.php:111
 msgid "If you don't have a wallet yet or would like to generate a new one, click below"
 msgstr ""
 
-#: src/CheckoutPage.php:104
+#: src/CheckoutPage.php:114
 msgid "Generate new wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:106
+#: src/CheckoutPage.php:116
 msgid "New Wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:107
+#: src/CheckoutPage.php:117
 msgid "Address"
 msgstr ""
 
-#: src/CheckoutPage.php:108
+#: src/CheckoutPage.php:118
 msgid "Private Key"
 msgstr ""
 
-#: src/CheckoutPage.php:111
+#: src/CheckoutPage.php:121
 msgid "Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again"
 msgstr ""
 
-#: src/CheckoutPage.php:151
+#: src/CheckoutPage.php:161
 msgid "Please enter a valid user wallet address."
 msgstr ""
 

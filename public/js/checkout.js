@@ -4,38 +4,63 @@ function showLoadingIcon(show = true) {
   jQuery('#user-wallet-connection-button').css('display', show ? 'none' : 'flex');
 }
 (function ($) {
+  function showSignModal(address) {
+    $('#wallet-sign-modal').dialog({
+      modal: true,
+      dialogClass: 'no-close no-title',
+      buttons: {
+        [checkout_wpScriptObject['cancel']]: function () {
+          showLoadingIcon(false);
+          disconnectWalletConnect();
+          $(this).dialog('close');
+        },
+        [checkout_wpScriptObject['sign']]: function () {
+          signWithWalletConnect(address)
+            .then(({ address, signature }) => {
+              console.log(address, signature);
+              showLoadingIcon(false);
+
+              $('#user-walletconnect-info').text(checkout_wpScriptObject['walletConnectedMessage']);
+              $('#user-wallet-connection-button').css('display', 'none');
+              setTimeout(() => {
+                $('#user-wallet-connection-button').css('display', 'flex');
+                $('#user-walletconnect-info').text('');
+              }, 15000);
+
+              $(this).dialog('close');
+              $.ajax({
+                method: 'POST',
+                url: checkout_wpScriptObject.ajaxUrl,
+                data: {
+                  security: checkout_wpScriptObject.security,
+                  action: checkout_wpScriptObject.action,
+                  address,
+                },
+                success: (data) => {
+                  $('#user_wallet_address').val(address);
+                },
+                error: (xhr, status, error) => {
+                  console.log(error);
+                  $('#user_wallet_address').val(address);
+                },
+              });
+            }).catch(e => {
+              console.error(e);
+              // alert(e && e.message);
+              showLoadingIcon(false);
+            });
+        },
+      }
+    });
+  }
 
   $('#user-wallet-connection-button').click(function (event) {
     event.preventDefault();
     $('#user_wallet_address').val('');
 
-    showLoadingIcon();
+    showLoadingIcon(true);
     connectWithWalletConnect()
-      .then(address => signWithWalletConnect(address))
-      .then(({ address, signature }) => {
-        console.log(address, signature);
-        showLoadingIcon(false);
-        $.ajax({
-          method: 'POST',
-          url: checkout_wpScriptObject.ajaxUrl,
-          data: {
-            security: checkout_wpScriptObject.security,
-            action: checkout_wpScriptObject.action,
-            address,
-          },
-          success: (data) => {
-            $('#user_wallet_address').val(address);
-          },
-          error: (xhr, status, error) => {
-            console.log(error);
-            $('#user_wallet_address').val(address);
-          },
-        });
-      }).catch(e => {
-        console.error(e);
-        // alert(e && e.message);
-        showLoadingIcon(false);
-      });
+      .then(address => showSignModal(address));
   });
 
   $('#user-wallet-generator-button').click(function (event) {
@@ -48,9 +73,11 @@ function showLoadingIcon(show = true) {
     $('#user-wallet-modal-privateKey').text(account.privateKey);
     $('#user-wallet-generator-modal').dialog({
       modal: true,
-      dialogClass: 'no-close',
-      width: 500,
+      dialogClass: 'no-close no-title',
       buttons: {
+        [checkout_wpScriptObject['cancel']]: function () {
+          $(this).dialog('close');
+        },
         [checkout_wpScriptObject['save']]: function () {
           $.ajax({
             method: 'POST',
@@ -73,9 +100,6 @@ function showLoadingIcon(show = true) {
             },
           });
         },
-        [checkout_wpScriptObject['cancel']]: function () {
-          $(this).dialog('close');
-        }
       }
     });
   });

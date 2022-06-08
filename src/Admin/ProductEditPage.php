@@ -32,7 +32,7 @@ class ProductEditPage
 						<p class="cryptum_nft_title"><?php echo $title ?></p>
 						<p><?php echo $message ?></p>
 					</div>
-			<?php
+		<?php
 					delete_transient('product_edit_page_error.title');
 					delete_transient('product_edit_page_error.message');
 				}
@@ -307,7 +307,7 @@ class ProductEditPage
 		} elseif ($method == 'DELETE') {
 			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
 		} elseif ($method == 'GET') {
-			$url = Api::get_cryptum_store_url($options['environment']) . '/products/sku/' . $request_body['sku'];
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/sku/' . $request_body['sku'] . '?store=' . $options['storeId'];
 			$body = null;
 		}
 		Log::info($method . ' ' . $url);
