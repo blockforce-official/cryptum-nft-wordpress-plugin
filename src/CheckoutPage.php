@@ -25,12 +25,12 @@ class CheckoutPage
 		wp_enqueue_script('web3', 'https://unpkg.com/web3@latest/dist/web3.min.js', [], false, false);
 		wp_enqueue_script('web3modal', 'https://unpkg.com/web3modal@1.9.7/dist/index.js', [], false, false);
 		wp_enqueue_script('walletconnect', 'https://unpkg.com/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js', [], false, false);
-		wp_enqueue_script('walletconnection', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/walletconnect.js', ['jquery', 'web3modal', 'walletconnect'], true, false);
+		wp_enqueue_script('walletconnection', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/walletconnect.js', ['jquery', 'web3modal', 'walletconnect'], false, false);
 		wp_localize_script('walletconnection', 'walletconnection_wpScriptObject', array(
 			'nonce' => wp_generate_uuid4(),
 			'signMessage'  => esc_html__("Sign this message to prove you have access to this wallet and we'll log you in. This won't cost you anything. To stop hackers using your wallet, here's a unique message ID they can't guess "),
 		));
-		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery', 'walletconnection'], true, true);
+		wp_enqueue_script('checkout', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/checkout.js', ['jquery', 'walletconnection'], false, false);
 		wp_localize_script('checkout', 'checkout_wpScriptObject', array(
 			'ajaxUrl' => admin_url('admin-ajax.php'),
 			'action' => 'save_user_meta',

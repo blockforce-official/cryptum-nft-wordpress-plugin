@@ -62,7 +62,7 @@ function showLoadingIcon(show = true) {
 
     showLoadingIcon(true);
     connectWithWallet()
-      .then(address => delay(1500).then(() => showSignModal(address)))
+      .then(address => delay(1000).then(() => showSignModal(address)))
       .catch(e => {
         console.error(e);
         showLoadingIcon(false);

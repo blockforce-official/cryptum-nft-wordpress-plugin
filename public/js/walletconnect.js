@@ -23,6 +23,7 @@ function initWalletConnection() {
       }
     }
   });
+  console.log(web3Modal);
 }
 
 async function connectWithWallet() {
