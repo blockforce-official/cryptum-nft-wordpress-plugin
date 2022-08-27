@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
+class ComposerStaticInitf1227a4dc0a04676288c5066897560e5
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -47,7 +47,6 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
         'Cryptum\\NFT\\Admin\\ProductEditPage' => __DIR__ . '/../..' . '/src/Admin/ProductEditPage.php',
         'Cryptum\\NFT\\Admin\\TokenAddressesTable' => __DIR__ . '/../..' . '/src/Admin/TokenAddressesTable.php',
         'Cryptum\\NFT\\CheckoutPage' => __DIR__ . '/../..' . '/src/CheckoutPage.php',
-        'Cryptum\\NFT\\NFTViewPage' => __DIR__ . '/../..' . '/src/NFTViewPage.php',
         'Cryptum\\NFT\\PluginInit' => __DIR__ . '/../..' . '/src/PluginInit.php',
         'Cryptum\\NFT\\ProductInfoPage' => __DIR__ . '/../..' . '/src/ProductInfoPage.php',
         'Cryptum\\NFT\\Utils\\AddressValidator' => __DIR__ . '/../..' . '/src/Utils/AddressValidator.php',
@@ -63,9 +62,9 @@ class ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit978a9dc8ac0665dbc8294fb48efb974f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf1227a4dc0a04676288c5066897560e5::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf1227a4dc0a04676288c5066897560e5::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf1227a4dc0a04676288c5066897560e5::$classMap;
 
         }, null, ClassLoader::class);
     }

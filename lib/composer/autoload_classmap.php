@@ -12,7 +12,6 @@ return array(
     'Cryptum\\NFT\\Admin\\ProductEditPage' => $baseDir . '/src/Admin/ProductEditPage.php',
     'Cryptum\\NFT\\Admin\\TokenAddressesTable' => $baseDir . '/src/Admin/TokenAddressesTable.php',
     'Cryptum\\NFT\\CheckoutPage' => $baseDir . '/src/CheckoutPage.php',
-    'Cryptum\\NFT\\NFTViewPage' => $baseDir . '/src/NFTViewPage.php',
     'Cryptum\\NFT\\PluginInit' => $baseDir . '/src/PluginInit.php',
     'Cryptum\\NFT\\ProductInfoPage' => $baseDir . '/src/ProductInfoPage.php',
     'Cryptum\\NFT\\Utils\\AddressValidator' => $baseDir . '/src/Utils/AddressValidator.php',

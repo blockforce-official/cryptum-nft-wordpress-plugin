@@ -3,7 +3,7 @@ Contributors: Blockforce
 Tags: cryptocurrency, crypto, e-commerce, ecommerce, store, blockchain, nft, token
 Requires at least: 5.7
 Tested up to: 5.7
-Stable tag: 2.0.4
+Stable tag: 1.0.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -34,7 +34,4 @@ Automatic installation is the easiest option -- WordPress will handle the file t
 = 1.0 =
 
 * Initial release.
-
-= 2.0 =
-
-* Support for various blockchains: Ethereum, Celo, Binance smart chain.
+* Support for various blockchains: Ethereum, Celo, Binance smart chain, Polygon, Avalanche C-Chain.
