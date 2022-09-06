@@ -4,15 +4,15 @@
  * Plugin Name: Cryptum NFT Plugin
  * Plugin URI: https://github.com/blockforce-official/cryptum-nft-wordpress-plugin
  * Description: Cryptum NFT Plugin
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Blockforce
  * Author URI: https://blockforce.in
  * Domain Path: /languages
  * Text Domain: cryptum-nft-domain
  * Requires at least: 5.7
  * Requires PHP: 7.0
- * License: GNU General Public License v3.0
- * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ * License: GNU General Public License v2.0
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 
 defined('ABSPATH') or exit;
