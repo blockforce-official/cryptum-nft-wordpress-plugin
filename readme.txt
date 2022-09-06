@@ -1,5 +1,5 @@
-=== Cryptum NFT Plugin ===
-Contributors: victorbfc
+=== Cryptum NFT ===
+Contributors: victorbfc, edsonprimo
 Tags: cryptocurrency, crypto, e-commerce, ecommerce, store, blockchain, nft, token
 Requires at least: 5.7
 Tested up to: 5.7

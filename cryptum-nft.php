@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Cryptum NFT Plugin
+ * Plugin Name: Cryptum NFT
  * Plugin URI: https://github.com/blockforce-official/cryptum-nft-wordpress-plugin
  * Description: Cryptum NFT Plugin
  * Version: 1.1.0
