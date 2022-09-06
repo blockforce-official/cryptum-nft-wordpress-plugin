@@ -1,5 +1,5 @@
 === Cryptum NFT Plugin ===
-Contributors: Blockforce
+Contributors: victorbfc
 Tags: cryptocurrency, crypto, e-commerce, ecommerce, store, blockchain, nft, token
 Requires at least: 5.7
 Tested up to: 5.7
@@ -24,7 +24,7 @@ Please notice that WooCommerce must be installed and active.
 
 == Installation ==
 
-* To do an automatic install of the Cryptum NFT Plugin, log in to your WordPress dashboard, navigate to the Plugins menu, and click “Add New.”
+* To do an automatic install of the Blockforce Cryptum NFT Plugin, log in to your WordPress dashboard, navigate to the Plugins menu, and click “Add New.”
 
 * In the search field type “Cryptum NFT,” then click “Search Plugins.” Once you’ve found us, you can view details about it such as the point release, rating, and description. Most importantly of course, you can install it by Clicking “Install Now,” and WordPress will take it from there.
 
@@ -73,6 +73,14 @@ Create your collections and NFTs on the Dashboard, using your blockchain wallet.
 * Celo
 * Avalanche C-Chain
 * Binance Smart Chain
+
+== Screenshots ==
+
+1. Cryptum NFT Settings on WordPress Admin page.
+2. Cryptum Dashboard store page.
+3. NFT minting page on Cryptum Dashboard.
+4. WordPress product page data showing the Cryptum NFT options to link the product with the minted NFT.
+5. Cryptum Dashboard product linking.
 
 
 == Changelog ==
