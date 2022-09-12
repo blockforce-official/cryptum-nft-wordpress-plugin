@@ -55,7 +55,7 @@ class OrderSettings
 
 			$user = $order->get_user();
 			$options = get_option('cryptum_nft');
-			$storeId = $options['storeId'];
+			$store_id = $options['storeId'];
 
 			$items = $order->get_items();
 			$products = [];
@@ -76,32 +76,15 @@ class OrderSettings
 				return;
 			}
 
-			$emailAddress = !empty($order->get_billing_email()) ? $order->get_billing_email() : $user->get('email');
-			$url = Api::get_cryptum_store_url($options['environment']);
-			$response = Api::request($url . '/nft/checkout', [
-				'body' => json_encode([
-					'store' => $storeId,
-					'email' => $emailAddress,
-					'products' => $products,
-					'ecommerceType' => 'wordpress',
-					'ecommerceOrderId' => $order_id,
-					'clientWallet' => $order->get_meta('user_wallet_address'),
-					'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback'),
-					'orderTotal' => $order->get_total(),
-					'orderCurrency' => $order->get_currency()
-				]),
-				'headers' => array(
-					'x-api-key' => $options['apikey'],
-					'Content-Type' => 'application/json; charset=utf-8',
-					'x-version' => '1.0.0'
-				),
-				'data_format' => 'body',
-				'method' => 'POST',
-				'timeout' => 60
-			]);
+			$email_address = !empty($order->get_billing_email()) ? $order->get_billing_email() : $user->get('email');
+
+			$response = Api::create_nft_order($order, $store_id, $products, $email_address);
 			if (isset($response['error'])) {
 				$message = $response['message'];
-				$this->set_admin_notices_error(__("Error in configuring Cryptum NFT Plugin", 'cryptum-nft-domain'), __($message, 'cryptum-nft-domain'));
+				$this->set_admin_notices_error(
+					__("Error in configuring Cryptum NFT Plugin", 'cryptum-nft-domain'),
+					__($message, 'cryptum-nft-domain')
+				);
 				return;
 			}
 		}

@@ -21,8 +21,6 @@ if (defined('CRYPTUM_NFT_PATH')) {
 	return;
 }
 
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
 define('CRYPTUM_NFT_PATH', dirname(__FILE__));
 define('CRYPTUM_NFT_PLUGIN_DIR', plugin_dir_url(__FILE__));
 

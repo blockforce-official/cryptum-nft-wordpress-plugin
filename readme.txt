@@ -2,7 +2,7 @@
 Contributors: victorbfc, edsonprimo
 Tags: cryptocurrency, crypto, e-commerce, ecommerce, store, blockchain, nft, token
 Requires at least: 5.7
-Tested up to: 5.7
+Tested up to: 6.0.2
 Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later

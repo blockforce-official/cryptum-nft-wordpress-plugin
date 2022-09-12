@@ -226,4 +226,37 @@ class Api
 		}
 		return $res;
 	}
+	/**
+	 * @param \WC_Order $order
+	 * @param string $store_id
+	 * @param mixed $products
+	 * @param string $email_address
+	 */
+	static function create_nft_order($order, $store_id, $products, $email_address)
+	{
+		$options = get_option('cryptum_nft');
+		$url = Api::get_cryptum_store_url($options['environment']);
+		$response = Api::request($url . '/nft/checkout', [
+			'body' => json_encode([
+				'store' => $store_id,
+				'email' => $email_address,
+				'products' => $products,
+				'ecommerceType' => 'wordpress',
+				'ecommerceOrderId' => $order->get_id(),
+				'clientWallet' => $order->get_meta('user_wallet_address'),
+				'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback'),
+				'orderTotal' => $order->get_total(),
+				'orderCurrency' => $order->get_currency()
+			]),
+			'headers' => array(
+				'x-api-key' => $options['apikey'],
+				'Content-Type' => 'application/json; charset=utf-8',
+				'x-version' => '1.0.0'
+			),
+			'data_format' => 'body',
+			'method' => 'POST',
+			'timeout' => 60
+		]);
+		return $response;
+	}
 }
