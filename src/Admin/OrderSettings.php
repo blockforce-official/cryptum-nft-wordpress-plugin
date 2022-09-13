@@ -142,7 +142,7 @@ class OrderSettings
 			status_header(200);
 			exit();
 		} elseif ('POST' == $_SERVER['REQUEST_METHOD']) {
-			$apikey = $_SERVER['HTTP_X_API_KEY'];
+			$apikey = trim($_SERVER['HTTP_X_API_KEY']);
 			$options = get_option('cryptum_nft');
 			if ($apikey != $options['apikey']) {
 				wp_send_json_error(array('message' => 'Unauthorized'), 401);

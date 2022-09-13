@@ -32,12 +32,6 @@ class ProductInfoPage
 			$nft = $this->get_product_nft_info($product->get_meta('_cryptum_nft_options_product_id'));
 ?>
 			<div id="_cryptum_nft_info">
-				<div id="_cryptum_nft_info_title" style="display: flex;">
-					<span id="_cryptum_nft_nft_info">
-						<i class="fa fa-link"></i>
-					</span>
-					<p style="flex-grow:1;"><?= __('This product is linked by an NFT', 'cryptum-nft-domain') ?></p>
-				</div>
 				<?php if (isset($nft)) :
 					/*$uri = Api::get_nft_uri($nft['tokenAddress'], $nft['protocol'], $nft['tokenId']);
 
@@ -54,6 +48,12 @@ class ProductInfoPage
 						});
 					JS);*/
 				?>
+					<div id="_cryptum_nft_info_title" style="display: flex;">
+						<span id="_cryptum_nft_nft_info">
+							<i class="fa fa-link"></i>
+						</span>
+						<p style="flex-grow:1;"><?= __('This product is linked by an NFT', 'cryptum-nft-domain') ?></p>
+					</div>
 					<hr>
 					<p style="font-size: 14px;"><?= __('Token Address', 'cryptum-nft-domain') ?>: <?php echo $nft['tokenAddress'] ?></p>
 					<p style="font-size: 14px;"><?= __('Token Id', 'cryptum-nft-domain') ?> : <?php echo $nft['tokenId'] ?></p>

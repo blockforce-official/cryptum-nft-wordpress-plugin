@@ -28,9 +28,7 @@ class PluginInit
 	public function load()
 	{
 		add_action('wp_enqueue_scripts', function () {
-			wp_enqueue_style('jquery-ui', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
-			wp_enqueue_style('fontawesome', 'https://use.fontawesome.com/releases/v5.15.4/css/all.css');
-			wp_enqueue_script('jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', ['jquery'], true);
+			wp_enqueue_style('fontawesome', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/vendor/fontawesome@5.15.4.min.css');
 			wp_enqueue_script('myutils', CRYPTUM_NFT_PLUGIN_DIR . 'public/js/utils.js', [], true);
 		});
 
