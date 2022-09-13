@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Cryptum NFT Plugin 2.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cryptum-nft-"
 "wordpress-plugin\n"
-"POT-Creation-Date: 2022-06-08T15:29:46-03:00\n"
-"PO-Revision-Date: 2022-06-08 15:30-0300\n"
+"POT-Creation-Date: 2022-09-13T14:44:17+00:00\n"
+"PO-Revision-Date: 2022-09-13 11:49-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -18,13 +18,18 @@ msgstr ""
 "X-Domain: cryptum-nft-domain\n"
 
 #. Plugin Name of the plugin
-#. Description of the plugin
-msgid "Cryptum NFT Plugin"
+#, fuzzy
+#| msgid "Cryptum NFT Plugin"
+msgid "Cryptum NFT"
 msgstr "Cryptum NFT Plugin"
 
 #. Plugin URI of the plugin
 msgid "https://github.com/blockforce-official/cryptum-nft-wordpress-plugin"
 msgstr ""
+
+#. Description of the plugin
+msgid "Cryptum NFT Plugin"
+msgstr "Cryptum NFT Plugin"
 
 #. Author of the plugin
 msgid "Blockforce"
@@ -50,15 +55,15 @@ msgstr "Alterações foram atualizadas com sucesso"
 msgid "Settings"
 msgstr "Configurações"
 
-#: src/Admin/AdminSettings.php:118
+#: src/Admin/AdminSettings.php:95
 msgid "Cryptum NFT Settings"
 msgstr "Configurações do Cryptum NFT"
 
-#: src/Admin/AdminSettings.php:127
+#: src/Admin/AdminSettings.php:104
 msgid "This plugin allows to configure your store environment."
 msgstr "Este plugin permite configurar sua loja."
 
-#: src/Admin/AdminSettings.php:129
+#: src/Admin/AdminSettings.php:106
 msgid ""
 "It is necessary to create an account in\n"
 "\t\t\t\t\t\tCryptum Dashboard to receive the store id and API key to fill "
@@ -68,70 +73,58 @@ msgstr ""
 "\t\t\t\t\t\t\tCryptum Dashboard para receber o store id e a API key para "
 "preencher os campos abaixo."
 
-#: src/Admin/AdminSettings.php:143
+#: src/Admin/AdminSettings.php:120
 msgid "Environment"
 msgstr "Ambiente"
 
-#: src/Admin/AdminSettings.php:148
+#: src/Admin/AdminSettings.php:125
 msgid "Production"
 msgstr "Produção"
 
-#: src/Admin/AdminSettings.php:151
+#: src/Admin/AdminSettings.php:128
 msgid "Test"
 msgstr "Teste"
 
-#: src/Admin/AdminSettings.php:154
+#: src/Admin/AdminSettings.php:131
 msgid ""
 "Choose your environment. The Test environment should be used for testing "
 "only."
 msgstr ""
 "Escolha seu ambiente. O ambiente de Teste deve ser usado somente para testes."
 
-#: src/Admin/AdminSettings.php:158
+#: src/Admin/AdminSettings.php:135
 msgid "Store Id"
 msgstr "Store Id"
 
-#: src/Admin/AdminSettings.php:161
+#: src/Admin/AdminSettings.php:138
 msgid "Enter your Store ID generated in Cryptum Dashboard"
 msgstr "Insira seu ID da Loja (Store ID) que foi gerado no Cryptum Dashboard"
 
-#: src/Admin/AdminSettings.php:165
+#: src/Admin/AdminSettings.php:142
 msgid "API key"
 msgstr "API key"
 
-#: src/Admin/AdminSettings.php:168
+#: src/Admin/AdminSettings.php:145
 msgid "Enter your Cryptum API Key (Generated in Cryptum Dashboard)"
 msgstr "Insira sua API key (Gerada no Cryptum Dashboard)"
 
-#: src/Admin/AdminSettings.php:173
-msgid "Enable NFT View page"
-msgstr "Habilitar Página de NFTs"
-
-#: src/Admin/AdminSettings.php:179
-msgid "Token Addresses Filter"
-msgstr "Filtro de Tokens"
-
-#: src/Admin/AdminSettings.php:183
-msgid "Enter token addresses following the pattern: "
-msgstr ""
-
-#: src/Admin/AdminSettings.php:198
+#: src/Admin/AdminSettings.php:152
 msgid "Save Changes"
 msgstr "Salvar Alterações"
 
-#: src/Admin/OrderSettings.php:104
+#: src/Admin/OrderSettings.php:85
 msgid "Error in configuring Cryptum NFT Plugin"
 msgstr "Ocorreu um erro na configuração do plugin"
 
-#: src/Admin/OrderSettings.php:120
+#: src/Admin/OrderSettings.php:103
 msgid "Cryptum NFT Transactions Info"
 msgstr "Informações das transações do Cryptum NFT"
 
-#: src/Admin/OrderSettings.php:142
+#: src/Admin/OrderSettings.php:125
 msgid "NFT transactions hashes"
 msgstr "Hashes das transações de NFT"
 
-#: src/Admin/OrderSettings.php:150
+#: src/Admin/OrderSettings.php:133
 msgid "No NFTs have been transferred yet."
 msgstr "Nenhum NFT foi transferido ainda."
 
@@ -155,10 +148,9 @@ msgstr ""
 "Vá até o Cryptum Dashboard depois que atualizar o produto para poder "
 "vincular o NFT a esse SKU do produto"
 
-#: src/Admin/ProductEditPage.php:243 src/Admin/ProductEditPage.php:324
-#, fuzzy
+#: src/Admin/ProductEditPage.php:243 src/Admin/ProductEditPage.php:331
 msgid "Error in configuring product on Cryptum NFT Plugin"
-msgstr "Ocorreu um erro na configuração do plugin"
+msgstr "Ocorreu um erro na configuração do Cryptum NFT plugin"
 
 #: src/Admin/ProductEditPage.php:243
 msgid "Product SKU is duplicate, try to set another SKU value."
@@ -201,7 +193,7 @@ msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 "Insira ou conecte sua carteira abaixo para poder receber seus NFTs depois."
 
-#: src/CheckoutPage.php:76 src/NFTViewPage.php:141
+#: src/CheckoutPage.php:76
 msgid "User wallet address"
 msgstr "Endereço de carteira"
 
@@ -213,9 +205,13 @@ msgstr "Clique em assinar para assinar a mensagem e verificar sua carteira"
 msgid "Click the button to connect your wallet"
 msgstr "Clique abaixo para se conectar a sua carteira"
 
+#: src/CheckoutPage.php:97
+msgid "Connecting ..."
+msgstr "Conectando ..."
+
 #: src/CheckoutPage.php:104
-msgid "Connect to WalletConnect"
-msgstr "Conectar com WalletConnect"
+msgid "Connect to Wallet"
+msgstr "Conectar sua carteira"
 
 #: src/CheckoutPage.php:111
 msgid ""
@@ -252,15 +248,7 @@ msgstr ""
 msgid "Please enter a valid user wallet address."
 msgstr "Endereço de carteira inválido."
 
-#: src/NFTViewPage.php:24
-msgid "Your NFTs"
-msgstr "Seus NFTs"
-
-#: src/NFTViewPage.php:140
-msgid "No NFTs found yet."
-msgstr "Nenhum NFT encontrado ainda."
-
-#: src/ProductInfoPage.php:39
+#: src/ProductInfoPage.php:55
 msgid "This product is linked by an NFT"
 msgstr "Produto vinculado a um NFT"
 
@@ -271,3 +259,15 @@ msgstr "Token Id"
 #: src/ProductInfoPage.php:63
 msgid "View in explorer"
 msgstr "Ver no explorer"
+
+#~ msgid "Enable NFT View page"
+#~ msgstr "Habilitar Página de NFTs"
+
+#~ msgid "Token Addresses Filter"
+#~ msgstr "Filtro de Tokens"
+
+#~ msgid "Your NFTs"
+#~ msgstr "Seus NFTs"
+
+#~ msgid "No NFTs found yet."
+#~ msgstr "Nenhum NFT encontrado ainda."
