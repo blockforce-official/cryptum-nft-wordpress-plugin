@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-09-13T14:44:17+00:00\n"
+"POT-Creation-Date: 2022-09-13T17:55:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: cryptum-nft-domain\n"
@@ -34,81 +34,81 @@ msgstr ""
 msgid "https://blockforce.in"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:54
+#: src/Admin/AdminSettings.php:46
 msgid "Store not configured yet or not existent. You must configure a store in Cryptum dashboard first"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:62
+#: src/Admin/AdminSettings.php:54
 msgid "Changes updated successfully"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:73
+#: src/Admin/AdminSettings.php:66
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:95
+#: src/Admin/AdminSettings.php:88
 msgid "Cryptum NFT Settings"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:104
+#: src/Admin/AdminSettings.php:97
 msgid "This plugin allows to configure your store environment."
 msgstr ""
 
-#: src/Admin/AdminSettings.php:106
+#: src/Admin/AdminSettings.php:99
 msgid ""
 "It is necessary to create an account in\n"
 "\t\t\t\t\t\tCryptum Dashboard to receive the store id and API key to fill out the fields below."
 msgstr ""
 
-#: src/Admin/AdminSettings.php:120
+#: src/Admin/AdminSettings.php:113
 msgid "Environment"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:125
+#: src/Admin/AdminSettings.php:118
 msgid "Production"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:128
+#: src/Admin/AdminSettings.php:121
 msgid "Test"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:131
-msgid "Choose your environment. The Test environment should be used for testing only."
+#: src/Admin/AdminSettings.php:124
+msgid "Choose your environment. The Test environment should be used for testing only (testnets)."
 msgstr ""
 
-#: src/Admin/AdminSettings.php:135
+#: src/Admin/AdminSettings.php:128
 msgid "Store Id"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:138
+#: src/Admin/AdminSettings.php:131
 msgid "Enter your Store ID generated in Cryptum Dashboard"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:142
+#: src/Admin/AdminSettings.php:135
 msgid "API key"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:145
+#: src/Admin/AdminSettings.php:138
 msgid "Enter your Cryptum API Key (Generated in Cryptum Dashboard)"
 msgstr ""
 
-#: src/Admin/AdminSettings.php:152
+#: src/Admin/AdminSettings.php:145
 msgid "Save Changes"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:85
+#: src/Admin/OrderSettings.php:83
 msgid "Error in configuring Cryptum NFT Plugin"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:103
+#: src/Admin/OrderSettings.php:101
 msgid "Cryptum NFT Transactions Info"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:125
+#: src/Admin/OrderSettings.php:123
 msgid "NFT transactions hashes"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:133
+#: src/Admin/OrderSettings.php:131
 msgid "No NFTs have been transferred yet."
 msgstr ""
 
@@ -137,93 +137,84 @@ msgstr ""
 msgid "Product SKU is duplicate, try to set another SKU value."
 msgstr ""
 
-#: src/Admin/TokenAddressesTable.php:28
-msgid "Token Type"
-msgstr ""
-
-#: src/Admin/TokenAddressesTable.php:29
-#: src/ProductInfoPage.php:58
-msgid "Token Address"
-msgstr ""
-
-#: src/Admin/TokenAddressesTable.php:30
-msgid "Token ID"
-msgstr ""
-
-#: src/CheckoutPage.php:38
+#: src/CheckoutPage.php:45
 msgid "Sign"
 msgstr ""
 
-#: src/CheckoutPage.php:39
+#: src/CheckoutPage.php:46
 msgid "Save"
 msgstr ""
 
-#: src/CheckoutPage.php:40
+#: src/CheckoutPage.php:47
 msgid "Cancel"
 msgstr ""
 
-#: src/CheckoutPage.php:41
+#: src/CheckoutPage.php:48
 msgid "Wallet connected successfully"
 msgstr ""
 
-#: src/CheckoutPage.php:64
+#: src/CheckoutPage.php:71
 msgid "Wallet information"
 msgstr ""
 
-#: src/CheckoutPage.php:66
+#: src/CheckoutPage.php:73
 msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 
-#: src/CheckoutPage.php:76
+#: src/CheckoutPage.php:83
 msgid "User wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:85
+#: src/CheckoutPage.php:92
 msgid "Click to sign message in order to verify your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:92
+#: src/CheckoutPage.php:99
 msgid "Click the button to connect your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:97
+#: src/CheckoutPage.php:104
 msgid "Connecting ..."
 msgstr ""
 
-#: src/CheckoutPage.php:104
+#: src/CheckoutPage.php:111
 msgid "Connect to Wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:111
+#: src/CheckoutPage.php:118
 msgid "If you don't have a wallet yet or would like to generate a new one, click below"
 msgstr ""
 
-#: src/CheckoutPage.php:114
+#: src/CheckoutPage.php:121
 msgid "Generate new wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:116
+#: src/CheckoutPage.php:123
 msgid "New Wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:117
+#: src/CheckoutPage.php:124
 msgid "Address"
 msgstr ""
 
-#: src/CheckoutPage.php:118
+#: src/CheckoutPage.php:125
 msgid "Private Key"
 msgstr ""
 
-#: src/CheckoutPage.php:121
+#: src/CheckoutPage.php:128
 msgid "Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again"
 msgstr ""
 
-#: src/CheckoutPage.php:161
+#: src/CheckoutPage.php:168
 msgid "Please enter a valid user wallet address."
 msgstr ""
 
 #: src/ProductInfoPage.php:55
 msgid "This product is linked by an NFT"
+msgstr ""
+
+#: src/ProductInfoPage.php:58
+msgid "Token Address"
 msgstr ""
 
 #: src/ProductInfoPage.php:59

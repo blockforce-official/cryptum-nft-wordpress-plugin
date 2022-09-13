@@ -52,12 +52,12 @@ class ProductInfoPage
 						<span id="_cryptum_nft_nft_info">
 							<i class="fa fa-link"></i>
 						</span>
-						<p style="flex-grow:1;"><?= __('This product is linked by an NFT', 'cryptum-nft-domain') ?></p>
+						<p style="flex-grow:1;"><?php _e('This product is linked by an NFT', 'cryptum-nft-domain') ?></p>
 					</div>
 					<hr>
-					<p style="font-size: 14px;"><?= __('Token Address', 'cryptum-nft-domain') ?>: <?php echo $nft['tokenAddress'] ?></p>
-					<p style="font-size: 14px;"><?= __('Token Id', 'cryptum-nft-domain') ?> : <?php echo $nft['tokenId'] ?></p>
-					<p style="font-size: 14px;">Blockchain: <?php echo $nft['protocol'] ?></p>
+					<p style="font-size: 14px;"><?php _e('Token Address', 'cryptum-nft-domain') ?>: <?php esc_html_e($nft['tokenAddress']) ?></p>
+					<p style="font-size: 14px;"><?php _e('Token Id', 'cryptum-nft-domain') ?> : <?php esc_html_e($nft['tokenId']) ?></p>
+					<p style="font-size: 14px;">Blockchain: <?php esc_html_e($nft['protocol']) ?></p>
 					<p style="font-size: 14px;">
 						<a href="<?php echo Blockchain::get_explorer_url($nft['protocol'], $nft['tokenAddress'], $nft['tokenId']) ?>" target="_blank">
 							<?php _e('View in explorer', 'cryptum-nft-domain') ?>

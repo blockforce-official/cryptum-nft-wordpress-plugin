@@ -25,26 +25,24 @@ class OrderSettings
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
 			});
-			add_action('admin_notices', function () {
-				$title = get_transient('order_settings_error.title');
-				$message = get_transient('order_settings_error.message');
-				if (!empty($title) or !empty($message)) { ?>
+			$title = get_transient('order_settings_error.title');
+			$message = get_transient('order_settings_error.message');
+			if (!empty($title) or !empty($message)) {
+				add_action('admin_notices', function () use ($title, $message) { ?>
 					<div class="error notice notice-error">
-						<p class="cryptum_nft_title"><?php echo $title ?></p>
-						<p><?php echo $message ?></p>
+						<p class="cryptum_nft_title"><?php esc_html_e($title) ?></p>
+						<p><?php esc_html_e($message) ?></p>
 					</div>
-					<?php
-					delete_transient('order_settings_error.title');
-					delete_transient('order_settings_error.message');
-				}
-			});
+		<?php
+				});
+			}
 		}
 	}
 
 	function set_admin_notices_error($title = '', $message = '')
 	{
-		set_transient('order_settings_error.title', $title, 10);
-		set_transient('order_settings_error.message', $message, 10);
+		set_transient('order_settings_error.title', $title, 5);
+		set_transient('order_settings_error.message', $message, 5);
 	}
 
 	public function on_order_status_changed($order_id, $old_status, $new_status)
@@ -83,7 +81,7 @@ class OrderSettings
 				$message = $response['message'];
 				$this->set_admin_notices_error(
 					__("Error in configuring Cryptum NFT Plugin", 'cryptum-nft-domain'),
-					__($message, 'cryptum-nft-domain')
+					$message
 				);
 				return;
 			}
@@ -118,7 +116,7 @@ class OrderSettings
 
 			$message = $order->get_meta('_cryptum_nft_order_transactions_message');
 			if (!empty($message)) {
-				echo '<p style="font-size:12px;">' . __($message, 'cryptum-nft-domain')  . '</p>';
+				echo '<p style="font-size:12px;">' . esc_html($message)  . '</p>';
 			}
 			$transactions = json_decode($order->get_meta('_cryptum_nft_order_transactions'));
 			if (isset($transactions) and count($transactions) > 0) {
@@ -166,7 +164,7 @@ class OrderSettings
 			}
 
 			foreach ($order->get_items() as $item) {
-				$cryptum_productId = get_post_meta( $item->get_product_id(), '_cryptum_nft_options_product_id', true );
+				$cryptum_productId = get_post_meta($item->get_product_id(), '_cryptum_nft_options_product_id', true);
 				$products_columns = array_column($updatedProducts, '_id');
 				$found_product = array_search($cryptum_productId, $products_columns);
 				if ($found_product) {

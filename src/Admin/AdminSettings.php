@@ -27,42 +27,35 @@ class AdminSettings
 	{
 		if (is_admin()) {
 			register_setting('cryptum_nft_settings', 'cryptum_nft', function ($input) {
-				$options = get_option('cryptum_nft');
-				$storeId = $input['storeId'];
-				$apikey = $input['apikey'];
+				// Detect multiple sanitizing passes.
+				// Accomodates bug: https://core.trac.wordpress.org/ticket/21989
+				static $pass_count = 0; $pass_count++;
 
-				$url = Api::get_cryptum_store_url($input['environment']);
-				$response = Api::request("{$url}/stores/verification", array(
-					'body' => json_encode(array(
-						'storeId' => $storeId,
-						'plugin' => 'nft',
-						'ecommerceType' => 'wordpress'
-					)),
-					'headers' => array(
-						'x-api-key' => $apikey,
-						'Content-type' => 'application/json'
-					),
-					'data_format' => 'body',
-					'method' => 'POST',
-					'timeout' => 60
-				));
-				if (isset($response['error'])) {
-					Log::error($response);
+				if ( $pass_count <= 1 ) {
+					$options = get_option('cryptum_nft');
+					$store_id = $input['storeId'];
+					$apikey = $input['apikey'];
+					$environment = $input['environment'];
+
+					$response = Api::verify_store_credentials($apikey, $store_id, $environment);
+					if (isset($response['error'])) {
+						Log::error($response);
+						add_settings_error(
+							'cryptum_nft_settings',
+							'error',
+							__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
+							'error'
+						);
+						return $options;
+					}
 					add_settings_error(
 						'cryptum_nft_settings',
-						'error',
-						__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
-						'error'
+						'success',
+						__('Changes updated successfully', 'cryptum-nft-domain'),
+						'success'
 					);
-					return $options;
+					return $input;
 				}
-				add_settings_error(
-					'cryptum_nft_settings',
-					'success',
-					__('Changes updated successfully', 'cryptum-nft-domain'),
-					'success'
-				);
-				return $input;
 			});
 		}
 	}
@@ -128,7 +121,7 @@ class AdminSettings
 																} ?>><?php _e('Test', 'cryptum-nft-domain'); ?></option>
 									</select>
 									<br>
-									<p><?php echo __('Choose your environment. The Test environment should be used for testing only.', 'cryptum-nft-domain'); ?></p>
+									<p><?php echo __('Choose your environment. The Test environment should be used for testing only (testnets).', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">

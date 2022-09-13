@@ -259,4 +259,28 @@ class Api
 		]);
 		return $response;
 	}
+	/**
+	 * @param string $apikey
+	 * @param string $store_id
+	 * @param string $environment
+	 */
+	static function verify_store_credentials($apikey, $store_id, $environment)
+	{
+		$url = Api::get_cryptum_store_url($environment);
+		$response = Api::request("{$url}/stores/verification", array(
+			'body' => json_encode(array(
+				'storeId' => $store_id,
+				'plugin' => 'nft',
+				'ecommerceType' => 'wordpress'
+			)),
+			'headers' => array(
+				'x-api-key' => $apikey,
+				'Content-type' => 'application/json'
+			),
+			'data_format' => 'body',
+			'method' => 'POST',
+			'timeout' => 60
+		));
+		return $response;
+	}
 }

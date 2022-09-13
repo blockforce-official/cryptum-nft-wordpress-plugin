@@ -141,10 +141,10 @@ class CheckoutPage
 	public function save_user_meta()
 	{
 		check_ajax_referer('save_user_meta', 'security');
-		$address = $_POST['address'];
-		// Log::info($address);
 		$user = wp_get_current_user();
 		if (!empty($user)) {
+			$address = trim($_POST['address']);
+			// Log::info($address);
 			update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');
 		}
 
@@ -172,8 +172,9 @@ class CheckoutPage
 
 	public function checkout_field_update_order_meta($order_id)
 	{
-		if (!empty($_POST['user_wallet_address'])) {
-			update_post_meta($order_id, 'user_wallet_address', sanitize_text_field($_POST['user_wallet_address']));
+		$user_wallet_address = sanitize_text_field($_POST['user_wallet_address']);
+		if (!empty($user_wallet_address)) {
+			update_post_meta($order_id, 'user_wallet_address', $user_wallet_address);
 		}
 	}
 }
