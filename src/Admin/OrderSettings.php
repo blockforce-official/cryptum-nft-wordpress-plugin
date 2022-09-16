@@ -21,7 +21,7 @@ class OrderSettings
 	{
 		$postType = Misc::get_post_type_from_querystring($_SERVER['QUERY_STRING']);
 		if (is_admin() && strcmp($postType, 'shop_order') == 0) {
-			Log::info($postType);
+			// Log::info($postType);
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
 			});
@@ -30,19 +30,21 @@ class OrderSettings
 			if (!empty($title) or !empty($message)) {
 				add_action('admin_notices', function () use ($title, $message) { ?>
 					<div class="error notice notice-error">
-						<p class="cryptum_nft_title"><?php esc_html_e($title) ?></p>
-						<p><?php esc_html_e($message) ?></p>
+						<p class="cryptum_nft_title"><?php htmlspecialchars($title) ?></p>
+						<p><?php htmlspecialchars($message) ?></p>
 					</div>
 		<?php
 				});
+				delete_transient('order_settings_error.title');
+				delete_transient('order_settings_error.message');
 			}
 		}
 	}
 
 	function set_admin_notices_error($title = '', $message = '')
 	{
-		set_transient('order_settings_error.title', $title, 5);
-		set_transient('order_settings_error.message', $message, 5);
+		set_transient('order_settings_error.title', $title);
+		set_transient('order_settings_error.message', $message);
 	}
 
 	public function on_order_status_changed($order_id, $old_status, $new_status)

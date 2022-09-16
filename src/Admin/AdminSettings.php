@@ -26,12 +26,19 @@ class AdminSettings
 	public function load()
 	{
 		if (is_admin()) {
+			add_action('admin_enqueue_scripts', function ($hook) {
+				if (!strstr($hook, "cryptum_nft_settings")) {
+					return;
+				}
+				wp_enqueue_style('admin-style', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
+			});
 			register_setting('cryptum_nft_settings', 'cryptum_nft', function ($input) {
 				// Detect multiple sanitizing passes.
 				// Accomodates bug: https://core.trac.wordpress.org/ticket/21989
-				static $pass_count = 0; $pass_count++;
+				static $pass_count = 0;
+				$pass_count++;
 
-				if ( $pass_count <= 1 ) {
+				if ($pass_count <= 1) {
 					$options = get_option('cryptum_nft');
 					$store_id = $input['storeId'];
 					$apikey = $input['apikey'];
@@ -82,7 +89,6 @@ class AdminSettings
 
 	public function cryptum_nft_settings()
 	{ ?>
-		<link rel="stylesheet" href="<?php echo CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css' ?>">
 		<div class="cryptum_nft_admin_wrap">
 			<div class="cryptum_nft_admin_top">
 				<h1><?php echo __('Cryptum NFT Settings', 'cryptum-nft-domain') ?></h1>

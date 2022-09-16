@@ -32,22 +32,7 @@ class ProductInfoPage
 			$nft = $this->get_product_nft_info($product->get_meta('_cryptum_nft_options_product_id'));
 ?>
 			<div id="_cryptum_nft_info">
-				<?php if (isset($nft)) :
-					/*$uri = Api::get_nft_uri($nft['tokenAddress'], $nft['protocol'], $nft['tokenId']);
-
-					wc_enqueue_js(<<<JS
-						jQuery(function() {
-							jQuery.ajax({
-								url: formatIpfsUri("{$uri}"),
-								method: 'GET',
-								success: (data) => {
-									jQuery('.wp-post-image').attr('src', formatIpfsUri(data.image));
-								},
-								error: (xhr, status, error) => { console.error(error); },
-							});
-						});
-					JS);*/
-				?>
+				<?php if (isset($nft)) : ?>
 					<div id="_cryptum_nft_info_title" style="display: flex;">
 						<span id="_cryptum_nft_nft_info">
 							<i class="fa fa-link"></i>
