@@ -52,7 +52,7 @@ class AdminSettings
 							__('Store id is not valid UUID string', 'cryptum-nft-domain'),
 							'error'
 						);
-						return $input;
+						return $options;
 					}
 					if (!Misc::is_apikey_valid($apikey)) {
 						add_settings_error(
@@ -61,7 +61,7 @@ class AdminSettings
 							__('API key is not valid', 'cryptum-nft-domain'),
 							'error'
 						);
-						return $input;
+						return $options;
 					}
 
 					$response = Api::verify_store_credentials($apikey, $store_id, $environment);
