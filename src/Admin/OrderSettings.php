@@ -142,22 +142,25 @@ class OrderSettings
 			status_header(200);
 			exit();
 		} elseif ('POST' == $_SERVER['REQUEST_METHOD']) {
-			$apikey = trim($_SERVER['HTTP_X_API_KEY']);
+			$apikey = filter_input(INPUT_SERVER, 'HTTP_X_API_KEY', FILTER_SANITIZE_SPECIAL_CHARS);
 			$options = get_option('cryptum_nft');
-			if ($apikey != $options['apikey']) {
-				wp_send_json_error(array('message' => 'Unauthorized'), 401);
+			if (strcmp($apikey, $options['apikey']) !== 0) {
+				wp_send_json_error(array('message' => 'Unauthorized request'), 401);
 			}
 
 			$raw_post = file_get_contents('php://input');
 			$decoded  = json_decode($raw_post);
-			$ecommerceOrderId = $decoded->ecommerceOrderId;
+			if (!isset($decoded)) {
+				wp_send_json_error(array('message' => 'JSON body payload is null or invalid'), 400);
+			}
+			$ecommerceOrderId = intval($decoded->ecommerceOrderId);
 			$storeId = $decoded->storeId;
 			$message = $decoded->message;
 			$transactions = $decoded->transactions;
 			$updatedProducts = $decoded->updatedProducts;
 			Log::info($updatedProducts);
 
-			if (!isset($storeId) or $options['storeId'] != $storeId) {
+			if (strcmp($options['storeId'], $storeId) !== 0) {
 				wp_send_json_error(array('message' => 'Incorrect store id'), 400);
 			}
 			$order = wc_get_order($ecommerceOrderId);

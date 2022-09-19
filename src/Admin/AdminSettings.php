@@ -4,6 +4,7 @@ namespace Cryptum\NFT\Admin;
 
 use Cryptum\NFT\Utils\Api;
 use Cryptum\NFT\Utils\Log;
+use Cryptum\NFT\Utils\Misc;
 
 // @codeCoverageIgnoreStart
 defined('ABSPATH') or exit;
@@ -43,6 +44,25 @@ class AdminSettings
 					$store_id = $input['storeId'];
 					$apikey = $input['apikey'];
 					$environment = $input['environment'];
+
+					if (!Misc::is_uuid_valid($store_id)) {
+						add_settings_error(
+							'cryptum_nft_settings',
+							'error',
+							__('Store id is not valid UUID string', 'cryptum-nft-domain'),
+							'error'
+						);
+						return $input;
+					}
+					if (!Misc::is_apikey_valid($apikey)) {
+						add_settings_error(
+							'cryptum_nft_settings',
+							'error',
+							__('API key is not valid', 'cryptum-nft-domain'),
+							'error'
+						);
+						return $input;
+					}
 
 					$response = Api::verify_store_credentials($apikey, $store_id, $environment);
 					if (isset($response['error'])) {
