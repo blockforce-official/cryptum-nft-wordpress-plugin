@@ -85,7 +85,6 @@ class ProductEditPage
 
 	public function on_process_product_metadata($post_id)
 	{
-		// Log::info('on_process_product_metadata');
 		$product = wc_get_product($post_id);
 		$old_nft_enabled = $product->get_meta('_cryptum_nft_options_nft_enable', true);
 		$nft_enabled = filter_input(INPUT_POST, '_cryptum_nft_options_nft_enable');
