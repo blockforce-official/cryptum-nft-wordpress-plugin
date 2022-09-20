@@ -19,7 +19,7 @@ class ProductEditPage
 	private function __construct()
 	{
 		$postType = Misc::get_post_type_from_querystring($_SERVER['QUERY_STRING']);
-		if (is_admin() && strcmp($postType, 'product') == 0) {
+		if (is_admin() && strcmp($postType, 'product') === 0) {
 			// Log::info($postType);
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
@@ -29,8 +29,8 @@ class ProductEditPage
 				$message = get_transient('product_edit_page_error.message');
 				if (!empty($title) or !empty($message)) { ?>
 					<div class="error notice notice-error">
-						<p class="cryptum_nft_title"><?php echo htmlspecialchars($title) ?></p>
-						<p><?php echo htmlspecialchars($message) ?></p>
+						<p class="cryptum_nft_title"><?php esc_html_e($title) ?></p>
+						<p><?php esc_html_e($message) ?></p>
 					</div>
 		<?php
 					delete_transient('product_edit_page_error.title');
@@ -149,7 +149,10 @@ class ProductEditPage
 						$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 						$product->update_meta_data('_cryptum_nft_product_price', $price);
 					} else {
-						$this->set_admin_notices_error(__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'), __('Product SKU is duplicate, try to set another SKU value.', 'cryptum-nft-domain'));
+						$this->set_admin_notices_error(
+							__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'),
+							__('Product SKU is duplicate, try to set another SKU value.', 'cryptum-nft-domain')
+						);
 						return false;
 					}
 				}

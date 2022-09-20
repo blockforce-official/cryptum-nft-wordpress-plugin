@@ -106,31 +106,13 @@ class CheckoutPage
 						</div>
 						<button id="user-wallet-connection-button" class="button alt">
 							<div id="user-wallet-connection-img-div">
-								<img src="<?php echo CRYPTUM_NFT_PLUGIN_DIR . 'public/img/walletconnect-logo.svg' ?>" alt="" />
+								<img src="<?php echo esc_url(CRYPTUM_NFT_PLUGIN_DIR . 'public/img/walletconnect-logo.svg') ?>" alt="" />
 							</div>
 							<div>&nbsp;&nbsp;<?php echo __('Connect to Wallet', 'cryptum-nft-domain') ?></div>
 						</button>
 						<p id="user-walletconnect-info" style="color:green;"></p>
 						<p id="user-walletconnect-error" style="color:red;"></p>
 					</div>
-					<!-- <div id="user-wallet-generator-block">
-						<p class="user-wallet-label">
-							<?php echo __('If you don\'t have a wallet yet or would like to generate a new one, click below', 'cryptum-nft-domain') ?>:
-						</p>
-						<button id="user-wallet-generator-button" class="button alt">
-							<?php echo __('Generate new wallet', 'cryptum-nft-domain') ?>
-						</button>
-						<div id="user-wallet-generator-modal" style="display:none;" title="<?php echo __('New Wallet', 'cryptum-nft-domain') ?>">
-							<p><strong><?php echo __('Address', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-address"></span></p>
-							<p><strong><?php echo __('Private Key', 'cryptum-nft-domain') ?>:</strong> <span id="user-wallet-modal-privateKey"></span></p>
-							<p style="color:red;">
-								<strong>
-									<?php echo __('Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again', 'cryptum-nft-domain') ?>
-								</strong>
-							</p>
-							<p id="user-wallet-modal-error" style="color:red; display:none;"></p>
-						</div>
-					</div> -->
 				</div>
 			</div>
 			<br>

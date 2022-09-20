@@ -20,7 +20,7 @@ class OrderSettings
 	private function __construct()
 	{
 		$postType = Misc::get_post_type_from_querystring($_SERVER['QUERY_STRING']);
-		if (is_admin() && strcmp($postType, 'shop_order') == 0) {
+		if (is_admin() && strcmp($postType, 'shop_order') === 0) {
 			// Log::info($postType);
 			add_action('wp_enqueue_scripts', function () {
 				wp_enqueue_style('admin', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
@@ -30,8 +30,8 @@ class OrderSettings
 			if (!empty($title) or !empty($message)) {
 				add_action('admin_notices', function () use ($title, $message) { ?>
 					<div class="error notice notice-error">
-						<p class="cryptum_nft_title"><?php htmlspecialchars($title) ?></p>
-						<p><?php htmlspecialchars($message) ?></p>
+						<p class="cryptum_nft_title"><?php esc_html_e($title) ?></p>
+						<p><?php esc_html_e($message) ?></p>
 					</div>
 		<?php
 				});
@@ -124,9 +124,9 @@ class OrderSettings
 			if (isset($transactions) and count($transactions) > 0) {
 				echo '<h4>' . __('NFT transactions hashes', 'cryptum-nft-domain') . '</h4>';
 				foreach ($transactions as $transaction) {
-					echo '<p><strong>' . $transaction->protocol . ': </strong> '
-						. '<a href="' . Blockchain::get_tx_explorer_url($transaction->protocol, $transaction->hash) . '" target="_blank">'
-						. $transaction->hash
+					echo '<p><strong>' . esc_html($transaction->protocol) . ': </strong> '
+						. '<a href="' . esc_url(Blockchain::get_tx_explorer_url($transaction->protocol, $transaction->hash)) . '" target="_blank">'
+						. esc_html($transaction->hash)
 						. '</a></p>';
 				}
 			} else {

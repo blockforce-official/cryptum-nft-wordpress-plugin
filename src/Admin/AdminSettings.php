@@ -111,7 +111,7 @@ class AdminSettings
 	{ ?>
 		<div class="cryptum_nft_admin_wrap">
 			<div class="cryptum_nft_admin_top">
-				<h1><?php echo __('Cryptum NFT Settings', 'cryptum-nft-domain') ?></h1>
+				<h1><?php _e('Cryptum NFT Settings', 'cryptum-nft-domain') ?></h1>
 				<hr>
 			</div>
 			<div class="cryptum_nft_admin_main_wrap">
@@ -120,9 +120,9 @@ class AdminSettings
 				?>
 				<div class="cryptum_nft_admin_main_left">
 					<p class="cryptum_nft_admin_main_p">
-						<?php echo __('This plugin allows to configure your store environment.', 'cryptum-nft-domain') ?>
+						<?php _e('This plugin allows to configure your store environment.', 'cryptum-nft-domain') ?>
 						<br>
-						<?php echo __('It is necessary to create an account in
+						<?php _e('It is necessary to create an account in
 						Cryptum Dashboard to receive the store id and API key to fill out the fields below.', 'cryptum-nft-domain') ?>
 					</p>
 					<br>
@@ -136,7 +136,7 @@ class AdminSettings
 						<table class="form-table">
 
 							<tr valign="top">
-								<th scope="row"><label for="order"><?php echo __('Environment', 'cryptum-nft-domain'); ?></label></th>
+								<th scope="row"><label for="order"><?php _e('Environment', 'cryptum-nft-domain'); ?></label></th>
 								<td>
 									<select name="cryptum_nft[environment]">
 										<option value="production" <?php if ($options['environment'] == 'production') {
@@ -147,21 +147,21 @@ class AdminSettings
 																} ?>><?php _e('Test', 'cryptum-nft-domain'); ?></option>
 									</select>
 									<br>
-									<p><?php echo __('Choose your environment. The Test environment should be used for testing only (testnets).', 'cryptum-nft-domain'); ?></p>
+									<p><?php _e('Choose your environment. The Test environment should be used for testing only (testnets).', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="storeId"><?php _e('Store Id', 'cryptum-nft-domain'); ?></label></th>
 								<td>
-									<input id="storeId" type="text" name="cryptum_nft[storeId]" value="<?php echo $options['storeId']; ?>" style="width: 70%" />
-									<p><?php echo __('Enter your Store ID generated in Cryptum Dashboard', 'cryptum-nft-domain'); ?></p>
+									<input id="storeId" type="text" name="cryptum_nft[storeId]" value="<?php echo esc_attr($options['storeId']); ?>" style="width: 70%" />
+									<p><?php _e('Enter your Store ID generated in Cryptum Dashboard', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<tr valign="top">
 								<th scope="row"><label for="apikey"><?php _e('API key', 'cryptum-nft-domain'); ?></label></th>
 								<td>
-									<input id="apikey" type="text" name="cryptum_nft[apikey]" value="<?php echo $options['apikey']; ?>" style="width: 70%" />
-									<p><?php echo __('Enter your Cryptum API Key (Generated in Cryptum Dashboard)', 'cryptum-nft-domain'); ?></p>
+									<input id="apikey" type="text" name="cryptum_nft[apikey]" value="<?php echo esc_attr($options['apikey']); ?>" style="width: 70%" />
+									<p><?php _e('Enter your Cryptum API Key (Generated in Cryptum Dashboard)', 'cryptum-nft-domain'); ?></p>
 								</td>
 							</tr>
 							<br>
