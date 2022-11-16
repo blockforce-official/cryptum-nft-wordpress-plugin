@@ -85,11 +85,11 @@ class Api
 {
 	static function get_cryptum_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io' : 'https://api-hml.cryptum.io';
+		return $environment == 'production' ? 'https://api.cryptum.io' : 'https://az-api-dev.cryptum.io';
 	}
 	static function get_cryptum_store_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-hml.cryptum.io/plugins';
+		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://az-api-dev.cryptum.io/plugins';
 	}
 
 	static function request($url, $args = array())

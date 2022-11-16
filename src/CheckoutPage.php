@@ -86,6 +86,19 @@ class CheckoutPage
 					),
 					$wallet_address
 				);
+				woocommerce_form_field(
+					'user_wallet_address',
+					array(
+						'type' => 'text',
+						'class' => array(
+							'my-field-class form-row-wide user-wallet-form-field'
+						),
+						'label' => __('User wallet address', 'cryptum-nft-domain'),
+						'placeholder' => '',
+						'required' => true
+					),
+					$wallet_address
+				);
 				?>
 
 				<div id="wallet-sign-modal" style="display:none;">
@@ -146,7 +159,7 @@ class CheckoutPage
 			}
 		}
 		if ($has_nft_enabled) {
-			if (empty($_POST['user_wallet_address']) or !AddressValidator::isETHAddress($_POST['user_wallet_address'])) {
+			if (empty($_POST['user_wallet_address']) or !AddressValidator::is_eth_address($_POST['user_wallet_address'])) {
 				wc_add_notice(__('Please enter a valid user wallet address.', 'cryptum-nft-domain'), 'error');
 			}
 		}
