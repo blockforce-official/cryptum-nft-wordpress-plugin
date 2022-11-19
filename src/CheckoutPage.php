@@ -4,6 +4,7 @@ namespace Cryptum\NFT;
 
 use Cryptum\NFT\Utils\AddressValidator;
 use Cryptum\NFT\Utils\Api;
+use Cryptum\NFT\Utils\Blockchain;
 use Cryptum\NFT\Utils\Log;
 
 class CheckoutPage
@@ -72,28 +73,47 @@ class CheckoutPage
 				$error_message = __('The following products are not linked to NFTs:', 'cryptum-nft-domain');
 			}
 
-			$not_linked_message = __('The following products are not linked to NFTs:', 'cryptum-nft-domain');
 			$not_linked_product_names = [];
+			$not_available_product_names = [];
 			foreach ($res['products'] as $p) {
-				if (!isset($p['nft'])) {
+				Log::info($p);
+				if ($p['status'] === 'null' or !isset($p['nft'])) {
 					array_push($not_linked_product_names, "<li>{$p['name']}</li>");
+				} elseif ($p['status'] === 'transferred' or $p['nft']['amount'] === 0) {
+					array_push($not_available_product_names, "<li>{$p['name']}</li>");
+				} elseif ($p['status'] === 'available' or $p['nft']['amount'] > 0) {
+					if (Blockchain::is_EVM($p['nft']['protocol'])) {
+						$this->should_show_eth_wallet_address = true;
+					} elseif ($p['nft']['protocol'] === 'HATHOR') {
+						$this->should_show_hathor_wallet_address = true;
+					}
 				}
 			}
 			if (count($not_linked_product_names) > 0) {
 				$not_linked_product_names = join('', $not_linked_product_names);
-				$error_message = $not_linked_message .
+				$error_message .= '<br>' . __('The following products are not linked to NFTs:', 'cryptum-nft-domain') .
 					"<ul>{$not_linked_product_names}</ul>" .
 					'<p style="font-size: small;">' .
 					__('You still can purchase those products but you won\'t be able to receive the NFTs at the moment because they are not properly linked', 'cryptum-nft-domain') .
+					"</p>";
+			}
+			if (count($not_available_product_names) > 0) {
+				$not_available_product_names = join('', $not_available_product_names);
+				$error_message .= '<br>' . __('The following products have no more linked NFTs:', 'cryptum-nft-domain') .
+					"<ul>{$not_available_product_names}</ul>" .
+					'<p style="font-size: small;">' .
+					__('You still can purchase those products but you won\'t be able to receive the NFTs at the moment because they have no more linked NFTs', 'cryptum-nft-domain') .
 					"</p>";
 			}
 ?>
 			<div class="cryptum-nft-wallet-info">
 				<h3><?php echo __('Wallet information', 'cryptum-nft-domain') ?></h3>
 
-				<div class="error-notice">
+				<div class="<?php !empty($error_message) ? esc_attr_e('error-notice') : esc_attr_e('') ?>">
 					<?php
 					if (!empty($error_message)) {
+						$should_show_eth_wallet_address = false;
+						$should_show_hathor_wallet_address = false;
 						echo $error_message;
 					} else {
 						echo '<p>' . __('Insert or connect your wallet address below to receive the NFTs later.', 'cryptum-nft-domain') . '</p>';
@@ -170,9 +190,13 @@ class CheckoutPage
 		check_ajax_referer('save_user_meta', 'security');
 		$user = wp_get_current_user();
 		if (!empty($user)) {
-			$address = trim($_POST['address']);
+			$hathor_address = trim($_POST['hathor_address']);
+			$eth_address = trim($_POST['eth_address']);
 			// Log::info($address);
-			update_user_meta($user->ID, '_cryptum_nft_user_wallet', '{"address":"' . $address . '"}');
+			update_user_meta($user->ID, '_cryptum_nft_user_wallet', json_encode(array(
+				'hathor_address' => $hathor_address,
+				'eth_address' => $eth_address,
+			)));
 		}
 
 		wp_die();
@@ -191,8 +215,11 @@ class CheckoutPage
 			}
 		}
 		if ($has_nft_enabled) {
-			if (empty($_POST['user_eth_wallet_address']) or !AddressValidator::is_eth_address($_POST['user_eth_wallet_address'])) {
-				wc_add_notice(__('Please enter a valid user wallet address.', 'cryptum-nft-domain'), 'error');
+			if (isset($_POST['user_eth_wallet_address']) and !AddressValidator::is_eth_address($_POST['user_eth_wallet_address'])) {
+				wc_add_notice(__('Please enter a valid Ethereum compatible wallet address.', 'cryptum-nft-domain'), 'error');
+			}
+			if (isset($_POST['user_hathor_wallet_address']) and !AddressValidator::is_hathor_address($_POST['user_hathor_wallet_address'])) {
+				wc_add_notice(__('Please enter a valid Hathor wallet address.', 'cryptum-nft-domain'), 'error');
 			}
 		}
 	}

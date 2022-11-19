@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-19T17:40:10+00:00\n"
+"POT-Creation-Date: 2022-11-19T20:39:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: cryptum-nft-domain\n"
@@ -145,65 +145,77 @@ msgstr ""
 msgid "Product SKU is duplicate, try to set another SKU value."
 msgstr ""
 
-#: src/CheckoutPage.php:46
+#: src/CheckoutPage.php:47
 msgid "Sign"
 msgstr ""
 
-#: src/CheckoutPage.php:47
+#: src/CheckoutPage.php:48
 msgid "Save"
 msgstr ""
 
-#: src/CheckoutPage.php:48
+#: src/CheckoutPage.php:49
 msgid "Cancel"
 msgstr ""
 
-#: src/CheckoutPage.php:49
+#: src/CheckoutPage.php:50
 msgid "Wallet connected successfully"
 msgstr ""
 
-#: src/CheckoutPage.php:72
-#: src/CheckoutPage.php:75
+#: src/CheckoutPage.php:73
+#: src/CheckoutPage.php:94
 msgid "The following products are not linked to NFTs:"
 msgstr ""
 
-#: src/CheckoutPage.php:86
+#: src/CheckoutPage.php:97
 msgid "You still can purchase those products but you won't be able to receive the NFTs at the moment because they are not properly linked"
 msgstr ""
 
-#: src/CheckoutPage.php:90
-msgid "Wallet information"
+#: src/CheckoutPage.php:102
+msgid "The following products have no more linked NFTs:"
 msgstr ""
 
-#: src/CheckoutPage.php:97
-msgid "Insert or connect your wallet address below to receive the NFTs later."
+#: src/CheckoutPage.php:105
+msgid "You still can purchase those products but you won't be able to receive the NFTs at the moment because they have no more linked NFTs"
 msgstr ""
 
 #: src/CheckoutPage.php:110
+msgid "Wallet information"
+msgstr ""
+
+#: src/CheckoutPage.php:119
+msgid "Insert or connect your wallet address below to receive the NFTs later."
+msgstr ""
+
+#: src/CheckoutPage.php:132
 msgid "Hathor wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:125
+#: src/CheckoutPage.php:147
 msgid "Eth wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:134
+#: src/CheckoutPage.php:156
 msgid "Click to sign message in order to verify your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:141
+#: src/CheckoutPage.php:163
 msgid "Click the button to connect your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:146
+#: src/CheckoutPage.php:168
 msgid "Connecting ..."
 msgstr ""
 
-#: src/CheckoutPage.php:153
+#: src/CheckoutPage.php:175
 msgid "Connect to Wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:193
-msgid "Please enter a valid user wallet address."
+#: src/CheckoutPage.php:221
+msgid "Please enter a valid Ethereum compatible wallet address."
+msgstr ""
+
+#: src/CheckoutPage.php:224
+msgid "Please enter a valid Hathor wallet address."
 msgstr ""
 
 #: src/ProductInfoPage.php:40

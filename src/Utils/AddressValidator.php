@@ -43,7 +43,7 @@ class AddressValidator
 				return false;
 			}
 			return true;
-		} catch (\Throwable) {
+		} catch (\Throwable $e) {
 			return false;
 		}
 	}

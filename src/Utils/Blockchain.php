@@ -63,4 +63,17 @@ class Blockchain
 		}
 		return $uri;
 	}
+	static function is_EVM(string $protocol)
+	{
+		switch ($protocol) {
+			case 'CELO':
+			case 'ETHEREUM':
+			case 'BSC':
+			case 'POLYGON':
+			case 'AVAXCCHAIN':
+				return true;
+			default:
+				return false;
+		}
+	}
 }
