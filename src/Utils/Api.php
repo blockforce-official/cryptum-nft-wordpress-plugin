@@ -226,6 +226,36 @@ class Api
 		}
 		return $res;
 	}
+	static function get_products_by_ids(array $cryptum_product_ids)
+	{
+		$options = get_option('cryptum_nft');
+		$url = Api::get_cryptum_store_url($options['environment']);
+
+		$qs = [];
+		foreach ($cryptum_product_ids as $id) {
+			array_push($qs, "ids[]={$id}");
+		}
+		$ids = join("&", $qs);
+		$res = Api::request("{$url}/products?storeId={$options['storeId']}&{$ids}", array(
+			'method' => 'GET',
+			'headers' => array(
+				'x-api-key' => $options['apikey'],
+				'Content-type' => 'application/json'
+			),
+			'timeout' => 60
+		));
+		if (isset($res['error'])) {
+			Log::info([
+				'url' => "{$url}/products?storeId={$options['storeId']}&{$ids}",
+				'method' => 'GET',
+				'request' => array(
+					'ids' => $ids,
+				),
+				'response' => $res
+			]);
+		}
+		return $res;
+	}
 	/**
 	 * @param \WC_Order $order
 	 * @param string $store_id
@@ -243,7 +273,7 @@ class Api
 				'products' => $products,
 				'ecommerceType' => 'wordpress',
 				'ecommerceOrderId' => $order->get_id(),
-				'clientWallet' => $order->get_meta('user_wallet_address'),
+				'clientWallet' => $order->get_meta('user_eth_wallet_address'),
 				'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback'),
 				'orderTotal' => $order->get_total(),
 				'orderCurrency' => $order->get_currency()

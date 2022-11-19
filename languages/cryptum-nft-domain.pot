@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-09-19T15:32:17+00:00\n"
+"POT-Creation-Date: 2022-11-19T17:40:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: cryptum-nft-domain\n"
@@ -136,84 +136,73 @@ msgstr ""
 msgid "After updating this product, go to Cryptum Dashboard to mint and link the NFT to this product SKU"
 msgstr ""
 
-#: src/Admin/ProductEditPage.php:152
-#: src/Admin/ProductEditPage.php:250
+#: src/Admin/ProductEditPage.php:153
+#: src/Admin/ProductEditPage.php:253
 msgid "Error in configuring product on Cryptum NFT Plugin"
 msgstr ""
 
-#: src/Admin/ProductEditPage.php:152
+#: src/Admin/ProductEditPage.php:154
 msgid "Product SKU is duplicate, try to set another SKU value."
 msgstr ""
 
-#: src/CheckoutPage.php:45
+#: src/CheckoutPage.php:46
 msgid "Sign"
 msgstr ""
 
-#: src/CheckoutPage.php:46
+#: src/CheckoutPage.php:47
 msgid "Save"
 msgstr ""
 
-#: src/CheckoutPage.php:47
+#: src/CheckoutPage.php:48
 msgid "Cancel"
 msgstr ""
 
-#: src/CheckoutPage.php:48
+#: src/CheckoutPage.php:49
 msgid "Wallet connected successfully"
 msgstr ""
 
-#: src/CheckoutPage.php:71
+#: src/CheckoutPage.php:72
+#: src/CheckoutPage.php:75
+msgid "The following products are not linked to NFTs:"
+msgstr ""
+
+#: src/CheckoutPage.php:86
+msgid "You still can purchase those products but you won't be able to receive the NFTs at the moment because they are not properly linked"
+msgstr ""
+
+#: src/CheckoutPage.php:90
 msgid "Wallet information"
 msgstr ""
 
-#: src/CheckoutPage.php:73
+#: src/CheckoutPage.php:97
 msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 
-#: src/CheckoutPage.php:83
-msgid "User wallet address"
-msgstr ""
-
-#: src/CheckoutPage.php:92
-msgid "Click to sign message in order to verify your wallet"
-msgstr ""
-
-#: src/CheckoutPage.php:99
-msgid "Click the button to connect your wallet"
-msgstr ""
-
-#: src/CheckoutPage.php:104
-msgid "Connecting ..."
-msgstr ""
-
-#: src/CheckoutPage.php:111
-msgid "Connect to Wallet"
-msgstr ""
-
-#: src/CheckoutPage.php:118
-msgid "If you don't have a wallet yet or would like to generate a new one, click below"
-msgstr ""
-
-#: src/CheckoutPage.php:121
-msgid "Generate new wallet"
-msgstr ""
-
-#: src/CheckoutPage.php:123
-msgid "New Wallet"
-msgstr ""
-
-#: src/CheckoutPage.php:124
-msgid "Address"
+#: src/CheckoutPage.php:110
+msgid "Hathor wallet address"
 msgstr ""
 
 #: src/CheckoutPage.php:125
-msgid "Private Key"
+msgid "Eth wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:128
-msgid "Obs: Copy this private key and save it somewhere safe. For security reasons, we cannot show it to you again"
+#: src/CheckoutPage.php:134
+msgid "Click to sign message in order to verify your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:168
+#: src/CheckoutPage.php:141
+msgid "Click the button to connect your wallet"
+msgstr ""
+
+#: src/CheckoutPage.php:146
+msgid "Connecting ..."
+msgstr ""
+
+#: src/CheckoutPage.php:153
+msgid "Connect to Wallet"
+msgstr ""
+
+#: src/CheckoutPage.php:193
 msgid "Please enter a valid user wallet address."
 msgstr ""
 

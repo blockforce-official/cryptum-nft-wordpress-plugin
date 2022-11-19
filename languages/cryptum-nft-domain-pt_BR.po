@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Cryptum NFT Plugin 2.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cryptum-nft-"
 "wordpress-plugin\n"
-"POT-Creation-Date: 2022-09-19T15:32:17+00:00\n"
-"PO-Revision-Date: 2022-09-19 12:35-0300\n"
+"POT-Creation-Date: 2022-11-19T17:40:10+00:00\n"
+"PO-Revision-Date: 2022-11-19 14:40-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2\n"
 "X-Domain: cryptum-nft-domain\n"
 
 #. Plugin Name of the plugin
@@ -155,91 +155,76 @@ msgstr ""
 "Vá até o Cryptum Dashboard depois que atualizar o produto para poder "
 "vincular o NFT a esse SKU do produto"
 
-#: src/Admin/ProductEditPage.php:152 src/Admin/ProductEditPage.php:250
+#: src/Admin/ProductEditPage.php:153 src/Admin/ProductEditPage.php:253
 msgid "Error in configuring product on Cryptum NFT Plugin"
 msgstr "Ocorreu um erro na configuração do Cryptum NFT plugin"
 
-#: src/Admin/ProductEditPage.php:152
+#: src/Admin/ProductEditPage.php:154
 msgid "Product SKU is duplicate, try to set another SKU value."
 msgstr "SKU do produto está duplicado, informe outro valor."
 
-#: src/CheckoutPage.php:45
+#: src/CheckoutPage.php:46
 msgid "Sign"
 msgstr "Assinar"
 
-#: src/CheckoutPage.php:46
+#: src/CheckoutPage.php:47
 msgid "Save"
 msgstr "Salvar"
 
-#: src/CheckoutPage.php:47
+#: src/CheckoutPage.php:48
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/CheckoutPage.php:48
+#: src/CheckoutPage.php:49
 msgid "Wallet connected successfully"
 msgstr "Carteira conectada com sucesso"
 
-#: src/CheckoutPage.php:71
+#: src/CheckoutPage.php:72 src/CheckoutPage.php:75
+msgid "The following products are not linked to NFTs:"
+msgstr "Os produtos abaixo não foram vinculados a NFTs:"
+
+#: src/CheckoutPage.php:86
+msgid ""
+"You still can purchase those products but you won't be able to receive the "
+"NFTs at the moment because they are not properly linked"
+msgstr ""
+"Você ainda pode comprar esses produtos mas não vai poder receber os NFTs "
+"porque no momento não estão vinculados"
+
+#: src/CheckoutPage.php:90
 msgid "Wallet information"
 msgstr "Informações de carteira"
 
-#: src/CheckoutPage.php:73
+#: src/CheckoutPage.php:97
 msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 "Insira ou conecte sua carteira abaixo para poder receber seus NFTs depois."
 
-#: src/CheckoutPage.php:83
-msgid "User wallet address"
-msgstr "Endereço de carteira"
+#: src/CheckoutPage.php:110
+msgid "Hathor wallet address"
+msgstr "Endereço de carteira Hathor"
 
-#: src/CheckoutPage.php:92
+#: src/CheckoutPage.php:125
+msgid "Eth wallet address"
+msgstr "Endereço de carteira Ethereum"
+
+#: src/CheckoutPage.php:134
 msgid "Click to sign message in order to verify your wallet"
 msgstr "Clique em assinar para assinar a mensagem e verificar sua carteira"
 
-#: src/CheckoutPage.php:99
+#: src/CheckoutPage.php:141
 msgid "Click the button to connect your wallet"
 msgstr "Clique abaixo para se conectar a sua carteira"
 
-#: src/CheckoutPage.php:104
+#: src/CheckoutPage.php:146
 msgid "Connecting ..."
 msgstr "Conectando ..."
 
-#: src/CheckoutPage.php:111
+#: src/CheckoutPage.php:153
 msgid "Connect to Wallet"
 msgstr "Conectar sua carteira"
 
-#: src/CheckoutPage.php:118
-msgid ""
-"If you don't have a wallet yet or would like to generate a new one, click "
-"below"
-msgstr ""
-"Se você não tiver uma carteira ou gostaria de gerar uma nova, clique abaixo"
-
-#: src/CheckoutPage.php:121
-msgid "Generate new wallet"
-msgstr "Gerar nova carteira"
-
-#: src/CheckoutPage.php:123
-msgid "New Wallet"
-msgstr "Nova Carteira"
-
-#: src/CheckoutPage.php:124
-msgid "Address"
-msgstr "Endereço"
-
-#: src/CheckoutPage.php:125
-msgid "Private Key"
-msgstr "Chave Privada"
-
-#: src/CheckoutPage.php:128
-msgid ""
-"Obs: Copy this private key and save it somewhere safe. For security reasons, "
-"we cannot show it to you again"
-msgstr ""
-"Copie esta chave e salve em lugar seguro. Por razões de segurança, não a "
-"mostraremos de novo"
-
-#: src/CheckoutPage.php:168
+#: src/CheckoutPage.php:193
 msgid "Please enter a valid user wallet address."
 msgstr "Endereço de carteira inválido."
 
@@ -258,6 +243,32 @@ msgstr "Token Id"
 #: src/ProductInfoPage.php:48
 msgid "View in explorer"
 msgstr "Ver no explorer"
+
+#~ msgid ""
+#~ "If you don't have a wallet yet or would like to generate a new one, click "
+#~ "below"
+#~ msgstr ""
+#~ "Se você não tiver uma carteira ou gostaria de gerar uma nova, clique "
+#~ "abaixo"
+
+#~ msgid "Generate new wallet"
+#~ msgstr "Gerar nova carteira"
+
+#~ msgid "New Wallet"
+#~ msgstr "Nova Carteira"
+
+#~ msgid "Address"
+#~ msgstr "Endereço"
+
+#~ msgid "Private Key"
+#~ msgstr "Chave Privada"
+
+#~ msgid ""
+#~ "Obs: Copy this private key and save it somewhere safe. For security "
+#~ "reasons, we cannot show it to you again"
+#~ msgstr ""
+#~ "Copie esta chave e salve em lugar seguro. Por razões de segurança, não a "
+#~ "mostraremos de novo"
 
 #~ msgid "Token Type"
 #~ msgstr "Tipo do Token"
