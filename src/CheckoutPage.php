@@ -83,9 +83,9 @@ class CheckoutPage
 					array_push($not_available_product_names, "<li>{$p['name']}</li>");
 				} elseif ($p['status'] === 'available' or $p['nft']['amount'] > 0) {
 					if (Blockchain::is_EVM($p['nft']['protocol'])) {
-						$this->should_show_eth_wallet_address = true;
+						$should_show_eth_wallet_address = true;
 					} elseif ($p['nft']['protocol'] === 'HATHOR') {
-						$this->should_show_hathor_wallet_address = true;
+						$should_show_hathor_wallet_address = true;
 					}
 				}
 			}
