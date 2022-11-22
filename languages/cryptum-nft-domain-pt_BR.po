@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Cryptum NFT Plugin 2.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cryptum-nft-"
 "wordpress-plugin\n"
-"POT-Creation-Date: 2022-11-19T20:39:04+00:00\n"
-"PO-Revision-Date: 2022-11-19 17:40-0300\n"
+"POT-Creation-Date: 2022-11-22T14:50:28+00:00\n"
+"PO-Revision-Date: 2022-11-22 11:52-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -23,7 +23,7 @@ msgstr "Cryptum NFT"
 
 #. Plugin URI of the plugin
 msgid "https://github.com/blockforce-official/cryptum-nft-wordpress-plugin"
-msgstr ""
+msgstr "https://github.com/blockforce-official/cryptum-nft-wordpress-plugin"
 
 #. Description of the plugin
 msgid "Cryptum NFT Plugin"
@@ -35,7 +35,7 @@ msgstr "Blockforce"
 
 #. Author URI of the plugin
 msgid "https://blockforce.in"
-msgstr ""
+msgstr "https://blockforce.in"
 
 #: src/Admin/AdminSettings.php:52
 msgid "Store id is not valid UUID string"
@@ -119,19 +119,37 @@ msgstr "Insira sua chave de API (Gerada no Cryptum Dashboard)"
 msgid "Save Changes"
 msgstr "Salvar Alterações"
 
-#: src/Admin/OrderSettings.php:85
+#: src/Admin/OrderSettings.php:83
+msgid "Error on connecting to Cryptum APIs"
+msgstr "Erro de conexão com APIs do Cryptum"
+
+#: src/Admin/OrderSettings.php:102
+msgid "Error"
+msgstr "Erro"
+
+#: src/Admin/OrderSettings.php:103 src/CheckoutPage.php:94
+#: src/CheckoutPage.php:233
+msgid "The following products are not linked to NFTs:"
+msgstr "Os produtos abaixo não foram vinculados a NFTs:"
+
+#: src/Admin/OrderSettings.php:112 src/CheckoutPage.php:99
+#: src/CheckoutPage.php:239
+msgid "The following products have no more linked NFTs:"
+msgstr "Os produtos abaixo não possuem mais NFTs vinculados:"
+
+#: src/Admin/OrderSettings.php:124
 msgid "Error in configuring Cryptum NFT Plugin"
 msgstr "Ocorreu um erro na configuração do plugin"
 
-#: src/Admin/OrderSettings.php:103
+#: src/Admin/OrderSettings.php:142
 msgid "Cryptum NFT Transactions Info"
 msgstr "Informações das transações do Cryptum NFT"
 
-#: src/Admin/OrderSettings.php:125
+#: src/Admin/OrderSettings.php:164
 msgid "NFT transactions hashes"
 msgstr "Hashes das transações de NFT"
 
-#: src/Admin/OrderSettings.php:133
+#: src/Admin/OrderSettings.php:172
 msgid "No NFTs have been transferred yet."
 msgstr "Nenhum NFT foi transferido ainda."
 
@@ -179,68 +197,50 @@ msgstr "Cancelar"
 msgid "Wallet connected successfully"
 msgstr "Carteira conectada com sucesso"
 
-#: src/CheckoutPage.php:73 src/CheckoutPage.php:94
-msgid "The following products are not linked to NFTs:"
-msgstr "Os produtos abaixo não foram vinculados a NFTs:"
-
-#: src/CheckoutPage.php:97
-msgid ""
-"You still can purchase those products but you won't be able to receive the "
-"NFTs at the moment because they are not properly linked"
+#: src/CheckoutPage.php:73 src/CheckoutPage.php:217
+msgid "Error on connecting to Cryptum APIs, please try again in a few minutes"
 msgstr ""
-"Você ainda pode comprar esses produtos mas não vai poder receber os NFTs "
-"porque no momento não estão vinculados"
-
-#: src/CheckoutPage.php:102
-msgid "The following products have no more linked NFTs:"
-msgstr "Os produtos abaixo não possuem mais NFTs vinculados:"
+"Erro de conexão com APIs do Cryptum, por favor tente de novo em alguns "
+"instantes"
 
 #: src/CheckoutPage.php:105
-msgid ""
-"You still can purchase those products but you won't be able to receive the "
-"NFTs at the moment because they have no more linked NFTs"
-msgstr ""
-"Você ainda pode comprar esses produtos mas não vai poder receber os NFTs "
-"porque no momento não há mais NFTs vinculados"
-
-#: src/CheckoutPage.php:110
 msgid "Wallet information"
 msgstr "Informações de carteira"
 
-#: src/CheckoutPage.php:119
+#: src/CheckoutPage.php:114
 msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 "Insira ou conecte sua carteira abaixo para poder receber seus NFTs depois."
 
-#: src/CheckoutPage.php:132
+#: src/CheckoutPage.php:127
 msgid "Hathor wallet address"
 msgstr "Endereço de carteira Hathor"
 
-#: src/CheckoutPage.php:147
+#: src/CheckoutPage.php:142
 msgid "Eth wallet address"
 msgstr "Endereço de carteira Ethereum"
 
-#: src/CheckoutPage.php:156
+#: src/CheckoutPage.php:151
 msgid "Click to sign message in order to verify your wallet"
 msgstr "Clique em assinar para assinar a mensagem e verificar sua carteira"
 
-#: src/CheckoutPage.php:163
+#: src/CheckoutPage.php:158
 msgid "Click the button to connect your wallet"
 msgstr "Clique abaixo para se conectar a sua carteira"
 
-#: src/CheckoutPage.php:168
+#: src/CheckoutPage.php:163
 msgid "Connecting ..."
 msgstr "Conectando ..."
 
-#: src/CheckoutPage.php:175
+#: src/CheckoutPage.php:170
 msgid "Connect to Wallet"
 msgstr "Conectar sua carteira"
 
-#: src/CheckoutPage.php:221
+#: src/CheckoutPage.php:244
 msgid "Please enter a valid Ethereum compatible wallet address."
 msgstr "O campo de endereço de Ethereum está inválido."
 
-#: src/CheckoutPage.php:224
+#: src/CheckoutPage.php:247
 msgid "Please enter a valid Hathor wallet address."
 msgstr "O campo de endereço de Hathor está inválido."
 
@@ -259,6 +259,20 @@ msgstr "Token Id"
 #: src/ProductInfoPage.php:48
 msgid "View in explorer"
 msgstr "Ver no explorer"
+
+#~ msgid ""
+#~ "You still can purchase those products but you won't be able to receive "
+#~ "the NFTs at the moment because they are not properly linked"
+#~ msgstr ""
+#~ "Você ainda pode comprar esses produtos mas não vai poder receber os NFTs "
+#~ "porque no momento não estão vinculados"
+
+#~ msgid ""
+#~ "You still can purchase those products but you won't be able to receive "
+#~ "the NFTs at the moment because they have no more linked NFTs"
+#~ msgstr ""
+#~ "Você ainda pode comprar esses produtos mas não vai poder receber os NFTs "
+#~ "porque no momento não há mais NFTs vinculados"
 
 #~ msgid ""
 #~ "If you don't have a wallet yet or would like to generate a new one, click "

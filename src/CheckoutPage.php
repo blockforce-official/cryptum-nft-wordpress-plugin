@@ -70,40 +70,35 @@ class CheckoutPage
 			$error_message = "";
 			$res = Api::get_products_by_ids($cryptum_product_ids);
 			if (isset($res['error'])) {
-				$error_message = __('The following products are not linked to NFTs:', 'cryptum-nft-domain');
-			}
+				$error_message = __('Error on connecting to Cryptum APIs, please try again in a few minutes', 'cryptum-nft-domain');
+			} else {
 
-			$not_linked_product_names = [];
-			$not_available_product_names = [];
-			foreach ($res['products'] as $p) {
-				Log::info($p);
-				if ($p['status'] === 'null' or !isset($p['nft'])) {
-					array_push($not_linked_product_names, "<li>{$p['name']}</li>");
-				} elseif ($p['status'] === 'transferred' or $p['nft']['amount'] === 0) {
-					array_push($not_available_product_names, "<li>{$p['name']}</li>");
-				} elseif ($p['status'] === 'available' or $p['nft']['amount'] > 0) {
-					if (Blockchain::is_EVM($p['nft']['protocol'])) {
-						$should_show_eth_wallet_address = true;
-					} elseif ($p['nft']['protocol'] === 'HATHOR') {
-						$should_show_hathor_wallet_address = true;
+				$not_linked_product_names = [];
+				$not_available_product_names = [];
+				foreach ($res['products'] as $p) {
+					// Log::info($p);
+					if ($p['status'] === 'null' or !isset($p['nft'])) {
+						array_push($not_linked_product_names, "<li>{$p['name']}</li>");
+					} elseif ($p['status'] === 'transferred' or $p['nft']['amount'] === 0) {
+						array_push($not_available_product_names, "<li>{$p['name']}</li>");
+					} elseif ($p['status'] === 'available' or $p['nft']['amount'] > 0) {
+						if (Blockchain::is_EVM($p['nft']['protocol'])) {
+							$should_show_eth_wallet_address = true;
+						} elseif ($p['nft']['protocol'] === 'HATHOR') {
+							$should_show_hathor_wallet_address = true;
+						}
 					}
 				}
-			}
-			if (count($not_linked_product_names) > 0) {
-				$not_linked_product_names = join('', $not_linked_product_names);
-				$error_message .= '<br>' . __('The following products are not linked to NFTs:', 'cryptum-nft-domain') .
-					"<ul>{$not_linked_product_names}</ul>" .
-					'<p style="font-size: small;">' .
-					__('You still can purchase those products but you won\'t be able to receive the NFTs at the moment because they are not properly linked', 'cryptum-nft-domain') .
-					"</p>";
-			}
-			if (count($not_available_product_names) > 0) {
-				$not_available_product_names = join('', $not_available_product_names);
-				$error_message .= '<br>' . __('The following products have no more linked NFTs:', 'cryptum-nft-domain') .
-					"<ul>{$not_available_product_names}</ul>" .
-					'<p style="font-size: small;">' .
-					__('You still can purchase those products but you won\'t be able to receive the NFTs at the moment because they have no more linked NFTs', 'cryptum-nft-domain') .
-					"</p>";
+				if (count($not_linked_product_names) > 0) {
+					$not_linked_product_names = join('', $not_linked_product_names);
+					$error_message .= '<br>' . __('The following products are not linked to NFTs:', 'cryptum-nft-domain') .
+						"<ul>{$not_linked_product_names}</ul>";
+				}
+				if (count($not_available_product_names) > 0) {
+					$not_available_product_names = join('', $not_available_product_names);
+					$error_message .= '<br>' . __('The following products have no more linked NFTs:', 'cryptum-nft-domain') .
+						"<ul>{$not_available_product_names}</ul>";
+				}
 			}
 ?>
 			<div class="cryptum-nft-wallet-info">
@@ -206,15 +201,45 @@ class CheckoutPage
 	{
 		$cart = WC()->cart->get_cart();
 		$has_nft_enabled = false;
+		$cryptum_product_ids = [];
 		foreach ($cart as $cart_item) {
 			$product = wc_get_product($cart_item['product_id']);
 			$cryptum_nft_enabled = $product->get_meta('_cryptum_nft_options_nft_enable');
 			if (isset($cryptum_nft_enabled) and $cryptum_nft_enabled == 'yes') {
 				$has_nft_enabled = true;
-				break;
+				array_push($cryptum_product_ids, $product->get_meta('_cryptum_nft_options_product_id'));
 			}
 		}
 		if ($has_nft_enabled) {
+			$error_message = "";
+			$res = Api::get_products_by_ids($cryptum_product_ids);
+			if (isset($res['error'])) {
+				wc_add_notice(__('Error on connecting to Cryptum APIs, please try again in a few minutes', 'cryptum-nft-domain'), 'error');
+				return;
+			}
+
+			$not_linked_product_names = [];
+			$not_available_product_names = [];
+			foreach ($res['products'] as $p) {
+				// Log::info($p);
+				if ($p['status'] === 'null' or !isset($p['nft'])) {
+					array_push($not_linked_product_names, "<li>{$p['name']}</li>");
+				} elseif ($p['status'] === 'transferred' or $p['nft']['amount'] === 0) {
+					array_push($not_available_product_names, "<li>{$p['name']}</li>");
+				}
+			}
+			if (count($not_linked_product_names) > 0) {
+				$not_linked_product_names = join('', $not_linked_product_names);
+				$error_message .= '<br>' . __('The following products are not linked to NFTs:', 'cryptum-nft-domain') .
+					"<ul>{$not_linked_product_names}</ul>";
+				wc_add_notice($error_message, 'error');
+			}
+			if (count($not_available_product_names) > 0) {
+				$not_available_product_names = join('', $not_available_product_names);
+				$error_message .= '<br>' . __('The following products have no more linked NFTs:', 'cryptum-nft-domain') .
+					"<ul>{$not_available_product_names}</ul>";
+				wc_add_notice($error_message, 'error');
+			}
 			if (isset($_POST['user_eth_wallet_address']) and !AddressValidator::is_eth_address($_POST['user_eth_wallet_address'])) {
 				wc_add_notice(__('Please enter a valid Ethereum compatible wallet address.', 'cryptum-nft-domain'), 'error');
 			}

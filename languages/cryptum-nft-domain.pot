@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-19T20:39:04+00:00\n"
+"POT-Creation-Date: 2022-11-22T14:50:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: cryptum-nft-domain\n"
@@ -104,19 +104,39 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:85
-msgid "Error in configuring Cryptum NFT Plugin"
+#: src/Admin/OrderSettings.php:83
+msgid "Error on connecting to Cryptum APIs"
+msgstr ""
+
+#: src/Admin/OrderSettings.php:102
+msgid "Error"
 msgstr ""
 
 #: src/Admin/OrderSettings.php:103
+#: src/CheckoutPage.php:94
+#: src/CheckoutPage.php:233
+msgid "The following products are not linked to NFTs:"
+msgstr ""
+
+#: src/Admin/OrderSettings.php:112
+#: src/CheckoutPage.php:99
+#: src/CheckoutPage.php:239
+msgid "The following products have no more linked NFTs:"
+msgstr ""
+
+#: src/Admin/OrderSettings.php:124
+msgid "Error in configuring Cryptum NFT Plugin"
+msgstr ""
+
+#: src/Admin/OrderSettings.php:142
 msgid "Cryptum NFT Transactions Info"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:125
+#: src/Admin/OrderSettings.php:164
 msgid "NFT transactions hashes"
 msgstr ""
 
-#: src/Admin/OrderSettings.php:133
+#: src/Admin/OrderSettings.php:172
 msgid "No NFTs have been transferred yet."
 msgstr ""
 
@@ -162,59 +182,47 @@ msgid "Wallet connected successfully"
 msgstr ""
 
 #: src/CheckoutPage.php:73
-#: src/CheckoutPage.php:94
-msgid "The following products are not linked to NFTs:"
-msgstr ""
-
-#: src/CheckoutPage.php:97
-msgid "You still can purchase those products but you won't be able to receive the NFTs at the moment because they are not properly linked"
-msgstr ""
-
-#: src/CheckoutPage.php:102
-msgid "The following products have no more linked NFTs:"
+#: src/CheckoutPage.php:217
+msgid "Error on connecting to Cryptum APIs, please try again in a few minutes"
 msgstr ""
 
 #: src/CheckoutPage.php:105
-msgid "You still can purchase those products but you won't be able to receive the NFTs at the moment because they have no more linked NFTs"
-msgstr ""
-
-#: src/CheckoutPage.php:110
 msgid "Wallet information"
 msgstr ""
 
-#: src/CheckoutPage.php:119
+#: src/CheckoutPage.php:114
 msgid "Insert or connect your wallet address below to receive the NFTs later."
 msgstr ""
 
-#: src/CheckoutPage.php:132
+#: src/CheckoutPage.php:127
 msgid "Hathor wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:147
+#: src/CheckoutPage.php:142
 msgid "Eth wallet address"
 msgstr ""
 
-#: src/CheckoutPage.php:156
+#: src/CheckoutPage.php:151
 msgid "Click to sign message in order to verify your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:163
+#: src/CheckoutPage.php:158
 msgid "Click the button to connect your wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:168
+#: src/CheckoutPage.php:163
 msgid "Connecting ..."
 msgstr ""
 
-#: src/CheckoutPage.php:175
+#: src/CheckoutPage.php:170
 msgid "Connect to Wallet"
 msgstr ""
 
-#: src/CheckoutPage.php:221
+#: src/CheckoutPage.php:244
 msgid "Please enter a valid Ethereum compatible wallet address."
 msgstr ""
 
-#: src/CheckoutPage.php:224
+#: src/CheckoutPage.php:247
 msgid "Please enter a valid Hathor wallet address."
 msgstr ""
 
