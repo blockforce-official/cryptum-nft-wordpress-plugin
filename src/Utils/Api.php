@@ -85,11 +85,11 @@ class Api
 {
 	static function get_cryptum_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io' : 'http://host.docker.internal:8080';
+		return $environment == 'production' ? 'https://api.cryptum.io' : 'https://api-hml.cryptum.io';
 	}
 	static function get_cryptum_store_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'http://host.docker.internal:8080/plugins';
+		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-hml.cryptum.io/plugins';
 	}
 
 	static function request($url, $args = array())
@@ -239,7 +239,7 @@ class Api
 		$res = Api::request("{$url}/products?storeId={$options['storeId']}&{$ids}", array(
 			'method' => 'GET',
 			'headers' => array(
-				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad', //'x-api-key' => $options['apikey'],
+				'x-api-key' => $options['apikey'],
 				'Content-type' => 'application/json'
 			),
 			'timeout' => 60
@@ -283,7 +283,7 @@ class Api
 				'orderCurrency' => $order->get_currency()
 			]),
 			'headers' => array(
-				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad', //'x-api-key' => $options['apikey'],
+				'x-api-key' => $options['apikey'],
 				'Content-Type' => 'application/json; charset=utf-8',
 				'x-version' => '1.0.0'
 			),
@@ -308,7 +308,7 @@ class Api
 				'ecommerceType' => 'wordpress'
 			)),
 			'headers' => array(
-				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad', //'x-api-key' => $apikey,
+				'x-api-key' => $apikey,
 				'Content-type' => 'application/json'
 			),
 			'data_format' => 'body',
