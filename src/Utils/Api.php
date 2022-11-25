@@ -85,16 +85,16 @@ class Api
 {
 	static function get_cryptum_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io' : 'https://az-api-dev.cryptum.io';
+		return $environment == 'production' ? 'https://api.cryptum.io' : 'http://host.docker.internal:8080';
 	}
 	static function get_cryptum_store_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://az-api-dev.cryptum.io/plugins';
+		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'http://host.docker.internal:8080/plugins';
 	}
 
 	static function request($url, $args = array())
 	{
-		$response = wp_safe_remote_request($url, $args);
+		$response = wp_remote_request($url, $args);
 		if (is_wp_error($response)) {
 			Log::error(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 			return [
@@ -239,7 +239,7 @@ class Api
 		$res = Api::request("{$url}/products?storeId={$options['storeId']}&{$ids}", array(
 			'method' => 'GET',
 			'headers' => array(
-				'x-api-key' => $options['apikey'],
+				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad', //'x-api-key' => $options['apikey'],
 				'Content-type' => 'application/json'
 			),
 			'timeout' => 60
@@ -266,6 +266,10 @@ class Api
 	{
 		$options = get_option('cryptum_nft');
 		$url = Api::get_cryptum_store_url($options['environment']);
+		$client_wallets = [];
+		$client_wallets['ETHEREUM'] = $order->get_meta('user_eth_wallet_address');
+		$client_wallets['HATHOR'] = $order->get_meta('user_hathor_wallet_address');
+
 		$response = Api::request($url . '/nft/checkout', [
 			'body' => json_encode([
 				'store' => $store_id,
@@ -273,13 +277,13 @@ class Api
 				'products' => $products,
 				'ecommerceType' => 'wordpress',
 				'ecommerceOrderId' => $order->get_id(),
-				'clientWallet' => $order->get_meta('user_eth_wallet_address'),
+				'clientWallets' => $client_wallets,
 				'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback'),
 				'orderTotal' => $order->get_total(),
 				'orderCurrency' => $order->get_currency()
 			]),
 			'headers' => array(
-				'x-api-key' => $options['apikey'],
+				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad', //'x-api-key' => $options['apikey'],
 				'Content-Type' => 'application/json; charset=utf-8',
 				'x-version' => '1.0.0'
 			),
@@ -304,7 +308,7 @@ class Api
 				'ecommerceType' => 'wordpress'
 			)),
 			'headers' => array(
-				'x-api-key' => $apikey,
+				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad', //'x-api-key' => $apikey,
 				'Content-type' => 'application/json'
 			),
 			'data_format' => 'body',
