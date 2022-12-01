@@ -38,10 +38,10 @@ class Blockchain
 		$options = get_option("cryptum_nft");
 		switch ($protocol) {
 			case 'CELO':
-				$middle = $options['environment'] == "production" ? 'explorer.celo' : 'alfajores-blockscout.celo-testnet';
-				return "https://$middle.org/tx/$hash";
+				$middle = $options['environment'] == "production" ? 'mainnet' : 'alfajores';
+				return "https://explorer.celo.org/$middle/tx/$hash";
 			case 'ETHEREUM':
-				$middle = $options['environment'] == "production" ? 'etherscan' : 'rinkeby.etherscan';
+				$middle = $options['environment'] == "production" ? 'etherscan' : 'goerli.etherscan';
 				return "https://$middle.io/tx/$hash";
 			case 'BSC':
 				$middle = $options['environment'] == "production" ? 'bscscan' : 'testnet.bscscan';
@@ -52,6 +52,9 @@ class Blockchain
 			case 'AVAXCCHAIN':
 				$middle = $options['environment'] == "production" ? 'snowtrace' : 'testnet.snowtrace';
 				return "https://$middle.io/tx/$hash";
+			case 'HATHOR':
+				$middle = $options['environment'] == "production" ? '' : '.testnet';
+				return "https://explorer$middle.hathor.network/transaction/$hash";
 			default:
 				return "";
 		}

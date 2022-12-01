@@ -136,7 +136,7 @@ class OrderSettings
 		if (is_admin() and $post_type == 'shop_order' and $pagenow == 'post.php') {
 			$order = wc_get_order($post);
 
-			if (!empty($order->get_meta('user_eth_wallet_address'))) {
+			if (!empty($order->get_meta('user_eth_wallet_address')) || !empty($order->get_meta('user_hathor_wallet_address'))) {
 				add_meta_box(
 					'cryptum_nft_transactions_info',
 					__('Cryptum NFT Transactions Info', 'cryptum-nft-domain'),
