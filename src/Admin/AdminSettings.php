@@ -132,6 +132,9 @@ class AdminSettings
 						<?php
 						settings_fields('cryptum_nft_settings');
 						$options = get_option('cryptum_nft');
+						if (!is_array($options)) {
+							$options = array();
+						}
 						?>
 						<table class="form-table">
 
