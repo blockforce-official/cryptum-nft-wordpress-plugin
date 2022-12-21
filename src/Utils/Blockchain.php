@@ -29,6 +29,9 @@ class Blockchain
 			case 'AVAXCCHAIN':
 				$middle = $options['environment'] == "production" ? 'snowtrace' : 'testnet.snowtrace';
 				return "https://$middle.io/token/$tokenAddress?a=$tokenId";
+			case 'HATHOR':
+				$middle = $options['environment'] == "production" ? '' : '.testnet';
+				return "https://explorer$middle.hathor.network/token_detail/$tokenAddress";
 			default:
 				return "";
 		}

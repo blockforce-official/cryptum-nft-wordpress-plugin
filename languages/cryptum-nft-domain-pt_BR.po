@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Cryptum NFT Plugin 2.0.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cryptum-nft-"
 "wordpress-plugin\n"
-"POT-Creation-Date: 2022-11-22T14:50:28+00:00\n"
-"PO-Revision-Date: 2022-11-22 11:52-0300\n"
+"POT-Creation-Date: 2022-12-21T13:23:11+00:00\n"
+"PO-Revision-Date: 2022-12-21 10:23-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Domain: cryptum-nft-domain\n"
 
 #. Plugin Name of the plugin
@@ -79,19 +79,19 @@ msgstr ""
 "\t\t\t\t\t\t\tCryptum Dashboard para receber o store id e a API key para "
 "preencher os campos abaixo."
 
-#: src/Admin/AdminSettings.php:139
+#: src/Admin/AdminSettings.php:142
 msgid "Environment"
 msgstr "Ambiente"
 
-#: src/Admin/AdminSettings.php:144
+#: src/Admin/AdminSettings.php:147
 msgid "Production"
 msgstr "Produção (Mainnet)"
 
-#: src/Admin/AdminSettings.php:147
+#: src/Admin/AdminSettings.php:150
 msgid "Test"
 msgstr "Teste (Testnet)"
 
-#: src/Admin/AdminSettings.php:150
+#: src/Admin/AdminSettings.php:153
 msgid ""
 "Choose your environment. The Test environment should be used for testing "
 "only (testnets)."
@@ -99,23 +99,23 @@ msgstr ""
 "Escolha seu ambiente. O ambiente de Teste deve ser usado somente para testes "
 "(testnets)."
 
-#: src/Admin/AdminSettings.php:154
+#: src/Admin/AdminSettings.php:157
 msgid "Store Id"
 msgstr "ID da Loja"
 
-#: src/Admin/AdminSettings.php:157
+#: src/Admin/AdminSettings.php:160
 msgid "Enter your Store ID generated in Cryptum Dashboard"
 msgstr "Insira seu ID da Loja (Store ID) que foi gerado no Cryptum Dashboard"
 
-#: src/Admin/AdminSettings.php:161
+#: src/Admin/AdminSettings.php:164
 msgid "API key"
 msgstr "Chave de API"
 
-#: src/Admin/AdminSettings.php:164
+#: src/Admin/AdminSettings.php:167
 msgid "Enter your Cryptum API Key (Generated in Cryptum Dashboard)"
 msgstr "Insira sua chave de API (Gerada no Cryptum Dashboard)"
 
-#: src/Admin/AdminSettings.php:171
+#: src/Admin/AdminSettings.php:174
 msgid "Save Changes"
 msgstr "Salvar Alterações"
 
@@ -173,7 +173,7 @@ msgstr ""
 "Vá até o Cryptum Dashboard depois que atualizar o produto para poder "
 "vincular o NFT a esse SKU do produto"
 
-#: src/Admin/ProductEditPage.php:153 src/Admin/ProductEditPage.php:253
+#: src/Admin/ProductEditPage.php:153 src/Admin/ProductEditPage.php:229
 msgid "Error in configuring product on Cryptum NFT Plugin"
 msgstr "Ocorreu um erro na configuração do Cryptum NFT plugin"
 
@@ -252,13 +252,17 @@ msgstr "Produto vinculado a um NFT"
 msgid "Token Address"
 msgstr "Endereço do Token"
 
-#: src/ProductInfoPage.php:44
+#: src/ProductInfoPage.php:45
 msgid "Token Id"
 msgstr "Token Id"
 
-#: src/ProductInfoPage.php:48
+#: src/ProductInfoPage.php:51
 msgid "View in explorer"
 msgstr "Ver no explorer"
+
+#: src/ProductInfoPage.php:59
+msgid "This product is not linked by an NFT"
+msgstr "Produto não vinculado a um NFT"
 
 #~ msgid ""
 #~ "You still can purchase those products but you won't be able to receive "
