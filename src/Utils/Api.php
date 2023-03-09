@@ -89,12 +89,12 @@ class Api
 	}
 	static function get_cryptum_store_url($environment)
 	{
-		return $environment == 'production' ? 'https://api.cryptum.io/plugins' : 'https://api-hml.cryptum.io/plugins';
+		return Api::get_cryptum_url($environment) . '/plugins';
 	}
 
 	static function request($url, $args = array())
 	{
-		$response = wp_safe_remote_request($url, $args);
+		$response = wp_remote_request($url, $args);
 		if (is_wp_error($response)) {
 			Log::error(json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 			return [
@@ -226,6 +226,36 @@ class Api
 		}
 		return $res;
 	}
+	static function get_products_by_ids(array $cryptum_product_ids)
+	{
+		$options = get_option('cryptum_nft');
+		$url = Api::get_cryptum_store_url($options['environment']);
+
+		$qs = [];
+		foreach ($cryptum_product_ids as $id) {
+			array_push($qs, "ids[]={$id}");
+		}
+		$ids = join("&", $qs);
+		$res = Api::request("{$url}/products?storeId={$options['storeId']}&{$ids}", array(
+			'method' => 'GET',
+			'headers' => array(
+				'x-api-key' => $options['apikey'],
+				'Content-type' => 'application/json'
+			),
+			'timeout' => 60
+		));
+		if (isset($res['error'])) {
+			Log::info([
+				'url' => "{$url}/products?storeId={$options['storeId']}&{$ids}",
+				'method' => 'GET',
+				'request' => array(
+					'ids' => $ids,
+				),
+				'response' => $res
+			]);
+		}
+		return $res;
+	}
 	/**
 	 * @param \WC_Order $order
 	 * @param string $store_id
@@ -236,6 +266,10 @@ class Api
 	{
 		$options = get_option('cryptum_nft');
 		$url = Api::get_cryptum_store_url($options['environment']);
+		$client_wallets = [];
+		$client_wallets['ETHEREUM'] = $order->get_meta('user_eth_wallet_address');
+		$client_wallets['HATHOR'] = $order->get_meta('user_hathor_wallet_address');
+
 		$response = Api::request($url . '/nft/checkout', [
 			'body' => json_encode([
 				'store' => $store_id,
@@ -243,7 +277,7 @@ class Api
 				'products' => $products,
 				'ecommerceType' => 'wordpress',
 				'ecommerceOrderId' => $order->get_id(),
-				'clientWallet' => $order->get_meta('user_wallet_address'),
+				'clientWallets' => $client_wallets,
 				'callbackUrl' => WC()->api_request_url('cryptum_nft_order_status_changed_callback'),
 				'orderTotal' => $order->get_total(),
 				'orderCurrency' => $order->get_currency()
@@ -282,5 +316,36 @@ class Api
 			'timeout' => 60
 		));
 		return $response;
+	}
+
+	static function call_product_request($method, $request_body, $show_admin_notice = true)
+	{
+		$body = $request_body;
+		$options = get_option('cryptum_nft');
+		if ($method == 'POST') {
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products';
+			$request_body['store'] = $options['storeId'];
+			$body = [$request_body];
+		} elseif ($method == 'PUT') {
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+			$body = ['value' => $request_body['value'], 'currency' => $request_body['currency']];
+		} elseif ($method == 'DELETE') {
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
+		} elseif ($method == 'GET') {
+			$url = Api::get_cryptum_store_url($options['environment']) . '/products/sku/' . $request_body['sku'] . '?store=' . $options['storeId'];
+			$body = null;
+		}
+		Log::info($method . ' ' . $url);
+		return Api::request($url, array(
+			'headers' => array(
+				'x-credential-identifier' => 'b0f9d288-351e-4b51-baae-f77afc8af4ad',
+				'x-api-key' => $options['apikey'],
+				'content-type' => 'application/json'
+			),
+			'data_format' => 'body',
+			'method' => $method,
+			'timeout' => 60,
+			'body' => json_encode($body)
+		));
 	}
 }

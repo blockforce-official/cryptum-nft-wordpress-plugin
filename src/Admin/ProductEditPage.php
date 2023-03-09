@@ -104,37 +104,37 @@ class ProductEditPage
 			if (empty($old_sku) and empty($sku)) {
 				$sku = $this->skuify($product);
 				// add new product
-				$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
-				if (!$response) {
+				$response = Api::call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
+				if ($this->has_error_response($response)) {
 					return false;
 				}
 				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 			} elseif (empty($old_sku) and !empty($sku)) {
-				$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
-				if (!$response) {
+				$response = Api::call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
+				if ($this->has_error_response($response)) {
 					return false;
 				}
 				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 			} elseif (!empty($old_sku) and !empty($sku)) {
 				if ($old_sku != $sku) {
 					$price = $product->get_price();
-					$response = $this->call_product_request('POST', array(
+					$response = Api::call_product_request('POST', array(
 						'name' => $product->get_name(),
 						'sku' => $sku,
 						'value' => $price,
 						'currency' => get_woocommerce_currency()
 					));
-					if (!$response) {
+					if ($this->has_error_response($response)) {
 						return false;
 					}
 					$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
 					$product->update_meta_data('_cryptum_nft_product_price', $price);
 				} else {
-					$response = $this->call_product_request('GET', array('sku' => $sku), false);
-					if (!$response) {
+					$response = Api::call_product_request('GET', array('sku' => $sku), false);
+					if ($this->has_error_response($response)) {
 						// no product yet, add it
 						$price = $product->get_price();
-						$response = $this->call_product_request(
+						$response = Api::call_product_request(
 							'POST',
 							array(
 								'name' => $product->get_name(),
@@ -143,7 +143,7 @@ class ProductEditPage
 								'currency' => get_woocommerce_currency()
 							)
 						);
-						if (!$response) {
+						if ($this->has_error_response($response)) {
 							return false;
 						}
 						$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
@@ -157,8 +157,8 @@ class ProductEditPage
 					}
 				}
 			} elseif (!empty($old_sku) and empty($sku)) {
-				// $response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
-				// if (!$response) {
+				// $response = Api::call_product_request('DELETE', array('cryptum_product_id' => $product->get_meta('_cryptum_nft_options_product_id', true)));
+				// if ($this->has_error_response($response)) {
 				// 	return false;
 				// }
 				$product->update_meta_data('_cryptum_nft_options_product_id', '');
@@ -168,8 +168,8 @@ class ProductEditPage
 			$product_id = $product->get_meta('_cryptum_nft_options_product_id', true);
 			Log::info('Product id: ' . $product_id . ', type: ' . gettype($product_id));
 			if (!empty($product_id)) {
-				$response = $this->call_product_request('DELETE', array('cryptum_product_id' => $product_id));
-				if (!$response) {
+				$response = Api::call_product_request('DELETE', array('cryptum_product_id' => $product_id));
+				if ($this->has_error_response($response)) {
 					return false;
 				}
 				$product->update_meta_data('_cryptum_nft_options_product_id', '');
@@ -177,8 +177,8 @@ class ProductEditPage
 			}
 		} elseif (!empty($old_nft_enabled) and !empty($nft_enabled) and $old_nft_enabled == $nft_enabled) {
 			if ($old_sku != $sku) {
-				$response = $this->call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
-				if (!$response) {
+				$response = Api::call_product_request('POST', array('name' => $product->get_name(), 'sku' => $sku));
+				if ($this->has_error_response($response)) {
 					return false;
 				}
 				$product->update_meta_data('_cryptum_nft_options_product_id', $response[0]['id']);
@@ -204,12 +204,12 @@ class ProductEditPage
 			Log::info('on_update_product: Product value: ' . $price . ' => ' . $updated_price);
 
 			if (!empty($product_id)) {
-				$response = $this->call_product_request('PUT', array(
+				$response = Api::call_product_request('PUT', array(
 					'cryptum_product_id' => $product_id,
 					'value' => $updated_price,
 					'currency' => get_woocommerce_currency()
 				), true);
-				if (!$response) {
+				if ($this->has_error_response($response)) {
 					Log::error('Error updating product price');
 				}
 			}
@@ -221,41 +221,16 @@ class ProductEditPage
 		update_post_meta($post_id, '_sku', $sku);
 	}
 
-	function call_product_request($method, $request_body, $show_admin_notice = true)
+	private function has_error_response($response)
 	{
-		$body = $request_body;
-		$options = get_option('cryptum_nft');
-		if ($method == 'POST') {
-			$url = Api::get_cryptum_store_url($options['environment']) . '/products';
-			$request_body['store'] = $options['storeId'];
-			$body = [$request_body];
-		} elseif ($method == 'PUT') {
-			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
-			$body = ['value' => $request_body['value'], 'currency' => $request_body['currency']];
-		} elseif ($method == 'DELETE') {
-			$url = Api::get_cryptum_store_url($options['environment']) . '/products/' . $request_body['cryptum_product_id'];
-		} elseif ($method == 'GET') {
-			$url = Api::get_cryptum_store_url($options['environment']) . '/products/sku/' . $request_body['sku'] . '?store=' . $options['storeId'];
-			$body = null;
-		}
-		Log::info($method . ' ' . $url);
-		$response = Api::request($url, array(
-			'headers' => array('x-api-key' => $options['apikey'], 'content-type' => 'application/json'),
-			'data_format' => 'body',
-			'method' => $method,
-			'timeout' => 60,
-			'body' => json_encode($body)
-		));
 		if (isset($response['error'])) {
 			$message = $response['message'];
-			if ($show_admin_notice) {
-				$this->set_admin_notices_error(
-					__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'),
-					$message
-				);
-			}
-			return false;
+			$this->set_admin_notices_error(
+				__("Error in configuring product on Cryptum NFT Plugin", 'cryptum-nft-domain'),
+				$message
+			);
+			return true;
 		}
-		return $response;
+		return false;
 	}
 }

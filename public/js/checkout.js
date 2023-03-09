@@ -37,11 +37,11 @@ function showLoadingIcon(show = true) {
                   address,
                 },
                 success: (data) => {
-                  $('#user_wallet_address').val(address);
+                  $('#user_eth_wallet_address').val(address);
                 },
                 error: (xhr, status, error) => {
                   console.log(error);
-                  $('#user_wallet_address').val(address);
+                  $('#user_eth_wallet_address').val(address);
                 },
               });
             }).catch(e => {
@@ -58,7 +58,7 @@ function showLoadingIcon(show = true) {
 
   $('#user-wallet-connection-button').click(function (event) {
     event.preventDefault();
-    $('#user_wallet_address').val('');
+    $('#user_eth_wallet_address').val('');
 
     showLoadingIcon(true);
     connectWithWallet()
@@ -69,44 +69,44 @@ function showLoadingIcon(show = true) {
       });
   });
 
-  $('#user-wallet-generator-button').click(function (event) {
-    event.preventDefault();
+  // $('#user-wallet-generator-button').click(function (event) {
+  //   event.preventDefault();
 
-    const web3 = new Web3();
-    const account = web3.eth.accounts.create();
+  //   const web3 = new Web3();
+  //   const account = web3.eth.accounts.create();
 
-    $('#user-wallet-modal-address').text(account.address);
-    $('#user-wallet-modal-privateKey').text(account.privateKey);
-    $('#user-wallet-generator-modal').dialog({
-      modal: true,
-      dialogClass: 'no-close no-title',
-      buttons: {
-        [checkout_wpScriptObject['cancel']]: function () {
-          $(this).dialog('close');
-        },
-        [checkout_wpScriptObject['save']]: function () {
-          $.ajax({
-            method: 'POST',
-            url: checkout_wpScriptObject.ajaxUrl,
-            data: {
-              security: checkout_wpScriptObject.security,
-              action: checkout_wpScriptObject.action,
-              address: account.address,
-            },
-            success: (data) => {
-              $('#user_wallet_address').val(account.address);
-              $(this).dialog("close");
-            },
-            error: (xhr, status, error) => {
-              console.log(error);
-              $('#user-wallet-modal-error').text(error);
-              $('#user-wallet-modal-error').css('display', 'block');
-              $('#user_wallet_address').val(account.address);
-              $(this).dialog("close");
-            },
-          });
-        },
-      }
-    });
-  });
+  //   $('#user-wallet-modal-address').text(account.address);
+  //   $('#user-wallet-modal-privateKey').text(account.privateKey);
+  //   $('#user-wallet-generator-modal').dialog({
+  //     modal: true,
+  //     dialogClass: 'no-close no-title',
+  //     buttons: {
+  //       [checkout_wpScriptObject['cancel']]: function () {
+  //         $(this).dialog('close');
+  //       },
+  //       [checkout_wpScriptObject['save']]: function () {
+  //         $.ajax({
+  //           method: 'POST',
+  //           url: checkout_wpScriptObject.ajaxUrl,
+  //           data: {
+  //             security: checkout_wpScriptObject.security,
+  //             action: checkout_wpScriptObject.action,
+  //             address: account.address,
+  //           },
+  //           success: (data) => {
+  //             $('#user_eth_wallet_address').val(account.address);
+  //             $(this).dialog("close");
+  //           },
+  //           error: (xhr, status, error) => {
+  //             console.log(error);
+  //             $('#user-wallet-modal-error').text(error);
+  //             $('#user-wallet-modal-error').css('display', 'block');
+  //             $('#user_eth_wallet_address').val(account.address);
+  //             $(this).dialog("close");
+  //           },
+  //         });
+  //       },
+  //     }
+  //   });
+  // });
 })(jQuery);

@@ -20,14 +20,12 @@
             'dev_requirement' => false,
         ),
         'kornrunner/keccak' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../kornrunner/keccak',
-            'aliases' => array(
-                0 => '9999999-dev',
-            ),
-            'reference' => 'c22f0e95c900d08d9a20f30122de948c73ba16c2',
+            'aliases' => array(),
+            'reference' => '433749d28e117fb97baf9f2631b92b5d9ab3c890',
             'dev_requirement' => false,
         ),
         'symfony/polyfill-mbstring' => array(
@@ -36,9 +34,9 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
             'aliases' => array(
-                0 => '1.26.x-dev',
+                0 => '1.27.x-dev',
             ),
-            'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+            'reference' => '8ad114f6b39e2c98a8b0e3bd907732c207c2b534',
             'dev_requirement' => false,
         ),
     ),

@@ -34,55 +34,50 @@ class AdminSettings
 				wp_enqueue_style('admin-style', CRYPTUM_NFT_PLUGIN_DIR . 'public/css/admin.css');
 			});
 			register_setting('cryptum_nft_settings', 'cryptum_nft', function ($input) {
-				// Detect multiple sanitizing passes.
-				// Accomodates bug: https://core.trac.wordpress.org/ticket/21989
-				static $pass_count = 0;
-				$pass_count++;
 
-				if ($pass_count <= 1) {
-					$options = get_option('cryptum_nft');
-					$store_id = $input['storeId'];
-					$apikey = $input['apikey'];
-					$environment = $input['environment'];
+				$options = get_option('cryptum_nft');
+				$store_id = $input['storeId'];
+				$apikey = $input['apikey'];
+				$environment = $input['environment'];
 
-					if (!Misc::is_uuid_valid($store_id)) {
-						add_settings_error(
-							'cryptum_nft_settings',
-							'error',
-							__('Store id is not valid UUID string', 'cryptum-nft-domain'),
-							'error'
-						);
-						return $options;
-					}
-					if (!Misc::is_apikey_valid($apikey)) {
-						add_settings_error(
-							'cryptum_nft_settings',
-							'error',
-							__('API key is not valid', 'cryptum-nft-domain'),
-							'error'
-						);
-						return $options;
-					}
-
-					$response = Api::verify_store_credentials($apikey, $store_id, $environment);
-					if (isset($response['error'])) {
-						Log::error($response);
-						add_settings_error(
-							'cryptum_nft_settings',
-							'error',
-							__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
-							'error'
-						);
-						return $options;
-					}
+				if (!Misc::is_uuid_valid($store_id)) {
 					add_settings_error(
 						'cryptum_nft_settings',
-						'success',
-						__('Changes updated successfully', 'cryptum-nft-domain'),
-						'success'
+						'error',
+						__('Store id is not valid UUID string', 'cryptum-nft-domain'),
+						'error'
 					);
-					return $input;
+					return $options;
 				}
+				if (!Misc::is_apikey_valid($apikey)) {
+					add_settings_error(
+						'cryptum_nft_settings',
+						'error',
+						__('API key is not valid', 'cryptum-nft-domain'),
+						'error'
+					);
+					return $options;
+				}
+
+				$response = Api::verify_store_credentials($apikey, $store_id, $environment);
+				if (isset($response['error'])) {
+					Log::error($response);
+					add_settings_error(
+						'cryptum_nft_settings',
+						'error',
+						__('Store not configured yet or not existent. You must configure a store in Cryptum dashboard first', 'cryptum-nft-domain'),
+						'error'
+					);
+					return $options;
+				}
+
+				add_settings_error(
+					'cryptum_nft_settings',
+					'success',
+					__('Changes updated successfully', 'cryptum-nft-domain'),
+					'success'
+				);
+				return $input;
 			});
 		}
 	}
@@ -132,6 +127,9 @@ class AdminSettings
 						<?php
 						settings_fields('cryptum_nft_settings');
 						$options = get_option('cryptum_nft');
+						if (!is_array($options)) {
+							$options = array();
+						}
 						?>
 						<table class="form-table">
 
