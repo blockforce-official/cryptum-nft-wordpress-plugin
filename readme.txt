@@ -3,7 +3,7 @@ Contributors: victorbfc, edsonprimo
 Tags: cryptocurrency, crypto, e-commerce, ecommerce, store, blockchain, nft, token
 Requires at least: 5.7
 Tested up to: 6.0.2
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -24,7 +24,7 @@ Please notice that WooCommerce must be installed and active.
 
 == Installation ==
 
-* To do an automatic install of the Blockforce Cryptum NFT Plugin, log in to your WordPress dashboard, navigate to the Plugins menu, and click “Add New.”
+* To do an automatic install of the Cryptum NFT Plugin, log in to your WordPress dashboard, navigate to the Plugins menu, and click “Add New.”
 
 * In the search field type “Cryptum NFT,” then click “Search Plugins.” Once you’ve found us, you can view details about it such as the point release, rating, and description. Most importantly of course, you can install it by Clicking “Install Now,” and WordPress will take it from there.
 
@@ -40,12 +40,12 @@ Please notice that WooCommerce must be installed and active.
 
 * Start creating your Collections and NFTs, and linking to your Store products.
 
-* Check more information in the complete <a href="https://doc.cryptum.io/main/for-sellers/overview-for-sellers" target="_blank">Documentation</a>.
+* Check more information in the complete <a href="https://docs.cryptum.io/main/for-sellers/overview-for-sellers" target="_blank">Documentation</a>.
 
 
 = Development =
 
-This plugin is being developed on <a href="https://github.com/blockforce-official/cryptum-nft-wordpress-plugin" target="_blank">GitHub</a> by Blockforce team. Feel free to look the code and help us.
+This plugin is being developed on <a href="https://github.com/cryptum-official/cryptum-nft-wordpress-plugin" target="_blank">GitHub</a> by Cryptum team. Feel free to look the code and help us.
 The plugin connects with our NFT Services and Dashboard to perform automatic transactions. Those APIs will link the user’s payment with cryptocurrency and the order in your WooCommerce store.
 
 For more details about Cryptum product go to our site.
@@ -98,3 +98,7 @@ Create your collections and NFTs on the Dashboard, using your blockchain wallet.
 = 1.1.1 =
 
 * Added support for Hathor NFTs.
+
+= 1.1.2 =
+
+* Updates in labels and links.

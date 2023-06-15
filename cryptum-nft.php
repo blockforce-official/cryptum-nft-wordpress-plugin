@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: Cryptum NFT
- * Plugin URI: https://github.com/blockforce-official/cryptum-nft-wordpress-plugin
+ * Plugin URI: https://github.com/cryptum-official/cryptum-nft-wordpress-plugin
  * Description: Cryptum NFT Plugin
- * Version: 1.1.1
- * Author: Blockforce
- * Author URI: https://blockforce.in
+ * Version: 1.1.2
+ * Author: Cryptum
+ * Author URI: https://cryptum.io
  * Domain Path: /languages
  * Text Domain: cryptum-nft-domain
  * Requires at least: 5.7

@@ -139,7 +139,7 @@ class CheckoutPage
 							'class' => array(
 								'my-field-class form-row-wide user-wallet-form-field'
 							),
-							'label' => __('Eth wallet address', 'cryptum-nft-domain'),
+							'label' => __('Ethereum wallet address or compatible (Celo, Polygon, BSC, ...)', 'cryptum-nft-domain'),
 							'placeholder' => '',
 							'required' => true
 						),
